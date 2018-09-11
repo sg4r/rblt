@@ -42,6 +42,8 @@ LoggerUI <-setRefClass("LoggerUI",
                                              min = 1,
                                              max = lnbrow,
                                              value = c(min,max)),
+                                 actionButton("btzoom", "Zoom"),
+                                 actionButton("btreset", "Reset"),
                                  checkboxGroupInput("checkGroup", label = "Behavior",
                                                     choices = lbechoices,
                                                     selected = lbeslct )
@@ -51,6 +53,16 @@ LoggerUI <-setRefClass("LoggerUI",
                                )  )
                            )
                            server <- function(input, output, session) {
+                             observeEvent(input$btzoom, {
+                               lmin=input$time[1]
+                               lmax=input$time[2]
+                               updateSliderInput(session, "time",min=lmin,max=lmax,step = 1)
+                             })
+                             observeEvent(input$btreset, {
+                               id=as.numeric(input$logger)
+                               lmax=loglst[[id]]$nbrow
+                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
+                             })
                              observeEvent(input$logger, {
                                id=as.numeric(input$logger)
                                lmax=loglst[[id]]$nbrow
