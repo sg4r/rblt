@@ -30,6 +30,8 @@ LoggerUI <-setRefClass("LoggerUI",
                              loggerchoice[[n$name]]=i
                            }
                            lnbrow=loglst[[1]]$nbrow
+                           lbechoices=loglst[[1]]$behaviorchoices
+                           lbeslct=loglst[[1]]$behaviorselected
                            ui <- fluidPage(
                              sidebarLayout(
                                sidebarPanel(
@@ -40,10 +42,9 @@ LoggerUI <-setRefClass("LoggerUI",
                                              min = 1,
                                              max = lnbrow,
                                              value = c(min,max)),
-                                 checkboxGroupInput("checkGroup", label = "Move",
-                                                    choices = list("Time mark" = 1, "Swimming horizontally" = 2, "Swimming descent" = 3,
-                                                                   "Swimming ascent"=4, "Breathing"=5, "Acceleration"=6),
-                                                    selected = list(1,2))
+                                 checkboxGroupInput("checkGroup", label = "Behavior",
+                                                    choices = lbechoices,
+                                                    selected = lbeslct )
                                ),
                                mainPanel(
                                  fluidRow(column(3, verbatimTextOutput("value")))
@@ -51,8 +52,12 @@ LoggerUI <-setRefClass("LoggerUI",
                            )
                            server <- function(input, output, session) {
                              observeEvent(input$logger, {
-                               lmax=loglst[[as.numeric(input$logger)]]$nbrow
+                               id=as.numeric(input$logger)
+                               lmax=loglst[[id]]$nbrow
                                updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
+                               lbechoices=loglst[[id]]$behaviorchoices
+                               lbeslct=loglst[[id]]$behaviorselected
+                               updateCheckboxGroupInput(session, "checkGroup",choices =lbechoices, selected= lbeslct)
                              })
                              output$value <- renderPrint({ input$time })
                            }

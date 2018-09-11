@@ -21,6 +21,7 @@ Logger <- setRefClass("Logger",
                       fields = list(name = "character",
                                     filedata = "character",
                                     filebehavior = "character",
+                                    datestart = "POSIXct",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
