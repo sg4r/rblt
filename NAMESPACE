@@ -3,6 +3,8 @@
 export(Logger)
 export(LoggerCats)
 export(LoggerUI)
+export(rbltgetversion)
+export(rbltsayhello)
 exportClasses(Logger)
 exportClasses(LoggerCats)
 exportClasses(LoggerUI)

@@ -1,3 +1,16 @@
+#-------------------------------------------------------------------------------
+# rbio-logging-toolbox
+# sebastien GEIGER IPHC CNRS
+# le 29/06/2018
+# Copyright (C) 2018 CNRS
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License
+#
+#-------------------------------------------------------------------------------
+
+
 #' A LoggerUI reference class
 #' @export LoggerUI
 #' @exportClass LoggerUI
