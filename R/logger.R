@@ -22,6 +22,8 @@ Logger <- setRefClass("Logger",
                                     filedata = "character",
                                     filebehavior = "character",
                                     datestart = "POSIXct",
+                                    becolor = "character",
+                                    beobslst = "list",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
@@ -29,6 +31,8 @@ Logger <- setRefClass("Logger",
                           filedata<<-filedata
                           name<<-basename(filedata)
                           filebehavior<<-filebehavior
+                          datestart<<-as.POSIXct("2015-04-01", tz="GMT")
+                          options(digits.secs = 3)
                           behaviorinit()
                         },
                         draw = function() {
@@ -37,15 +41,30 @@ Logger <- setRefClass("Logger",
                         behaviorinit= function() {
                           lchoices=list()
                           lslct=list()
+                          becolor<<-""
+                          lbeobslst=list()
                           if (nchar(filebehavior)>0) {
                             tryCatch({
                               dso=read.csv(filebehavior)
                               dsob=levels(dso$Behavior)
+                              #get number of different Behavior
                               i=0
                               for(o in dsob) {
                                 i=i+1
                                 lchoices[[o]]=i
                                 lslct=c(lslct,i)
+                              }
+                              becolor<<-rainbow(i)
+                              cat(datestart)
+                              #build Behavior obs list
+                              for(i in 1:nrow(dso)) {
+                                row=dso[i,]
+                                lfrom=paste(datestart+row$Start..s.)
+                                lto=paste(datestart+row$Stop..s.)
+                                #verifier index Behavior< confnbcolor
+                                lcode=as.numeric(row$Behavior)
+                                lcolor=becolor[[lcode]]
+                                lbeobslst[[i]]=list(from = lfrom , to = lto, color = lcolor, code=lcode)
                               }
                             }, error = function(c) {
                               c$message <- paste0(c$message, " (in ", filebehavior, ")")
@@ -54,6 +73,7 @@ Logger <- setRefClass("Logger",
                           }#if
                           behaviorchoices<<-lchoices
                           behaviorselected<<-lslct
+                          beobslst<<-lbeobslst
                         }#function
                       )
 )
