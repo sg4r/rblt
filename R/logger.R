@@ -55,7 +55,6 @@ Logger <- setRefClass("Logger",
                                 lslct=c(lslct,i)
                               }
                               becolor<<-rainbow(i)
-                              cat(datestart)
                               #build Behavior obs list
                               for(i in 1:nrow(dso)) {
                                 row=dso[i,]
