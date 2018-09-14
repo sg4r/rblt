@@ -10,7 +10,10 @@
 #
 #-------------------------------------------------------------------------------
 
+library(dygraphs)
+library(xts)
 library(shiny)
+
 
 #' A LoggerUI reference class
 #' @export LoggerUI
@@ -33,6 +36,7 @@ LoggerUI <-setRefClass("LoggerUI",
                            lnbrow=loglst$.l[[1]]$nbrow
                            lbechoices=loglst$.l[[1]]$behaviorchoices
                            lbeslct=loglst$.l[[1]]$behaviorselected
+                           ldatestart=loglst$.l[[1]]$datestart
                            ui <- fluidPage(
                              sidebarLayout(
                                sidebarPanel(
@@ -50,7 +54,7 @@ LoggerUI <-setRefClass("LoggerUI",
                                                     selected = lbeslct )
                                ),
                                mainPanel(
-                                 fluidRow(column(3, verbatimTextOutput("value")))
+                                 uiOutput("dygraph")
                                )  )
                            )
                            server <- function(input, output, session) {
@@ -70,9 +74,40 @@ LoggerUI <-setRefClass("LoggerUI",
                                updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
                                lbechoices=loglst$.l[[id]]$behaviorchoices
                                lbeslct=loglst$.l[[id]]$behaviorselected
+                               ldatestart=loglst$.l[[id]]$datestart
                                updateCheckboxGroupInput(session, "checkGroup",choices =lbechoices, selected= lbeslct)
                              })
-                             output$value <- renderPrint({ input$time })
+                             output$dygraph <- renderUI({
+                               fres=1000
+                               fmin=input$time[1]
+                               fmax=input$time[2]
+                               if ((fmax-fmin) < fres) {
+                                 fpas=1
+                                 fres=fmax-fmin
+                               } else {
+                                 fpas=floor((fmax-fmin)/fres)
+                               }
+                               mi=seq(fmin,fmax,fpas)
+                               mi=mi[1:fres]
+                               #m=ds[mi,]
+                               #demo
+                               cat(lnbrow)
+                               xseq=seq(1,lnbrow)
+                               ds=data.frame(xseq)
+                               ds[,"y"]=lnbrow-ds[,1]
+                               ds[,"z"]=lnbrow
+                               m=ds[mi,]
+                               datedeb=(ldatestart+fmin)
+                               datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
+                               datetimes=datetimes[1:fres]
+                               acc=cbind(m[,1],m[,2],m[,3])
+                               wacc=xts(acc, order.by = datetimes, tz="GMT" )
+                               dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
+                                 dyOptions(labelsUTC = TRUE)
+                               dy_graph <- list(dyacc)
+                               tagList(dy_graph)
+                             })
+
                            }
                            shinyApp(ui = ui, server = server)
                          }
