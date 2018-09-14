@@ -74,7 +74,7 @@ Logger <- setRefClass("Logger",
                                 lto=paste(datestart+row$Stop..s.)
                                 #verifier index Behavior< confnbcolor
                                 lcode=as.numeric(row$Behavior)
-                                lcolor=becolor[[lcode]]
+                                lcolor=substr(becolor[[lcode]],1,7)
                                 lbeobslst[[i]]=list(from = lfrom , to = lto, color = lcolor, code=lcode)
                               }
                             }, error = function(c) {
