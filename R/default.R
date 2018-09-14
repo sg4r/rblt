@@ -70,3 +70,29 @@ cats2h5 = function(filecatscsv="",fileh5="") {
     h5close(h5f)
   }
 }
+
+#' A democats2h5 fonction build demo cats h5 file
+#' @export democats2h5
+democats2h5 = function(fileh5="",nbrow=10000) {
+  if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("out:",fileh5))
+    xseq=seq(1,nbrow)
+    ds=data.frame(xseq)
+    ds[,2]=nbrow-ds[,1]
+    ds[,3]=nbrow/2
+    datestart=Sys.time()
+    #ecriture du fichier H5
+    ldm=data.matrix(ds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="CATS"
+    h5attr(h5f, "version")="1.0"
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")="democats2h5"
+    h5close(h5f)
+  }
+}
+
