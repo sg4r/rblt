@@ -2,10 +2,12 @@
 
 export(Logger)
 export(LoggerCats)
+export(LoggerList)
 export(LoggerUI)
 export(cats2h5)
 export(getversion)
 export(sayhello)
 exportClasses(Logger)
 exportClasses(LoggerCats)
+exportClasses(LoggerList)
 exportClasses(LoggerUI)

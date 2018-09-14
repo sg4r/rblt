@@ -10,6 +10,7 @@
 #
 #-------------------------------------------------------------------------------
 
+library(h5)
 
 #' A Logger reference class
 #' @field filedata nom du fichier de donnée
@@ -19,7 +20,7 @@
 #' @author sebastien geiger
 Logger <- setRefClass("Logger",
                       fields = list(name = "character",
-                                    filedata = "character",
+                                    fileh5 = "character",
                                     filebehavior = "character",
                                     datestart = "POSIXct",
                                     becolor = "character",
@@ -27,16 +28,27 @@ Logger <- setRefClass("Logger",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(filedata = "", filebehavior = "") {
-                          filedata<<-filedata
-                          name<<-basename(filedata)
-                          filebehavior<<-filebehavior
-                          datestart<<-as.POSIXct("2015-04-01", tz="GMT")
-                          options(digits.secs = 3)
-                          behaviorinit()
+                        initialize= function(fileh5 = "", filebehavior = "") {
+                          if(!is.character(fileh5)){
+                            stop("fileh5 file path")
+                          }else if (!is.h5file(fileh5)){
+                            stop("fileh5 is not h5 format")
+                          } else {
+                            fileh5<<-fileh5
+                            name<<-basename(fileh5)
+                            filebehavior<<-filebehavior
+                            options(digits.secs = 3)
+                            h5init()
+                            behaviorinit()
+                          }
                         },
                         draw = function() {
-                          print(paste("t:Logger fd:",filedata))
+                          return(paste("t:Logger fd:",fileh5))
+                        },
+                        h5init = function() {
+                          #get info from h5 file
+                          datestart<<-as.POSIXct("2015-04-01", tz="GMT")
+                          stop("default class ne doit pas etre executé")
                         },
                         behaviorinit= function() {
                           lchoices=list()
@@ -85,12 +97,36 @@ LoggerCats <-setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(nbrow = "numeric"),
                          methods = list(
-                           initialize = function(filedata = "", filebehavior = "",nbrow=10) {
-                             callSuper(filedata, filebehavior)
+                           initialize = function(fileh5 = "", filebehavior = "",nbrow=10) {
+                             callSuper(fileh5, filebehavior)
                              nbrow<<-nbrow
                            },
+                           h5init = function() {
+                             cat("init version cats")
+                             #get info from h5 file
+                             datestart<<-as.POSIXct("2015-04-01", tz="GMT")
+                           },
                            draw = function() {
-                             print(paste("t:LoggerCats fd",filedata))
+                             return(paste("t:LoggerCats fd",name))
+                           }
+                         )
+)
+#' A LoggerList reference class
+#' @export LoggerList
+#' @exportClass LoggerList
+LoggerList <-setRefClass("LoggerList",
+                         fields = list(.l ="list"),
+                         methods = list(
+                           initialize= function() {
+                             .l<<-list()
+                           },
+                           add = function(node) {
+                             .l<<-c(.l,node)
+                           },
+                           draw = function() {
+                             rep=list()
+                             for (i in l$.l) {rep=c(rep,i$draw())}
+                             return(rep)
                            }
                          )
 )

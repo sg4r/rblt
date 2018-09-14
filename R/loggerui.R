@@ -10,12 +10,13 @@
 #
 #-------------------------------------------------------------------------------
 
+library(shiny)
 
 #' A LoggerUI reference class
 #' @export LoggerUI
 #' @exportClass LoggerUI
 LoggerUI <-setRefClass("LoggerUI",
-                       fields = list(loglst = "list",
+                       fields = list(loglst = "LoggerList",
                                      nbrow = "numeric"),
                        methods = list(
                          initialize = function(loglst) {
@@ -25,13 +26,13 @@ LoggerUI <-setRefClass("LoggerUI",
                          gui = function() {
                            i=0
                            loggerchoice=list()
-                           for(n in loglst) {
+                           for(n in loglst$.l) {
                              i=i+1
                              loggerchoice[[n$name]]=i
                            }
-                           lnbrow=loglst[[1]]$nbrow
-                           lbechoices=loglst[[1]]$behaviorchoices
-                           lbeslct=loglst[[1]]$behaviorselected
+                           lnbrow=loglst$.l[[1]]$nbrow
+                           lbechoices=loglst$.l[[1]]$behaviorchoices
+                           lbeslct=loglst$.l[[1]]$behaviorselected
                            ui <- fluidPage(
                              sidebarLayout(
                                sidebarPanel(
@@ -60,15 +61,15 @@ LoggerUI <-setRefClass("LoggerUI",
                              })
                              observeEvent(input$btreset, {
                                id=as.numeric(input$logger)
-                               lmax=loglst[[id]]$nbrow
+                               lmax=loglst$.l[[id]]$nbrow
                                updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                              })
                              observeEvent(input$logger, {
                                id=as.numeric(input$logger)
-                               lmax=loglst[[id]]$nbrow
+                               lmax=loglst$.l[[id]]$nbrow
                                updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
-                               lbechoices=loglst[[id]]$behaviorchoices
-                               lbeslct=loglst[[id]]$behaviorselected
+                               lbechoices=loglst$.l[[id]]$behaviorchoices
+                               lbeslct=loglst$.l[[id]]$behaviorselected
                                updateCheckboxGroupInput(session, "checkGroup",choices =lbechoices, selected= lbeslct)
                              })
                              output$value <- renderPrint({ input$time })
