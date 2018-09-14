@@ -97,17 +97,27 @@ LoggerCats <-setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(nbrow = "numeric"),
                          methods = list(
-                           initialize = function(fileh5 = "", filebehavior = "",nbrow=10) {
+                           initialize = function(fileh5 = "", filebehavior = "") {
                              callSuper(fileh5, filebehavior)
-                             nbrow<<-nbrow
                            },
                            h5init = function() {
-                             cat("init version cats")
+                             #cat("init version cats")
                              #get info from h5 file
-                             datestart<<-as.POSIXct("2015-04-01", tz="GMT")
+                             f=h5file(fileh5,"r")
+                             #list.attributes(f)
+                             if (h5attr(f["/"], "logger")!="CATS") {
+                               stop("h5 file not CATS structure")
+                             }else {
+                               dt=h5attr(f["/"], "datestart")
+                               datestart<<-as.POSIXct(dt, tz="GMT")
+                               dset=openDataSet(f,"/data")
+                               size=dset@dim
+                               nbrow<<-size[1]
+                             }
+                             h5close(f)
                            },
                            draw = function() {
-                             return(paste("t:LoggerCats fd",name))
+                             return(paste0("t:LoggerCats f:",name," s:",datestart))
                            }
                          )
 )
