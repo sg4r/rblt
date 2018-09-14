@@ -117,7 +117,7 @@ LoggerCats <-setRefClass("LoggerCats",
                              h5close(f)
                            },
                            draw = function() {
-                             return(paste0("t:LoggerCats f:",name," s:",datestart))
+                             return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
                            }
                          )
 )
