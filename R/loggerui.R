@@ -104,6 +104,12 @@ LoggerUI <-setRefClass("LoggerUI",
                                wacc=xts(acc, order.by = datetimes, tz="GMT" )
                                dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
                                  dyOptions(labelsUTC = TRUE)
+                               lobs=loglst$.l[[id]]$beobslst
+                               for( ob in lobs ) {
+                                 if (ob$code %in% input$checkGroup) {
+                                   dyacc <- dyShading(dyacc, from = ob$from , to = ob$to, color = ob$color )
+                                 }
+                               }
                                dy_graph <- list(dyacc)
                                tagList(dy_graph)
                              })
