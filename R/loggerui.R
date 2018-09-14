@@ -20,6 +20,7 @@ library(shiny)
 #' @exportClass LoggerUI
 LoggerUI <-setRefClass("LoggerUI",
                        fields = list(loglst = "LoggerList",
+                                     id = "numeric",
                                      nbrow = "numeric"),
                        methods = list(
                          initialize = function(loglst) {
@@ -33,6 +34,7 @@ LoggerUI <-setRefClass("LoggerUI",
                              i=i+1
                              loggerchoice[[n$name]]=i
                            }
+                           id<<-1
                            lnbrow=loglst$.l[[1]]$nbrow
                            lbechoices=loglst$.l[[1]]$behaviorchoices
                            lbeslct=loglst$.l[[1]]$behaviorselected
@@ -64,13 +66,14 @@ LoggerUI <-setRefClass("LoggerUI",
                                updateSliderInput(session, "time",min=lmin,max=lmax,step = 1)
                              })
                              observeEvent(input$btreset, {
-                               id=as.numeric(input$logger)
+                               id<<-as.numeric(input$logger)
                                lmax=loglst$.l[[id]]$nbrow
                                updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                              })
                              observeEvent(input$logger, {
-                               id=as.numeric(input$logger)
+                               id<<-as.numeric(input$logger)
                                lmax=loglst$.l[[id]]$nbrow
+                               nbrow<<-lmax
                                updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
                                lbechoices=loglst$.l[[id]]$behaviorchoices
                                lbeslct=loglst$.l[[id]]$behaviorselected
@@ -89,14 +92,11 @@ LoggerUI <-setRefClass("LoggerUI",
                                }
                                mi=seq(fmin,fmax,fpas)
                                mi=mi[1:fres]
+                               fileh5=loglst$.l[[id]]$fileh5
+                               f=h5file(fileh5,"r")
                                #m=ds[mi,]
-                               #demo
-                               cat(lnbrow)
-                               xseq=seq(1,lnbrow)
-                               ds=data.frame(xseq)
-                               ds[,"y"]=lnbrow-ds[,1]
-                               ds[,"z"]=lnbrow
-                               m=ds[mi,]
+                               m=f["/data"][mi,1:3]
+                               h5close(f)
                                datedeb=(ldatestart+fmin)
                                datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
                                datetimes=datetimes[1:fres]
