@@ -49,7 +49,7 @@ cats2h5 = function(filecatscsv="",fileh5="") {
   }else {
     print(paste("in:",filecatscsv))
     print(paste("out:",fileh5))
-    lds=read.csv(file=filecatscsv,colClasses=c("Date..UTC."="character","Time..UTC."="character","Accelerometer.X..m.s²."="numeric"))
+    lds=read.csv(file=filecatscsv,check.names = F, colClasses=c("Date..UTC."="character","Time..UTC."="character","Accelerometer.X..m.s²."="numeric"))
     ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:7)]
     rm(lds)
     names(ldscats)=c("date","time","x","y","z")
