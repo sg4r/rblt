@@ -96,3 +96,22 @@ democats2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
+democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
+  if (!is.character(fbe)){
+    stop("fbe must file path")
+  }else {
+    if(file.exists(fbe)) file.remove(fbe)
+    s=seq.int(1,nbrow,length.out = nbseq)
+    rep="Observation id,Observation date,Media file,Total length,FPS,Subject,Behavior,Modifiers,Behavior type,Start (s),Stop (s),Duration (s),Comment start,Comment stop"
+    for(i in 1:(length(s)-1)) {
+      deb=s[i]
+      fin=s[i+1]
+      dure=fin-deb
+      ben=paste0("event-",i)
+      rep=c(rep,paste(i,"1-1-1990,demo,100,20,sub,",ben,",STATE",deb,fin,dure,",",sep=","))
+    }
+    fileConn<-file(fbe)
+    writeLines(rep,fileConn)
+    close(fileConn)
+  }
+}
