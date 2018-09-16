@@ -22,6 +22,7 @@ LoggerUI <-setRefClass(
   "LoggerUI",
    fields = list(loglst = "LoggerList",
                  id = "numeric",
+                 ldatestart =  "POSIXct",
                  nbrow = "numeric"),
    methods = list(
      initialize = function(loglst) {
@@ -42,7 +43,7 @@ LoggerUI <-setRefClass(
        lbecolor=loglst$.l[[1]]$becolor
        lbechnames=list()
        lbechvalues=list()
-       ldatestart=loglst$.l[[1]]$datestart
+       ldatestart<<-loglst$.l[[1]]$datestart
        ui <- fluidPage(
          sidebarLayout(
            sidebarPanel(
@@ -83,7 +84,7 @@ LoggerUI <-setRefClass(
            updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
            lbechoices=loglst$.l[[id]]$behaviorchoices
            lbeslct=loglst$.l[[id]]$behaviorselected
-           ldatestart=loglst$.l[[id]]$datestart
+           ldatestart<<-loglst$.l[[id]]$datestart
            lbecolor=loglst$.l[[id]]$becolor
            for(v in lbechoices) {
              tag=tags$span(names(lbechoices[v]),style =paste0("color :",substr(lbecolor[v],1,7),";"))
