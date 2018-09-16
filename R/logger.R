@@ -11,6 +11,7 @@
 #-------------------------------------------------------------------------------
 
 library(h5)
+library(tools)
 
 #' A Logger reference class
 #' @field filedata nom du fichier de donnée
@@ -35,7 +36,7 @@ Logger <- setRefClass("Logger",
                             stop("fileh5 is not h5 format")
                           } else {
                             fileh5<<-fileh5
-                            name<<-basename(fileh5)
+                            name<<-file_path_sans_ext(basename(fileh5))
                             filebehavior<<-filebehavior
                             options(digits.secs = 3)
                             h5init()
