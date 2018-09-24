@@ -22,8 +22,8 @@ lui=LoggerUI$new(l)
 lui$gui()
 ````
 # Conversion des données
-Dans la mesure où les différents biologgeur n’utilisent pas le même format de données, il est nécessaire de convertir les données au format utilisé par la librairie rblt.
-## Pour les biologger CATS :
+Dans la mesure où les différents bio-logger n’utilisent pas le même format de données, il est nécessaire de convertir les données au format utilisé par la librairie rblt.
+## Pour les bio-logger CATS :
 Convertissez les résultats de vos données au format csv avec la fonction rblt::cats2h5
 ### Exemple :
 ```
@@ -41,7 +41,7 @@ rblt::cats2h5(filecatscsv,filecatsh5)
 [1] "nbrow: 5868"
 ```
 
-## Pour les biologger WACU :
+## Pour les bio-logger WACU :
 Convertissez les résultat de vos données au format csv avec la fonction rblt::wacu2h5
 ### Exemple :
 ```
