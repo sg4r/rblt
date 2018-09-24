@@ -36,7 +36,7 @@ sayhello <- function() {
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  print("rblt_version: 0.1.0")
+  print("rblt_version: 0.2.0")
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file

@@ -13,6 +13,7 @@ RoxygenNote: 6.1.0
 Depends:
     R (>= 3.2),
     h5,
+    tools,
     dygraphs,
     xts,
     shiny
