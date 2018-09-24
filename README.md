@@ -12,10 +12,12 @@ devtools::install_github("sebastien45/rblt")
 # Utilisation
 Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l'object de la classe LoggerUI qui affichera les différentes données.
 ```
+library(rblt)
+
 l=LoggerList$new()
 l$add(LoggerCats$new("~/rtoolbox/CC-07-48_14-02-2017_1.h5",filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
 l$add(LoggerCats$new("~/rtoolbox/CC-07-48_15-02-2017_1.h5"))
-l$add(LoggerCats$new("~/rtoolbox/democats2h5.h5"))
+l$add(LoggerCats$new("~/rtoolbox/democats-10k-pts.h5"))
 lui=LoggerUI$new(l)
 lui$gui()
 ````
