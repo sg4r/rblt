@@ -3,8 +3,14 @@ Le package rblt est une librairie de fonctions R pour simplifier la visualisatio
 ![rblt Logo](/rblt.png)
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 # Installation
+Installation depuis R, saisir les instructions suivantes, qui installeront la librairie rblt et ses dépendances.
+```
+install.packages("devtools")
+devtools::install_github("sebastien45/rblt")
+```
 
 # Utilisation
+Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l'object de la classe LoggerUI qui affichera les différentes données.
 ```
 l=LoggerList$new()
 l$add(LoggerCats$new("~/rtoolbox/CC-07-48_14-02-2017_1.h5",filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
@@ -17,7 +23,7 @@ lui$gui()
 Dans la mesure où les différents biologgeur n’utilisent pas le même format de données, il est nécessaire de convertir les données au format utilisé par la librairie rblt.
 ## Pour les biologger CATS :
 Convertissez les résultats de vos données au format csv avec la fonction rblt::cats2h5
-## Exemple :
+### Exemple :
 ```
 filecatscsv="~/rtoolbox/20180216-004210-CC-07-48_15-02-2017_1.csv"
 filecatsh5="~/rtoolbox/CC-07-48_15-02-2017_1.h5"
@@ -33,9 +39,9 @@ rblt::cats2h5(filecatscsv,filecatsh5)
 [1] "nbrow: 5868"
 ```
 
-# Pour les biologger WACU :
+## Pour les biologger WACU :
 Convertissez les résultat de vos données au format csv avec la fonction rblt::wacu2h5
-## Exemple :
+### Exemple :
 ```
 Bientôt
 ```
