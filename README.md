@@ -1,6 +1,6 @@
 # rblt
 Le package rblt est une librairie de fonctions R pour simplifier la visualisation des données accéléros des bio-loggers CATS ou fabriqué par l’equipe MIBE de l’IPHC http://www.iphc.cnrs.fr/-MIBE-.html 
-![rblt Logo](/rblt.png)
+![rblt Logo](rblt.png)
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 # Installation
 Installation depuis R, saisir les instructions suivantes, qui installeront la librairie rblt et ses dépendances.
