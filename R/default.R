@@ -115,3 +115,35 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
     close(fileConn)
   }
 }
+
+#' A wacu2h5 fonction for concert wacu csv file to h5 file
+#' @export wacu2h5
+wacu2h5 = function(filewacucsv="",fileh5="") {
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    lds=read.csv(file=filewacucsv,check.names = F, colClasses=c("character","character","numeric","numeric","numeric"),skip = 24,header = F, sep="\t")
+    ldswacu=lds[,c(1:5)]
+    rm(lds)
+    names(ldswacu)=c("date","time","x","y","z")
+    ldswacu[,"id"]=as.POSIXct(paste(ldswacu[,"date"],ldswacu[,"time"]),format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    datestart=ldswacu[1,"id"]
+    ldswacu[,"tick"]=as.numeric(ldswacu[,"id"]-datestart)
+    nbrow=nrow(ldswacu)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=data.matrix(ldswacu[,c("x","y","z","tick")])
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")="0.2"
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5close(h5f)
+  }
+}

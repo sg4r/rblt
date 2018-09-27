@@ -122,6 +122,39 @@ LoggerCats <-setRefClass("LoggerCats",
                            }
                          )
 )
+
+#' A LoggerWacu reference class
+#' @export LoggerWacu
+#' @exportClass LoggerWacu
+LoggerWacu <-setRefClass("LoggerWacu",
+                         contains = list("Logger"),
+                         fields = list(nbrow = "numeric"),
+                         methods = list(
+                           initialize = function(fileh5 = "", filebehavior = "") {
+                             callSuper(fileh5, filebehavior)
+                           },
+                           h5init = function() {
+                             cat("init version wacu")
+                             #get info from h5 file
+                             f=h5file(fileh5,"r")
+                             #list.attributes(f)
+                             if (h5attr(f["/"], "logger")!="WACU") {
+                               stop("h5 file not WACU structure")
+                             }else {
+                               dt=h5attr(f["/"], "datestart")
+                               datestart<<-as.POSIXct(dt, tz="GMT")
+                               dset=openDataSet(f,"/data")
+                               size=dset@dim
+                               nbrow<<-size[1]
+                             }
+                             h5close(f)
+                           },
+                           draw = function() {
+                             return(paste0("t:LoggerWacu f:",name," s:",datestart," r:",nbrow))
+                           }
+                         )
+)
+
 #' A LoggerList reference class
 #' @export LoggerList
 #' @exportClass LoggerList
