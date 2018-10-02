@@ -5,7 +5,9 @@ Version: 0.2.0
 Author: sebastien geiger
 Maintainer: the package maintainer <sebastien.geiger@iphc.cnrs.fr>
 Description: package pour la visualisation des données accelero des capteurs cats ou wacu
-    Déscription a compléter plutard.
+    Le package rblt R-bio-logging-toolbox est une librairie de fonctions R pour simplifier la visualisation des données accéléros
+    des bio-loggers CATS ainsi que des bio-loggers WACU, qui sont fabriqués par le service MIBE
+    de l’IPHC http://www.iphc.cnrs.fr/-MIBE-.html
 License: GPL3
 Encoding: UTF-8
 LazyData: true

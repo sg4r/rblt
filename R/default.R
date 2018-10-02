@@ -1,7 +1,6 @@
 #-------------------------------------------------------------------------------
 # rbio-logging-toolbox
-# sebastien GEIGER IPHC CNRS
-# le 29/06/2018
+# sebastien GEIGER IPHC CNRS# le 29/06/2018
 # Copyright (C) 2018 CNRS
 #
 # This program is free software: you can redistribute it and/or modify
@@ -11,6 +10,7 @@
 #-------------------------------------------------------------------------------
 
 library(h5)
+library("data.table")
 
 # Hello, world!
 #
@@ -130,20 +130,56 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
     ldswacu=lds[,c(1:5)]
     rm(lds)
     names(ldswacu)=c("date","time","x","y","z")
-    ldswacu[,"id"]=as.POSIXct(paste(ldswacu[,"date"],ldswacu[,"time"]),format="%d/%m/%Y %H:%M:%OS",tz="GMT")
-    datestart=ldswacu[1,"id"]
-    ldswacu[,"tick"]=as.numeric(ldswacu[,"id"]-datestart)
+    strdatestart=paste(ldswacu[1,"date"],ldswacu[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(ldswacu)
     print(paste("nbrow:",nbrow))
     #ecriture du fichier H5
-    ldm=data.matrix(ldswacu[,c("x","y","z","tick")])
+    ldm=data.matrix(ldswacu[,c("x","y","z")])
+    rm(ldswacu)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
-    h5f["data"]=ldm
+    #h5f["/data", "data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data", "data"]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")="0.2"
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
     h5close(h5f)
+    rm(ldm)
+  }
+}
+
+#' A wacu2h5dt fonction for concert wacu csv file to h5 file
+#' @export wacu2h5dt
+wacu2h5dt = function(filewacucsv="",fileh5="") {
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    lds=fread(file=filewacucsv,skip = 24,header = F, sep="\t")
+    names(lds)=c("date","time","x","y","z","v1")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=data.matrix(lds[,c("x","y","z")])
+    rm(lds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    #h5f["/data", "data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data", "data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")="0.2"
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5close(h5f)
+    rm(ldm)
   }
 }
