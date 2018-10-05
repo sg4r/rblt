@@ -223,3 +223,7 @@ wacu2haccl = function(filewacucsv= "", fileh5="") {
     close(con)
   }
 }
+
+# h5unlink(h5f,"acc1")
+# h5f["acc1"]=ldm
+# extendDataSet(h5f["acc1"],dims=c(288487438,3))
