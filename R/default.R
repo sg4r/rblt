@@ -173,13 +173,53 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
     rm(lds)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
-    #h5f["/data", "data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
-    h5f["/data", "data"]=ldm
+    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data"]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")="0.2"
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "accfreq")=25
     h5close(h5f)
     rm(ldm)
+  }
+}
+
+
+wacu2haccl = function(filewacucsv= "", fileh5="") {
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    con = file(filewacucsv, "r")
+    nbline=110
+    nblinetick=0
+    nblineacc=1
+    #file has lines
+    line = readLines(con, n = 1)
+    #head
+    line = readLines(con, n = 1)
+    while ( nbline ) {
+      line = readLines(con, n = 1)
+      if ( length(line) == 0 ) {
+        break
+      }
+      if (substr(line,1,1)==" ") {
+        #read acc
+        nblineacc=nblineacc+1
+      }else {
+        #est une ligne avec le temps
+        #read time and acc
+        nblineacc=1
+        nblinetick=nblinetick+1
+      }
+      print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
+      nbline=nbline-1
+    }
+    close(con)
   }
 }
