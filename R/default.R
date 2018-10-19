@@ -50,16 +50,16 @@ cats2h5 = function(filecatscsv="",fileh5="") {
     print(paste("in:",filecatscsv))
     print(paste("out:",fileh5))
     lds=read.csv(file=filecatscsv,check.names = F, stringsAsFactors=F)
-    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:14)]
+    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:14,20,22)]
     rm(lds)
-    names(ldscats)=c("date","time","ax","ay","az","gx","gy","gz","mx","my","mz","t")
+    names(ldscats)=c("date","time","ax","ay","az","gx","gy","gz","mx","my","mz","t","p","l")
     ldscats[,"id"]=as.POSIXct(paste(ldscats[,"date"],ldscats[,"time"]),format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     datestart=ldscats[1,"id"]
     ldscats[,"tick"]=as.numeric(ldscats[,"id"]-datestart)
     nbrow=nrow(ldscats)
     print(paste("nbrow:",nbrow))
     #ecriture du fichier H5
-    ldm=data.matrix(ldscats[,c("ax","ay","az","gx","gy","gz","mx","my","mz","t","tick")])
+    ldm=data.matrix(ldscats[,c("ax","ay","az","gx","gy","gz","mx","my","mz","t","p","l","tick")])
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
@@ -80,8 +80,21 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     print(paste("out:",fileh5))
     xseq=seq(1,nbrow)
     ds=data.frame(xseq)
+    #acc
     ds[,2]=nbrow-ds[,1]
     ds[,3]=nbrow/2
+    #g
+    ds[,4]=ds[,1]
+    ds[,5]=ds[,2]
+    ds[,6]=ds[,3]
+    #m
+    ds[,7]=ds[,1]
+    ds[,8]=ds[,2]
+    ds[,9]=ds[,3]
+    #tpl
+    ds[,10]=ds[,1]
+    ds[,11]=ds[,2]
+    ds[,12]=ds[,3]
     datestart=Sys.time()
     #ecriture du fichier H5
     ldm=data.matrix(ds)

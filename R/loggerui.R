@@ -109,7 +109,7 @@ LoggerUI <-setRefClass(
            fileh5=loglst$.l[[id]]$fileh5
            f=h5file(fileh5,"r")
            #m=ds[mi,]
-           m=f["/data"][mi,1:3]
+           m=f["/data"][mi,1:12]
            h5close(f)
            datedeb=(ldatestart+fmin)
            datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
@@ -124,7 +124,13 @@ LoggerUI <-setRefClass(
                dyacc <- dyShading(dyacc, from = ob$from , to = ob$to, color = ob$color )
              }
            }
-           dy_graph <- list(dyacc)
+           wt=xts(m[,10], order.by = datetimes, tz="GMT" )
+           dyt=dygraphs::dygraph(wt,main = "Temperature", group = "wac",height = 200)
+           wp=xts(m[,11], order.by = datetimes, tz="GMT" )
+           dyp=dygraphs::dygraph(wp,main = "Pression", group = "wac",height = 200)
+           wl=xts(m[,12], order.by = datetimes, tz="GMT" )
+           dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)
+           dy_graph <- list(dyacc,dyt,dyp,dyl)
            tagList(dy_graph)
          })
 
