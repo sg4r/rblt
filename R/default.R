@@ -36,7 +36,7 @@ sayhello <- function() {
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  print("rblt_version: 0.2.0")
+  return("rblt_version: 0.2.1")
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file
@@ -49,22 +49,22 @@ cats2h5 = function(filecatscsv="",fileh5="") {
   }else {
     print(paste("in:",filecatscsv))
     print(paste("out:",fileh5))
-    lds=read.csv(file=filecatscsv,check.names = F, colClasses=c("Date..UTC."="character","Time..UTC."="character","Accelerometer.X..m.s²."="numeric"))
-    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:7)]
+    lds=read.csv(file=filecatscsv,check.names = F, stringsAsFactors=F)
+    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:14)]
     rm(lds)
-    names(ldscats)=c("date","time","x","y","z")
+    names(ldscats)=c("date","time","ax","ay","az","gx","gy","gz","mx","my","mz","t")
     ldscats[,"id"]=as.POSIXct(paste(ldscats[,"date"],ldscats[,"time"]),format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     datestart=ldscats[1,"id"]
     ldscats[,"tick"]=as.numeric(ldscats[,"id"]-datestart)
     nbrow=nrow(ldscats)
     print(paste("nbrow:",nbrow))
     #ecriture du fichier H5
-    ldm=data.matrix(ldscats[,c("x","y","z","tick")])
+    ldm=data.matrix(ldscats[,c("ax","ay","az","gx","gy","gz","mx","my","mz","t","tick")])
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")="1.0"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecatscsv)
     h5close(h5f)
@@ -89,7 +89,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")="1.0"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5close(h5f)
@@ -143,7 +143,7 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
     #h5f["/data", "data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
     h5f["/data", "data"]=ldm
     h5attr(h5f, "logger")="WACU"
-    h5attr(h5f, "version")="0.2"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
     h5close(h5f)
@@ -176,7 +176,7 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
     #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
     h5f["/data"]=ldm
     h5attr(h5f, "logger")="WACU"
-    h5attr(h5f, "version")="0.2"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
     h5attr(h5f, "rtctick")=1
