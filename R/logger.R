@@ -108,6 +108,8 @@ LoggerCats <-setRefClass("LoggerCats",
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="CATS") {
                                stop("h5 file not CATS structure")
+                             }else if (h5attr(f["/"], "version")!=getversion()){
+                               stop("h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")

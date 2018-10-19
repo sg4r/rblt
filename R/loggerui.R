@@ -125,11 +125,14 @@ LoggerUI <-setRefClass(
              }
            }
            wt=xts(m[,10], order.by = datetimes, tz="GMT" )
-           dyt=dygraphs::dygraph(wt,main = "Temperature", group = "wac",height = 200)
+           dyt=dygraphs::dygraph(wt,main = "Temperature", group = "wac",height = 200)%>%
+             dyOptions(labelsUTC = TRUE)
            wp=xts(m[,11], order.by = datetimes, tz="GMT" )
-           dyp=dygraphs::dygraph(wp,main = "Pression", group = "wac",height = 200)
+           dyp=dygraphs::dygraph(wp,main = "Pression", group = "wac",height = 200) %>%
+             dyOptions(labelsUTC = TRUE)
            wl=xts(m[,12], order.by = datetimes, tz="GMT" )
-           dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)
+           dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)%>%
+             dyOptions(labelsUTC = TRUE)
            dy_graph <- list(dyacc,dyt,dyp,dyl)
            tagList(dy_graph)
          })
