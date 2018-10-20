@@ -18,5 +18,6 @@ Depends:
     tools,
     dygraphs,
     xts,
-    shiny
+    shiny,
+    data.table
 URL: https://github.com/sebastien45/rblt

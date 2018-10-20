@@ -194,7 +194,6 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
     h5attr(h5f, "rtctick")=1
-    h5attr(h5f, "accfreq")=25
     h5close(h5f)
     rm(ldm)
   }
@@ -203,8 +202,8 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
 #' A wacu2haccl function for insert wacu acc csv file to h5 file
 #' @export wacu2haccl
 wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
-# version rapide pour ne lire que les informations a la seconde
-# pour préparer le ui et la demo
+# version rapide qui ne lit que les informations a la seconde
+# pour préparer la ui et la démo
 # je ferait pour trad;)
   m=matrix(0,size,3)
   if(!is.character(filewacucsv)){
@@ -246,7 +245,17 @@ wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
     }
     close(con)
   }
-  return(m)
+  h5f <- h5file(name = fileh5, mode = "a")
+  l=list.datasets(h5f)
+  if ("/acc" %in% l) {
+    stop("ERROR : Dataset existing at location")
+  }else {
+    h5f["/acc"]=m
+    h5attr(h5f, "acctype")=1
+    h5attr(h5f, "accfreq")=accfreq
+    h5attr(h5f, "accsize")=size
+  }
+  h5close(h5f)
 }
 
 # h5unlink(h5f,"acc1")
