@@ -242,16 +242,6 @@ LoggerWacuUI <-setRefClass(
           datedeb=(ldatestart+fmin)
           datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
           datetimes=datetimes[1:fres]
-          #acc=cbind(m[,1],m[,2],m[,3])
-          #wacc=xts(acc, order.by = datetimes, tz="GMT" )
-          #dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
-          #  dyOptions(labelsUTC = TRUE)
-          #lobs=loglst$.l[[id]]$beobslst
-          # for( ob in lobs ) {
-          #   if (ob$code %in% input$checkGroup) {
-          #     dyacc <- dyShading(dyacc, from = ob$from , to = ob$to, color = ob$color )
-          #   }
-          # }
           wt=xts(m[,1], order.by = datetimes, tz="GMT" )
           dyt=dygraphs::dygraph(wt,main = "Temperature", group = "wac",height = 200)%>%
             dyOptions(labelsUTC = TRUE)
@@ -261,11 +251,20 @@ LoggerWacuUI <-setRefClass(
           wl=xts(m[,3], order.by = datetimes, tz="GMT" )
           dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)%>%
             dyOptions(labelsUTC = TRUE)
-#          dy_graph <- list(dyacc,dyt,dyp,dyl)
-          dy_graph <- list(dyt,dyp,dyl)
+          acc=cbind(m[,1],m[,2],m[,3])
+          wacc=xts(acc, order.by = datetimes, tz="GMT" )
+          dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
+           dyOptions(labelsUTC = TRUE)
+          lobs=loglst$.l[[id]]$beobslst
+          for( ob in lobs ) {
+            if (ob$code %in% input$checkGroup) {
+              dyacc <- dyShading(dyacc, from = ob$from , to = ob$to, color = ob$color )
+            }
+          }
+          dy_graph <- list(dyacc,dyt,dyp,dyl)
+#          dy_graph <- list(dyt,dyp,dyl)
           tagList(dy_graph)
         })
-
       }
       shinyApp(ui = ui, server = server)
     }

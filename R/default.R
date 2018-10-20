@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # rbio-logging-toolbox
-# sebastien GEIGER IPHC CNRS# le 29/06/2018
+# sebastien GEIGER IPHC CNRS
+# le 29/06/2018
 # Copyright (C) 2018 CNRS
 #
 # This program is free software: you can redistribute it and/or modify
@@ -199,8 +200,13 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
   }
 }
 
-
-wacu2haccl = function(filewacucsv= "", fileh5="") {
+#' A wacu2haccl function for insert wacu acc csv file to h5 file
+#' @export wacu2haccl
+wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+# version rapide pour ne lire que les informations a la seconde
+# pour préparer le ui et la demo
+# je ferait pour trad;)
+  m=matrix(0,size,3)
   if(!is.character(filewacucsv)){
     stop("filewacucsv file path")
   }else if (!is.character(fileh5)){
@@ -209,9 +215,10 @@ wacu2haccl = function(filewacucsv= "", fileh5="") {
     print(paste("in:",filewacucsv))
     print(paste("out:",fileh5))
     con = file(filewacucsv, "r")
-    nbline=110
+    nbline=510
     nblinetick=0
     nblineacc=1
+    mid=1
     #file has lines
     line = readLines(con, n = 1)
     #head
@@ -229,12 +236,17 @@ wacu2haccl = function(filewacucsv= "", fileh5="") {
         #read time and acc
         nblineacc=1
         nblinetick=nblinetick+1
+        val=strsplit(line,"\t")
+        acc=c(as.numeric(val[[1]][5]),as.numeric(val[[1]][6]),as.numeric(val[[1]][7]))
+        m[mid,]=acc
+        mid=mid+1
       }
       print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
       nbline=nbline-1
     }
     close(con)
   }
+  return(m)
 }
 
 # h5unlink(h5f,"acc1")
