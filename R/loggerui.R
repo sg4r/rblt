@@ -237,7 +237,7 @@ LoggerWacuUI <-setRefClass(
           fileh5=loglst$.l[[id]]$fileh5
           f=h5file(fileh5,"r")
           #m=ds[mi,]
-          m=f["/data"][mi,1:3]
+          m=f["/data"][mi,1:6]
           h5close(f)
           datedeb=(ldatestart+fmin)
           datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
@@ -251,7 +251,7 @@ LoggerWacuUI <-setRefClass(
           wl=xts(m[,3], order.by = datetimes, tz="GMT" )
           dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)%>%
             dyOptions(labelsUTC = TRUE)
-          acc=cbind(m[,1],m[,2],m[,3])
+          acc=cbind(m[,4],m[,5],m[,6])
           wacc=xts(acc, order.by = datetimes, tz="GMT" )
           dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
            dyOptions(labelsUTC = TRUE)
