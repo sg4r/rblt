@@ -11,7 +11,6 @@
 #-------------------------------------------------------------------------------
 
 library(h5)
-library(tools)
 
 #' A Logger reference class
 #' @field filedata nom du fichier de donnée
@@ -109,7 +108,7 @@ LoggerCats <-setRefClass("LoggerCats",
                              if (h5attr(f["/"], "logger")!="CATS") {
                                stop("h5 file not CATS structure")
                              }else if (h5attr(f["/"], "version")!=getversion()){
-                               stop("h5 file not good version")
+                               stop("CATS h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
@@ -142,6 +141,8 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="WACU") {
                                stop("h5 file not WACU structure")
+                             }else if (h5attr(f["/"], "version")!=getversion()){
+                               stop("WACU h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")

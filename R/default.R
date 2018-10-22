@@ -199,12 +199,15 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
   }
 }
 
-#' A wacu2haccl function for insert wacu acc csv file to h5 file
-#' @export wacu2haccl
-wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+#' A wacu2hacc1 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc1
+wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # version rapide qui ne lit que les informations a la seconde
 # pour préparer la ui et la démo
 # je ferait pour trad;)
+# readlines n'est pas rapide en ligne par ligne
+# pas possible de lire le fichier de 9Go en ram
+  library(svMisc)
   m=matrix(0,size,3)
   if(!is.character(filewacucsv)){
     stop("filewacucsv file path")
@@ -214,7 +217,8 @@ wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
     print(paste("in:",filewacucsv))
     print(paste("out:",fileh5))
     con = file(filewacucsv, "r")
-    nbline=510
+    prmax=510000
+    nbline=prmax*accfreq
     nblinetick=0
     nblineacc=1
     mid=1
@@ -240,7 +244,9 @@ wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
         m[mid,]=acc
         mid=mid+1
       }
-      print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
+      #print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
+      #affichage progression en pourcent
+      progress(mid*100/prmax)
       nbline=nbline-1
     }
     close(con)
@@ -256,8 +262,79 @@ wacu2haccl = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
     h5attr(h5f, "accsize")=size
   }
   h5close(h5f)
+  #free local variable
+  rm(m)
 }
+# system.time(wacu2hacc1(filewacucsv,w134))
+# Timing stopped at: 4027 161.9 4025
+# =>67.08333 minutes pour traiter 50% du fichier ACC de 9Go
 
+# memo
 # h5unlink(h5f,"acc1")
 # h5f["acc1"]=ldm
 # extendDataSet(h5f["acc1"],dims=c(288487438,3))
+
+
+#' A wacu2hacc2 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc2
+wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+  # version rapide qui ne lit que les informations a la seconde
+  # pour préparer la ui et la démo
+  # je ferait pour trad;)
+  m=matrix(0,size,3)
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    buffsize=10000000
+    buffcpt=0
+    buffcont=TRUE
+    mid=1
+    f=file(filewacucsv, "rb")
+    while(buffcont) {
+      buff=readChar(f, buffsize)
+      buffcpt=buffcpt+1
+      print(buffcpt)
+      if (nchar(buff)<buffsize) {
+        buffcont=FALSE
+      }
+      buffstr=strsplit(buff,"\r\n")
+      for(l in buffstr[[1]]) {
+        if (substr(l,1,1)==" ") {
+          #read acc
+          nblineacc=nblineacc+1
+        }else {
+          #est une ligne avec le temps
+          #read time and acc
+          nblineacc=1
+          val=strsplit(l,"\t")
+          acc=c(as.numeric(val[[1]][5]),as.numeric(val[[1]][6]),as.numeric(val[[1]][7]))
+          m[mid,]=acc
+          mid=mid+1
+        }
+      }#for
+    }
+    close(f)
+  }
+  h5f <- h5file(name = fileh5, mode = "a")
+  l=list.datasets(h5f)
+  if ("/acc" %in% l) {
+    stop("ERROR : Dataset existing at location")
+  }else {
+    h5f["/acc"]=m
+    h5attr(h5f, "acctype")=1
+    h5attr(h5f, "accfreq")=accfreq
+    h5attr(h5f, "accsize")=size
+  }
+  h5close(h5f)
+  #free local variable
+  rm(m)
+}
+# mesure du temps de traitement
+# system.time(wacu2hacc2(filewacucsv,w134))
+# user   system  elapsed
+# 2719.274   15.107 2748.208
+# => 45 minutes pour traiter le fichier ACC
