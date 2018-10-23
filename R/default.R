@@ -31,7 +31,7 @@ library("data.table")
 #' A sayhello function
 #' @export sayhello
 sayhello <- function() {
-  print("rblt:Hello, world!")
+  print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["login"]][1],"!"))
 }
 
 #' A getversion function

@@ -116,7 +116,7 @@ LoggerUI <-setRefClass(
            datetimes=datetimes[1:fres]
            acc=cbind(m[,1],m[,2],m[,3])
            wacc=xts(acc, order.by = datetimes, tz="GMT" )
-           dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
+           dyacc=dygraphs::dygraph(wacc,main = "Accelerometer", group = "wac",height = 200) %>%
              dyOptions(labelsUTC = TRUE)
            lobs=loglst$.l[[id]]$beobslst
            for( ob in lobs ) {
@@ -133,10 +133,17 @@ LoggerUI <-setRefClass(
            wl=xts(m[,12], order.by = datetimes, tz="GMT" )
            dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)%>%
              dyOptions(labelsUTC = TRUE)
-           dy_graph <- list(dyacc,dyt,dyp,dyl)
+           gyr=cbind(m[,4],m[,5],m[,6])
+           wgyr=xts(gyr, order.by = datetimes, tz="GMT" )
+           dgyr=dygraphs::dygraph(wgyr,main = "Gyroscope", group = "wac",height = 200) %>%
+             dyOptions(labelsUTC = TRUE)
+           mag=cbind(m[,7],m[,8],m[,9])
+           wmag=xts(mag, order.by = datetimes, tz="GMT" )
+           dmag=dygraphs::dygraph(wmag,main = "Magnetometer", group = "wac",height = 200) %>%
+             dyOptions(labelsUTC = TRUE)
+           dy_graph <- list(dyacc,dyt,dyp,dyl,dgyr,dmag)
            tagList(dy_graph)
          })
-
        }
        shinyApp(ui = ui, server = server)
      }
