@@ -11,6 +11,7 @@
 #-------------------------------------------------------------------------------
 
 library(h5)
+library("data.table")
 
 # Hello, world!
 #
@@ -30,13 +31,13 @@ library(h5)
 #' A sayhello function
 #' @export sayhello
 sayhello <- function() {
-  print("rblt:Hello, world!")
+  print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["login"]][1],"!"))
 }
 
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  print("rblt_version: 0.2.0")
+  return("0.2.1")
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file
@@ -49,22 +50,22 @@ cats2h5 = function(filecatscsv="",fileh5="") {
   }else {
     print(paste("in:",filecatscsv))
     print(paste("out:",fileh5))
-    lds=read.csv(file=filecatscsv,check.names = F, colClasses=c("Date..UTC."="character","Time..UTC."="character","Accelerometer.X..m.s²."="numeric"))
-    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:7)]
+    lds=read.csv(file=filecatscsv,check.names = F, stringsAsFactors=F)
+    ldscats=lds[seq(1,nrow(lds),50),c(1:2,5:14,20,22)]
     rm(lds)
-    names(ldscats)=c("date","time","x","y","z")
+    names(ldscats)=c("date","time","ax","ay","az","gx","gy","gz","mx","my","mz","t","p","l")
     ldscats[,"id"]=as.POSIXct(paste(ldscats[,"date"],ldscats[,"time"]),format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     datestart=ldscats[1,"id"]
     ldscats[,"tick"]=as.numeric(ldscats[,"id"]-datestart)
     nbrow=nrow(ldscats)
     print(paste("nbrow:",nbrow))
     #ecriture du fichier H5
-    ldm=data.matrix(ldscats[,c("x","y","z","tick")])
+    ldm=data.matrix(ldscats[,c("ax","ay","az","gx","gy","gz","mx","my","mz","t","p","l","tick")])
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")="1.0"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecatscsv)
     h5close(h5f)
@@ -80,8 +81,21 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     print(paste("out:",fileh5))
     xseq=seq(1,nbrow)
     ds=data.frame(xseq)
+    #acc
     ds[,2]=nbrow-ds[,1]
     ds[,3]=nbrow/2
+    #g
+    ds[,4]=ds[,1]
+    ds[,5]=ds[,2]
+    ds[,6]=ds[,3]
+    #m
+    ds[,7]=ds[,1]
+    ds[,8]=ds[,2]
+    ds[,9]=ds[,3]
+    #tpl
+    ds[,10]=ds[,1]
+    ds[,11]=ds[,2]
+    ds[,12]=ds[,3]
     datestart=Sys.time()
     #ecriture du fichier H5
     ldm=data.matrix(ds)
@@ -89,7 +103,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")="1.0"
+    h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5close(h5f)
@@ -115,3 +129,237 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
     close(fileConn)
   }
 }
+
+#' A wacu2h5 fonction for concert wacu csv file to h5 file
+#' @export wacu2h5
+wacu2h5 = function(filewacucsv="",fileh5="") {
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    lds=read.csv(file=filewacucsv,check.names = F, colClasses=c("character","character","numeric","numeric","numeric"),skip = 24,header = F, sep="\t")
+    ldswacu=lds[,c(1:5)]
+    rm(lds)
+    names(ldswacu)=c("date","time","x","y","z")
+    strdatestart=paste(ldswacu[1,"date"],ldswacu[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(ldswacu)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=data.matrix(ldswacu[,c("x","y","z")])
+    rm(ldswacu)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    #h5f["/data", "data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data", "data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5close(h5f)
+    rm(ldm)
+  }
+}
+
+#' A wacu2h5dt fonction for concert wacu csv file to h5 file
+#' @export wacu2h5dt
+wacu2h5dt = function(filewacucsv="",fileh5="") {
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    lds=fread(file=filewacucsv,skip = 24,header = F, sep="\t")
+    names(lds)=c("date","time","x","y","z","v1")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=data.matrix(lds[,c("x","y","z")])
+    rm(lds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5attr(h5f, "rtctick")=1
+    h5close(h5f)
+    rm(ldm)
+  }
+}
+
+#' A wacu2hacc1 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc1
+wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+# version rapide qui ne lit que les informations a la seconde
+# pour préparer la ui et la démo
+# je ferait pour trad;)
+# readlines n'est pas rapide en ligne par ligne
+# pas possible de lire le fichier de 9Go en ram
+  library(svMisc)
+  m=matrix(0,size,3)
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    con = file(filewacucsv, "r")
+    prmax=510000
+    nbline=prmax*accfreq
+    nblinetick=0
+    nblineacc=1
+    mid=1
+    #file has lines
+    line = readLines(con, n = 1)
+    #head
+    line = readLines(con, n = 1)
+    while ( nbline ) {
+      line = readLines(con, n = 1)
+      if ( length(line) == 0 ) {
+        break
+      }
+      if (substr(line,1,1)==" ") {
+        #read acc
+        nblineacc=nblineacc+1
+      }else {
+        #est une ligne avec le temps
+        #read time and acc
+        nblineacc=1
+        nblinetick=nblinetick+1
+        val=strsplit(line,"\t")
+        acc=c(as.numeric(val[[1]][5]),as.numeric(val[[1]][6]),as.numeric(val[[1]][7]))
+        m[mid,]=acc
+        mid=mid+1
+      }
+      #print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
+      #affichage progression en pourcent
+      progress(mid*100/prmax)
+      nbline=nbline-1
+    }
+    close(con)
+  }
+  h5f <- h5file(name = fileh5, mode = "a")
+  l=list.datasets(h5f)
+  if ("/acc" %in% l) {
+    stop("ERROR : Dataset existing at location")
+  }else {
+    h5f["/acc"]=m
+    h5attr(h5f, "acctype")=1
+    h5attr(h5f, "accfreq")=accfreq
+    h5attr(h5f, "accsize")=size
+  }
+  h5close(h5f)
+  #free local variable
+  rm(m)
+}
+# system.time(wacu2hacc1(filewacucsv,w134))
+# Timing stopped at: 4027 161.9 4025
+# =>67.08333 minutes pour traiter 50% du fichier ACC de 9Go
+
+# memo
+# h5unlink(h5f,"acc1")
+# h5f["acc1"]=ldm
+# extendDataSet(h5f["acc1"],dims=c(288487438,3))
+
+
+#' A wacu2hacc2 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc2
+wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+  # version rapide qui ne lit que les informations a la seconde
+  # pour préparer la ui et la démo
+  # je ferait pour trad;)
+  m=matrix(0,size,3)
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    buffsize=10000000
+    buffcpt=0
+    buffcont=TRUE
+    mid=1
+    f=file(filewacucsv, "rb")
+    while(buffcont) {
+      buff=readChar(f, buffsize)
+      buffcpt=buffcpt+1
+      print(buffcpt)
+      if (nchar(buff)<buffsize) {
+        buffcont=FALSE
+      }
+      buffstr=strsplit(buff,"\r\n")
+      for(l in buffstr[[1]]) {
+        if (substr(l,1,1)==" ") {
+          #read acc
+          nblineacc=nblineacc+1
+        }else {
+          #est une ligne avec le temps
+          #read time and acc
+          nblineacc=1
+          val=strsplit(l,"\t")
+          acc=c(as.numeric(val[[1]][5]),as.numeric(val[[1]][6]),as.numeric(val[[1]][7]))
+          m[mid,]=acc
+          mid=mid+1
+        }
+      }#for
+    }
+    close(f)
+  }
+  h5f <- h5file(name = fileh5, mode = "a")
+  l=list.datasets(h5f)
+  if ("/acc" %in% l) {
+    stop("ERROR : Dataset existing at location")
+  }else {
+    h5f["/acc"]=m
+    h5attr(h5f, "acctype")=1
+    h5attr(h5f, "accfreq")=accfreq
+    h5attr(h5f, "accsize")=size
+  }
+  h5close(h5f)
+  #free local variable
+  rm(m)
+}
+# mesure du temps de traitement
+# system.time(wacu2hacc2(filewacucsv,w134))
+# user   system  elapsed
+# 2719.274   15.107 2748.208
+# => 45 minutes pour traiter le fichier ACC
+
+
+# time python ./hwacug.py ./wacu134_TRDDU_cc.txt ./wacu134_TRDDU_cc_ACC.txt
+# nbrow:11272094
+# [[  184641.  1152739.        0.        0.        0.        0.]
+#   [  184641.  1152739.        0.        0.        0.        0.]
+#   [  184717.  1152739.        0.        0.        0.        0.]
+#   [  184641.  1155506.        0.        0.        0.        0.]
+#   [  184717.  1155506.        0.        0.        0.        0.]]
+# [[  1.84641000e+05   1.15273900e+06   0.00000000e+00   1.60000000e+01
+#     1.60000000e+01  -1.04700000e+03]
+#   [  1.84641000e+05   1.15273900e+06   0.00000000e+00  -9.40000000e+01
+#     2.66000000e+02  -1.00000000e+03]
+#   [  1.84717000e+05   1.15273900e+06   0.00000000e+00  -7.80000000e+01
+#     2.66000000e+02  -1.00000000e+03]
+#   [  1.84641000e+05   1.15550600e+06   0.00000000e+00  -7.80000000e+01
+#     2.66000000e+02  -1.00000000e+03]
+#   [  1.84717000e+05   1.15550600e+06   0.00000000e+00  -9.40000000e+01
+#     2.81000000e+02  -1.00000000e+03]]
+# writing data...
+#
+# real	7m27,602s
+# user	7m13,120s
+# sys	0m7,509s
+# version en python 7 minutes
