@@ -124,6 +124,40 @@ LoggerCats <-setRefClass("LoggerCats",
                          )
 )
 
+#' A LoggerAxytrek reference class
+#' @export LoggerAxytrek
+#' @exportClass LoggerAxytrek
+LoggerAxytrek <-setRefClass("LoggerAxytrek",
+                         contains = list("Logger"),
+                         fields = list(nbrow = "numeric"),
+                         methods = list(
+                           initialize = function(fileh5 = "", filebehavior = "") {
+                             callSuper(fileh5, filebehavior)
+                           },
+                           h5init = function() {
+                             #cat("init version cats")
+                             #get info from h5 file
+                             f=h5file(fileh5,"r")
+                             #list.attributes(f)
+                             if (h5attr(f["/"], "logger")!="AXYTREK") {
+                               stop("h5 file not AXYTREK structure")
+                             }else if (h5attr(f["/"], "version")!=getversion()){
+                               stop("CATS h5 file not good version")
+                             }else {
+                               dt=h5attr(f["/"], "datestart")
+                               datestart<<-as.POSIXct(dt, tz="GMT")
+                               dset=openDataSet(f,"/data")
+                               size=dset@dim
+                               nbrow<<-size[1]
+                             }
+                             h5close(f)
+                           },
+                           draw = function() {
+                             return(paste0("t:LoggerAxytrek f:",name," s:",datestart," r:",nbrow))
+                           }
+                         )
+)
+
 #' A LoggerWacu reference class
 #' @export LoggerWacu
 #' @exportClass LoggerWacu

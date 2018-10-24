@@ -37,7 +37,7 @@ sayhello <- function() {
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  return("0.2.1")
+  return("0.2.2")
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file
@@ -129,6 +129,43 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
     close(fileConn)
   }
 }
+
+#' A axytrek2h5 fonction for convert csv file to h5 file
+#' @export axytrek2h5
+axytrek2h5 = function(filecsv="",fileh5="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    ldsr1=fread(file = filecsv,fill = TRUE, dec = ",")
+    ldsr2=fread(file = filecsv,fill = TRUE, dec = ".")
+    ldsra=ldsr1[seq(1,nrow(ldsr1),15),c(2:6)]
+    ldsrb=ldsr2[seq(1,nrow(ldsr2),15),c(8:9)]
+    lds=cbind(ldsra,ldsrb)
+    rm(ldsr1,ldsr2,ldsra,ldsrb)
+    names(lds)=c("date","time","x","y","z","p","t")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+#   ldm=data.matrix(lds[,c("x","y","z","p","t")])
+    ldm=as.matrix(lds[,3:7])
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="AXYTREK"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5close(h5f)
+  }
+}
+
 
 #' A wacu2h5 fonction for concert wacu csv file to h5 file
 #' @export wacu2h5
