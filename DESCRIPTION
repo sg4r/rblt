@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: R Bio-Logging Toolbox
-Version: 0.2.1
+Version: 0.2.2
 Author: sebastien geiger
 Maintainer: the package maintainer <sebastien.geiger@iphc.cnrs.fr>
 Description: package de visualisation des données accelero des capteurs bio-logging CATS, WACU
