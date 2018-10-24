@@ -363,3 +363,38 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # user	7m13,120s
 # sys	0m7,509s
 # version en python 7 minutes
+
+#' A demowacu2h5 fonction build demo cats h5 file
+#' @export demowacu2h5
+demowacu2h5 = function(fileh5="",nbrow=10000) {
+  if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("out:",fileh5))
+    t=seq(1,60*10,1)
+    x=t/100
+    y=sin(t/10)+2
+    z=tan(t/25)/40+3.5
+    mx=matrix(x,ncol = 1)
+    my=matrix(y,ncol = 1)
+    mz=matrix(z,ncol = 1)
+    m=data.frame(mx,my,mz,mx,my,mz)
+    nbech=60*10
+    nbloo=round(nbrow/nbech)
+    w=m
+    for (i in 1:nbloo) {
+      w=rbind(w,m)
+    }
+    datestart=Sys.time()
+    #ecriture du fichier H5
+    ldm=data.matrix(w)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")="demowacu2h5"
+    h5close(h5f)
+  }
+}

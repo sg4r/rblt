@@ -260,7 +260,7 @@ LoggerWacuUI <-setRefClass(
             dyOptions(labelsUTC = TRUE)
           acc=cbind(m[,4],m[,5],m[,6])
           wacc=xts(acc, order.by = datetimes, tz="GMT" )
-          dyacc=dygraphs::dygraph(wacc,main = "acc", group = "wac",height = 200) %>%
+          dyacc=dygraphs::dygraph(wacc,main = "Accelerometer", group = "wac",height = 200) %>%
            dyOptions(labelsUTC = TRUE)
           lobs=loglst$.l[[id]]$beobslst
           for( ob in lobs ) {
