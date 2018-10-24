@@ -43,17 +43,17 @@ rblt::cats2h5(filecatscsv,filecatsh5)
 ```
 
 ## Pour les bio-logger AXYTREK :
-Convertissez les résultats de vos données du format csv avec la fonction rblt:axytrek2h5
+Convertissez les résultats de vos données du format csv avec la fonction rblt::axytrek2h5
 
 ### Exemple:
 ```
 atreks1="~/rtoolbox/axytrec-s1.h5"
-axytrek2h5("~/rtoolbox/AXYTREK2_S1.csv",atreks1)
+rblt::axytrek2h5("~/rtoolbox/AXYTREK2_S1.csv",atreks1)
 [1] "in: ~/rtoolbox/AXYTREK2_S1.csv"
 [1] "out: ~/rtoolbox/axytrec-s1.h5"
 [1] "nbrow: 670051"
-> atreks2="~/rtoolbox/axytrec-s2.h5"
-> axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",atreks2)
+atreks2="~/rtoolbox/axytrec-s2.h5"
+rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",atreks2)
 [1] "in: ~/rtoolbox/AXYTREK5_S1.csv"
 [1] "out: ~/rtoolbox/axytrec-s2.h5"
 [1] "nbrow: 2234282"
