@@ -225,7 +225,7 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
-    h5f["/data"]=ldm
+    h5f["/tpl"]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -400,6 +400,39 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # user	7m13,120s
 # sys	0m7,509s
 # version en python 7 minutes
+
+#' A wacu2hacc3 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc3
+wacu2hacc3 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+  # version rapide qui ne lit que les informations a la seconde
+  # pour préparer la ui et la démo
+  # evolution de la version 2, mais en utilisant wacu2csv en C++ pour reformater les data au format CSV
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    #read wacu acc data
+    macc=fread(file=filewacucsv,header = F, select=c(5,6,7))
+    h5f=h5file(fileh5,"a")
+    if (h5attr(h5f["/"], "logger")!="WACU") {
+      stop("h5 file not WACU structure")
+    }else if (h5attr(h5f["/"], "version")!=getversion()){
+      stop("WACU h5 file not good version")
+    }else {
+      #ok all data
+      mtpl=h5f["/tpl"][,1:3]
+      m=cbind(mtpl,macc)
+      m=as.matrix(m)
+      #write new value in "/data
+      h5f["/data"]=m
+      h5close(h5f)
+    }#end else if
+  }
+}
+
 
 #' A demowacu2h5 fonction build demo cats h5 file
 #' @export demowacu2h5
