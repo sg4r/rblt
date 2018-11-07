@@ -12,6 +12,53 @@
 
 library(h5)
 
+#' A datahead reference class
+#' @export Datahead
+#' @exportClass Datahead
+Datahead <-setRefClass("Datahead",
+                       fields = list(name = "character",
+                                     colid = "numeric",
+                                     colnb = "numeric",
+                                     height ="numeric"),
+                       methods = list(
+                         initialize= function(name,colid,colnb,height=200) {
+                           name<<-name
+                           colid<<-colid
+                           colnb<<-colnb
+                           height<<-height
+                         },
+                         draw = function() {
+                           rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
+                           return(rep)
+                         }
+                       )
+)
+
+
+#' A DataheadList reference class
+#' @export DataheadList
+#' @exportClass DataheadList
+DataheadList <-setRefClass("DataheadList",
+                           fields = list(.l ="list"),
+                           methods = list(
+                             initialize= function() {
+                               .l<<-list()
+                             },
+                             add = function(node) {
+                               .l<<-c(.l,node)
+                             },
+                             getat = function(id) {
+                               return(.l[id])
+                             },
+                             draw = function() {
+                               rep=list()
+                               for (i in .l) {rep=c(rep,i$draw())}
+                               return(rep)
+                             }
+                           )
+)
+
+
 #' A Logger reference class
 #' @field filedata nom du fichier de donnée
 #' @field filebehavior nom du chier des comportement
@@ -22,7 +69,7 @@ Logger <- setRefClass("Logger",
                       fields = list(name = "character",
                                     fileh5 = "character",
                                     filebehavior = "character",
-                                    datahead ="list",
+                                    dataheadlst ="DataheadList",
                                     datestart = "POSIXct",
                                     becolor = "character",
                                     beobslst = "list",
@@ -41,12 +88,13 @@ Logger <- setRefClass("Logger",
                             options(digits.secs = 3)
                             h5init()
                             behaviorinit()
+                            initdataheadlst()
                           }
                         },
                         draw = function() {
                           return(paste("t:Logger fd:",fileh5))
                         },
-                        initdatahead =function() {
+                        initdataheadlst = function() {
                           #definit les grandeurs par defaut
                           stop("default class ne doit pas etre executé")
                         },
@@ -123,6 +171,16 @@ LoggerCats <-setRefClass("LoggerCats",
                              }
                              h5close(f)
                            },
+                           initdataheadlst = function() {
+                             ldh=DataheadList$new()
+                             ldh$add(Datahead("AAccelerometer",1,3))
+                             ldh$add(Datahead("AGyroscope",4,3))
+                             ldh$add(Datahead("AMagnetometer",7,3))
+                             ldh$add(Datahead("ATemperature",10,1))
+                             ldh$add(Datahead("APression",11,1))
+                             ldh$add(Datahead("ALight intensity",12,1))
+                             dataheadlst<<-ldh
+                           },
                            draw = function() {
                              return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
                            }
@@ -156,6 +214,12 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                                nbrow<<-size[1]
                              }
                              h5close(f)
+                           },
+                           initdataheadlst = function() {
+                             ldh=DataheadList$new()
+                             ldh$add(Datahead("titre",1,1))
+                             ldh$add(Datahead("Pres",3,1))
+                             dataheadlst<<-ldh
                            },
                            draw = function() {
                              return(paste0("t:LoggerAxytrek f:",name," s:",datestart," r:",nbrow))
@@ -191,6 +255,13 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              }
                              h5close(f)
                            },
+                           initdataheadlst = function() {
+                             ldh=DataheadList$new()
+                             ldh$add(Datahead("wacutitre",1,1))
+                             ldh$add(Datahead("wacuTemp",2,1))
+                             ldh$add(Datahead("wacuPres",3,1))
+                             dataheadlst<<-ldh
+                           },
                            draw = function() {
                              return(paste0("t:LoggerWacu f:",name," s:",datestart," r:",nbrow))
                            }
@@ -217,47 +288,4 @@ LoggerList <-setRefClass("LoggerList",
                          )
 )
 
-#' A datahead reference class
-#' @export Datahead
-#' @exportClass Datahead
-Datahead <-setRefClass("Datahead",
-           fields = list(name = "character",
-                         colid = "numeric",
-                         colnb = "numeric",
-                         height ="numeric"),
-           methods = list(
-             initialize= function(name,colid,colnb,height=200) {
-               name<<-name
-               colid<<-colid
-               colnb<<-colnb
-               height<<-height
-             },
-             draw = function() {
-               rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
-               return(rep)
-             }
-           )
-)
 
-#' A DataheadList reference class
-#' @export DataheadList
-#' @exportClass DataheadList
-DataheadList <-setRefClass("DataheadList",
-                         fields = list(.l ="list"),
-                         methods = list(
-                           initialize= function() {
-                             .l<<-list()
-                           },
-                           add = function(node) {
-                             .l<<-c(.l,node)
-                           },
-                           getat = function(id) {
-                             return(.l[id])
-                           },
-                           draw = function() {
-                             rep=list()
-                             for (i in .l) {rep=c(rep,i$draw())}
-                             return(rep)
-                           }
-                         )
-)
