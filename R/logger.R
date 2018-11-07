@@ -22,6 +22,7 @@ Logger <- setRefClass("Logger",
                       fields = list(name = "character",
                                     fileh5 = "character",
                                     filebehavior = "character",
+                                    datahead ="list",
                                     datestart = "POSIXct",
                                     becolor = "character",
                                     beobslst = "list",
@@ -44,6 +45,10 @@ Logger <- setRefClass("Logger",
                         },
                         draw = function() {
                           return(paste("t:Logger fd:",fileh5))
+                        },
+                        initdatahead =function() {
+                          #definit les grandeurs par defaut
+                          stop("default class ne doit pas etre executé")
                         },
                         h5init = function() {
                           #get info from h5 file
@@ -206,7 +211,52 @@ LoggerList <-setRefClass("LoggerList",
                            },
                            draw = function() {
                              rep=list()
-                             for (i in l$.l) {rep=c(rep,i$draw())}
+                             for (i in .l) {rep=c(rep,i$draw())}
+                             return(rep)
+                           }
+                         )
+)
+
+#' A datahead reference class
+#' @export Datahead
+#' @exportClass Datahead
+Datahead <-setRefClass("Datahead",
+           fields = list(name = "character",
+                         colid = "numeric",
+                         colnb = "numeric",
+                         height ="numeric"),
+           methods = list(
+             initialize= function(name,colid,colnb,height=200) {
+               name<<-name
+               colid<<-colid
+               colnb<<-colnb
+               height<<-height
+             },
+             draw = function() {
+               rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
+               return(rep)
+             }
+           )
+)
+
+#' A DataheadList reference class
+#' @export DataheadList
+#' @exportClass DataheadList
+DataheadList <-setRefClass("DataheadList",
+                         fields = list(.l ="list"),
+                         methods = list(
+                           initialize= function() {
+                             .l<<-list()
+                           },
+                           add = function(node) {
+                             .l<<-c(.l,node)
+                           },
+                           getat = function(id) {
+                             return(.l[id])
+                           },
+                           draw = function() {
+                             rep=list()
+                             for (i in .l) {rep=c(rep,i$draw())}
                              return(rep)
                            }
                          )
