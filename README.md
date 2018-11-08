@@ -59,10 +59,14 @@ rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",atreks2)
 [1] "nbrow: 2234282"
 ```
 ## Pour les bio-logger WACU :
-Convertissez les résultats de vos données au format csv avec la fonction rblt::wacu2h5
+Convertissez les résultats de vos données au format csv avec la fonction rblt::wacu2h5dt
+Pour ajouter les informations accelero, il est nécéssaire d'utiliser l'utilitaire en C++ wacu2csv
 ### Exemple :
 ```
-Bientôt
+w134="~/rtoolbox/wacu134.h5"
+wacu2h5dt("~/rtoolbox/wacu134_TRDDU_cc.txt",w134)
+# voir wacu2csv pour la concersion des données accéléros en csv, puis
+wacu2hacc3("~/rtoolbox/wacu134_TRDDU_cc_ACC.csv",w134)
 ```
 # Fichiers de démonstration
 Il est possible de générer des fichiers de démonstrations de différentes tailles afin de tester l’affichage d’un ensemble plus ou moins important d’enregistrements de données.
