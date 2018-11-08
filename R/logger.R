@@ -260,9 +260,10 @@ LoggerWacu <-setRefClass("LoggerWacu",
                            },
                            initdataheadlst = function() {
                              ldh=DataheadList$new()
-                             ldh$add(Datahead("wacutitre",1,1))
-                             ldh$add(Datahead("wacuTemp",2,1))
-                             ldh$add(Datahead("wacuPres",3,1))
+                             ldh$add(Datahead("wTemperature",1,1))
+                             ldh$add(Datahead("wPression",2,1))
+                             ldh$add(Datahead("wLight intensity",3,1))
+                             ldh$add(Datahead("wAccelerometer",3,3))
                              dataheadlst<<-ldh
                            },
                            draw = function() {
