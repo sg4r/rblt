@@ -48,7 +48,10 @@ DataheadList <-setRefClass("DataheadList",
                                .l<<-c(.l,node)
                              },
                              getat = function(id) {
-                               return(.l[id])
+                               return(.l[id][[1]])
+                             },
+                             getsize = function() {
+                               return(length(.l))
                              },
                              draw = function() {
                                rep=list()
