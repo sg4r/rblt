@@ -404,8 +404,6 @@ LoggerWacuUI <-setRefClass(
   )
 )
 
-
-
 #' A LoggerDataUI reference class
 #' @export LoggerDataUI
 #' @exportClass LoggerDataUI
@@ -510,10 +508,12 @@ LoggerDataUI <-setRefClass(
           dy_graph=list()
           #boucle creation graph
           for(dh in dhlst$.l) {
-            wt=xts(m[,dh$colid], order.by = datetimes, tz="GMT" )
-            dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%
-              dyOptions(labelsUTC = TRUE)
-            dy_graph=list(dy_graph,dyt)
+            if (dh$enable==T) {
+              wt=xts(m[,dh$colid], order.by = datetimes, tz="GMT" )
+              dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%
+                dyOptions(labelsUTC = TRUE)
+              dy_graph=list(dy_graph,dyt)
+            }
           }
 
 

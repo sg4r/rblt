@@ -19,12 +19,14 @@ Datahead <-setRefClass("Datahead",
                        fields = list(name = "character",
                                      colid = "numeric",
                                      colnb = "numeric",
+                                     enable = "logical",
                                      height ="numeric"),
                        methods = list(
-                         initialize= function(name,colid,colnb,height=200) {
+                         initialize= function(name,colid,colnb,height=200,enable=TRUE) {
                            name<<-name
                            colid<<-colid
                            colnb<<-colnb
+                           enable<<-enable
                            height<<-height
                          },
                          draw = function() {
@@ -47,11 +49,25 @@ DataheadList <-setRefClass("DataheadList",
                              add = function(node) {
                                .l<<-c(.l,node)
                              },
+                             get = function() {
+                               return(.l)
+                             },
                              getat = function(id) {
                                return(.l[id][[1]])
                              },
                              getsize = function() {
                                return(length(.l))
+                             },
+                             slctset =function(v) {
+                               if (length(v)!=length(.l)) {
+                                 stop("datahead set size dif from internal size")
+                               }else {
+                                 i=1
+                                 for(n in .l) {
+                                   n$enable=v[i]
+                                   i=i+1
+                                 }
+                               }
                              },
                              draw = function() {
                                rep=list()
@@ -79,7 +95,7 @@ Logger <- setRefClass("Logger",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "") {
+                        initialize= function(fileh5 = "", filebehavior = "", dataheadenable=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -92,6 +108,9 @@ Logger <- setRefClass("Logger",
                             h5init()
                             behaviorinit()
                             initdataheadlst()
+                            if (is.null(dataheadenable)==F) {
+                              dataheadlst$slctset(dataheadenable)
+                            }
                           }
                         },
                         draw = function() {
@@ -153,8 +172,8 @@ LoggerCats <-setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(nbrow = "numeric"),
                          methods = list(
-                           initialize = function(fileh5 = "", filebehavior = "") {
-                             callSuper(fileh5, filebehavior)
+                           initialize = function(fileh5 = "", filebehavior = "",...) {
+                             callSuper(fileh5, filebehavior,...)
                            },
                            h5init = function() {
                              #cat("init version cats")
@@ -237,8 +256,8 @@ LoggerWacu <-setRefClass("LoggerWacu",
                          contains = list("Logger"),
                          fields = list(nbrow = "numeric"),
                          methods = list(
-                           initialize = function(fileh5 = "", filebehavior = "") {
-                             callSuper(fileh5, filebehavior)
+                           initialize = function(fileh5 = "", filebehavior = "",...) {
+                             callSuper(fileh5, filebehavior,...)
                            },
                            h5init = function() {
                              cat("init version wacu")
