@@ -20,13 +20,15 @@ Metric <-setRefClass("Metric",
                                      colid = "numeric",
                                      colnb = "numeric",
                                      enable = "logical",
+                                     srcin = "logical",
                                      height ="numeric"),
                        methods = list(
-                         initialize= function(name,colid,colnb,height=200,enable=TRUE) {
+                         initialize= function(name,colid,colnb,height=200,enable=TRUE,srcin=TRUE) {
                            name<<-name
                            colid<<-colid
                            colnb<<-colnb
                            enable<<-enable
+                           srcin<<-srcin
                            height<<-height
                          },
                          draw = function() {
