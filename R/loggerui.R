@@ -504,10 +504,10 @@ LoggerDataUI <-setRefClass(
           datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
           datetimes=datetimes[1:fres]
 
-          dhlst=loglst$.l[[id]]$dataheadlst
+          mlst=loglst$.l[[id]]$metriclst
           dy_graph=list()
           #boucle creation graph
-          for(dh in dhlst$.l) {
+          for(dh in mlst$.l) {
             if (dh$enable==T) {
               cdeb=dh$colid
               cfin=cdeb
@@ -515,7 +515,7 @@ LoggerDataUI <-setRefClass(
                 cfin=cdeb+dh$colnb
               }
               if (cfin>ncol(m)) {
-                stop("ERROR: DataHead index over ncol")
+                stop("ERROR: Metric index over ncol")
               }
               wt=xts(m[,cdeb:cfin], order.by = datetimes, tz="GMT" )
               dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%

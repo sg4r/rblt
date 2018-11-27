@@ -12,10 +12,10 @@
 
 library(h5)
 
-#' A datahead reference class
-#' @export Datahead
-#' @exportClass Datahead
-Datahead <-setRefClass("Datahead",
+#' A Metric reference class
+#' @export Metric
+#' @exportClass Metric
+Metric <-setRefClass("Metric",
                        fields = list(name = "character",
                                      colid = "numeric",
                                      colnb = "numeric",
@@ -37,10 +37,10 @@ Datahead <-setRefClass("Datahead",
 )
 
 
-#' A DataheadList reference class
-#' @export DataheadList
-#' @exportClass DataheadList
-DataheadList <-setRefClass("DataheadList",
+#' A MetricList reference class
+#' @export MetricList
+#' @exportClass MetricList
+MetricList <-setRefClass("MetricList",
                            fields = list(.l ="list"),
                            methods = list(
                              initialize= function() {
@@ -60,7 +60,7 @@ DataheadList <-setRefClass("DataheadList",
                              },
                              slctset =function(v) {
                                if (length(v)!=length(.l)) {
-                                 stop("datahead set size dif from internal size")
+                                 stop("metricList set size dif from internal size")
                                }else {
                                  i=1
                                  for(n in .l) {
@@ -88,14 +88,14 @@ Logger <- setRefClass("Logger",
                       fields = list(name = "character",
                                     fileh5 = "character",
                                     filebehavior = "character",
-                                    dataheadlst ="DataheadList",
+                                    metriclst ="MetricList",
                                     datestart = "POSIXct",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", dataheadenable=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -107,16 +107,16 @@ Logger <- setRefClass("Logger",
                             options(digits.secs = 3)
                             h5init()
                             behaviorinit()
-                            initdataheadlst()
-                            if (is.null(dataheadenable)==F) {
-                              dataheadlst$slctset(dataheadenable)
+                            initmetriclst()
+                            if (is.null(metricshow)==F) {
+                              metriclst$slctset(metricshow)
                             }
                           }
                         },
                         draw = function() {
                           return(paste("t:Logger fd:",fileh5))
                         },
-                        initdataheadlst = function() {
+                        initmetriclst = function() {
                           #definit les grandeurs par defaut
                           stop("default class ne doit pas etre executé")
                         },
@@ -193,15 +193,15 @@ LoggerCats <-setRefClass("LoggerCats",
                              }
                              h5close(f)
                            },
-                           initdataheadlst = function() {
-                             ldh=DataheadList$new()
-                             ldh$add(Datahead("AAccelerometer",1,3))
-                             ldh$add(Datahead("AGyroscope",4,3))
-                             ldh$add(Datahead("AMagnetometer",7,3))
-                             ldh$add(Datahead("ATemperature",10,1))
-                             ldh$add(Datahead("APression",11,1))
-                             ldh$add(Datahead("ALight intensity",12,1))
-                             dataheadlst<<-ldh
+                           initmetriclst = function() {
+                             lm=MetricList$new()
+                             lm$add(Metric("AAccelerometer",1,3))
+                             lm$add(Metric("AGyroscope",4,3))
+                             lm$add(Metric("AMagnetometer",7,3))
+                             lm$add(Metric("ATemperature",10,1))
+                             lm$add(Metric("APression",11,1))
+                             lm$add(Metric("ALight intensity",12,1))
+                             metriclst<<-lm
                            },
                            draw = function() {
                              return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
@@ -237,11 +237,11 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                              }
                              h5close(f)
                            },
-                           initdataheadlst = function() {
-                             ldh=DataheadList$new()
-                             ldh$add(Datahead("titre",1,1))
-                             ldh$add(Datahead("Pres",3,1))
-                             dataheadlst<<-ldh
+                           initmetriclst = function() {
+                             lm=MetricList$new()
+                             lm$add(Metric("axy-titre",1,1))
+                             lm$add(Metric("axy-Pres",3,1))
+                             metriclst<<-lm
                            },
                            draw = function() {
                              return(paste0("t:LoggerAxytrek f:",name," s:",datestart," r:",nbrow))
@@ -277,13 +277,13 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              }
                              h5close(f)
                            },
-                           initdataheadlst = function() {
-                             ldh=DataheadList$new()
-                             ldh$add(Datahead("wTemperature",1,1))
-                             ldh$add(Datahead("wPression",2,1))
-                             ldh$add(Datahead("wLight intensity",3,1))
-                             ldh$add(Datahead("wAccelerometer",3,3))
-                             dataheadlst<<-ldh
+                           initmetriclst = function() {
+                             lm=MetricList$new()
+                             lm$add(Metric("wTemperature",1,1))
+                             lm$add(Metric("wPression",2,1))
+                             lm$add(Metric("wLight intensity",3,1))
+                             lm$add(Metric("wAccelerometer",3,3))
+                             metriclst<<-lm
                            },
                            draw = function() {
                              return(paste0("t:LoggerWacu f:",name," s:",datestart," r:",nbrow))
