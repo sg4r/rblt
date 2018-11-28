@@ -91,13 +91,14 @@ Logger <- setRefClass("Logger",
                                     fileh5 = "character",
                                     filebehavior = "character",
                                     metriclst ="MetricList",
+                                    extmatrix ="matrix",
                                     datestart = "POSIXct",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", metricshow=NULL, extmatrix=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -113,6 +114,7 @@ Logger <- setRefClass("Logger",
                             if (is.null(metricshow)==F) {
                               metriclst$slctset(metricshow)
                             }
+                            extmatrix<<-extmatrix
                           }
                         },
                         draw = function() {
