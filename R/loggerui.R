@@ -517,7 +517,13 @@ LoggerDataUI <-setRefClass(
               if (dh$colnb>1) {
                 cfin=cdeb+dh$colnb-1
               }
-              if (cfin>ncol(m)) {
+              cmax=ncol(m)
+              if (loglst$.l[[id]]$extmatrixenable) {
+                if (dh$srcin==F) {
+                  cmax=ncol(me)
+                }
+              }
+              if (cfin>cmax) {
                 stop("ERROR: Metric index over ncol")
               }
               if (dh$srcin) {
@@ -539,39 +545,6 @@ LoggerDataUI <-setRefClass(
               dy_graph=list(dy_graph,dyt)
             }
           }
-
-
-
-          # acc=cbind(m[,1],m[,2],m[,3])
-          # wacc=xts(acc, order.by = datetimes, tz="GMT" )
-          # #dyacc=dygraphs::dygraph(wacc,main = "Accelerometer", group = "wac",height = 200) %>%
-          # dyacc=dygraphs::dygraph(wacc,main = dhlst$getat(1)$name , group = "wac",height = 200) %>%
-          #   dyOptions(labelsUTC = TRUE)
-          # lobs=loglst$.l[[id]]$beobslst
-          # for( ob in lobs ) {
-          #   if (ob$code %in% input$checkGroup) {
-          #     dyacc <- dyShading(dyacc, from = ob$from , to = ob$to, color = ob$color )
-          #   }
-          # }
-          # wt=xts(m[,10], order.by = datetimes, tz="GMT" )
-          # #dyt=dygraphs::dygraph(wt,main = "Temperature", group = "wac",height = 200)%>%
-          # dyt=dygraphs::dygraph(wt,main = dhlst$getat(2)$name, group = "wac",height = 200)%>%
-          #   dyOptions(labelsUTC = TRUE)
-          # wp=xts(m[,11], order.by = datetimes, tz="GMT" )
-          # dyp=dygraphs::dygraph(wp,main = "Pression", group = "wac",height = 200) %>%
-          #   dyOptions(labelsUTC = TRUE)
-          # wl=xts(m[,12], order.by = datetimes, tz="GMT" )
-          # dyl=dygraphs::dygraph(wl,main = "Light intensity", group = "wac",height = 200)%>%
-          #   dyOptions(labelsUTC = TRUE)
-          # gyr=cbind(m[,4],m[,5],m[,6])
-          # wgyr=xts(gyr, order.by = datetimes, tz="GMT" )
-          # dgyr=dygraphs::dygraph(wgyr,main = "Gyroscope", group = "wac",height = 200) %>%
-          #   dyOptions(labelsUTC = TRUE)
-          # mag=cbind(m[,7],m[,8],m[,9])
-          # wmag=xts(mag, order.by = datetimes, tz="GMT" )
-          # dmag=dygraphs::dygraph(wmag,main = "Magnetometer", group = "wac",height = 200) %>%
-          #   dyOptions(labelsUTC = TRUE)
-          # dy_graph <- list(dyacc,dyt,dyp,dyl,dgyr,dmag)
           tagList(dy_graph)
         })
       }
