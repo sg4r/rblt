@@ -94,6 +94,7 @@ Logger <- setRefClass("Logger",
                                     extmatrix ="matrix",
                                     datestart = "POSIXct",
                                     nbrow = "numeric",
+                                    nbcol = "numeric",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
@@ -109,6 +110,8 @@ Logger <- setRefClass("Logger",
                             name<<-file_path_sans_ext(basename(fileh5))
                             filebehavior<<-filebehavior
                             options(digits.secs = 3)
+                            nbrow<<-0
+                            nbcol<<- Inf
                             h5init()
                             behaviorinit()
                             initmetriclst()
@@ -119,9 +122,9 @@ Logger <- setRefClass("Logger",
                           }
                         },
                         setextmatrix= function(m) {
-                          if(!is.matrix(extm)) {
+                          if(!is.matrix(m)) {
                             stop("error: not matrix")
-                          } else if (nrow(m)<100) {
+                          } else if (nrow(m)<nbcol) {
                             stop ("error: matrix not good size")
                           } else {
                             extmatrix<<-m
