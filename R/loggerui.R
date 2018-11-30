@@ -527,6 +527,15 @@ LoggerDataUI <-setRefClass(
               }
               dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%
                 dyOptions(labelsUTC = TRUE)
+              if (dh$beobs==T) {
+                #add obs
+                lobs=loglst$.l[[id]]$beobslst
+                for( ob in lobs ) {
+                  if (ob$code %in% input$checkGroup) {
+                    dyt <- dyShading(dyt, from = ob$from , to = ob$to, color = ob$color )
+                  }
+                }
+              }
               dy_graph=list(dy_graph,dyt)
             }
           }

@@ -21,14 +21,16 @@ Metric <-setRefClass("Metric",
                                      colnb = "numeric",
                                      enable = "logical",
                                      srcin = "logical",
+                                     beobs = "logical",
                                      height ="numeric"),
                        methods = list(
-                         initialize= function(name,colid,colnb,height=200,enable=TRUE,srcin=TRUE) {
+                         initialize= function(name,colid,colnb,height=200,enable=TRUE,beobs=FALSE,srcin=TRUE) {
                            name<<-name
                            colid<<-colid
                            colnb<<-colnb
                            enable<<-enable
                            srcin<<-srcin
+                           beobs<<-beobs
                            height<<-height
                          },
                          draw = function() {
@@ -216,7 +218,7 @@ LoggerCats <-setRefClass("LoggerCats",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("AAccelerometer",1,3))
+                             lm$add(Metric("AAccelerometer",1,3,beobs=TRUE))
                              lm$add(Metric("AGyroscope",4,3))
                              lm$add(Metric("AMagnetometer",7,3))
                              lm$add(Metric("ATemperature",10,1))
@@ -261,7 +263,7 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("axy-titre",1,1))
+                             lm$add(Metric("axy-titre",1,1,beobs=TRUE))
                              lm$add(Metric("axy-Pres",3,1))
                              metriclst<<-lm
                            },
@@ -305,7 +307,7 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              lm$add(Metric("wTemperature",1,1))
                              lm$add(Metric("wPression",2,1))
                              lm$add(Metric("wLight intensity",3,1))
-                             lm$add(Metric("wAccelerometer",3,3))
+                             lm$add(Metric("wAccelerometer",3,3,beobs=TRUE))
                              metriclst<<-lm
                            },
                            draw = function() {
