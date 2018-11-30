@@ -93,6 +93,7 @@ Logger <- setRefClass("Logger",
                                     metriclst ="MetricList",
                                     extmatrix ="matrix",
                                     datestart = "POSIXct",
+                                    nbrow = "numeric",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
@@ -115,6 +116,15 @@ Logger <- setRefClass("Logger",
                               metriclst$slctset(metricshow)
                             }
                             extmatrix<<-matrix()
+                          }
+                        },
+                        setextmatrix= function(m) {
+                          if(!is.matrix(extm)) {
+                            stop("error: not matrix")
+                          } else if (nrow(m)<100) {
+                            stop ("error: matrix not good size")
+                          } else {
+                            extmatrix<<-m
                           }
                         },
                         draw = function() {
@@ -174,7 +184,7 @@ Logger <- setRefClass("Logger",
 #' @exportClass LoggerCats
 LoggerCats <-setRefClass("LoggerCats",
                          contains = list("Logger"),
-                         fields = list(nbrow = "numeric"),
+                         fields = list(),
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "",...) {
                              callSuper(fileh5, filebehavior,...)
@@ -218,7 +228,7 @@ LoggerCats <-setRefClass("LoggerCats",
 #' @exportClass LoggerAxytrek
 LoggerAxytrek <-setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
-                         fields = list(nbrow = "numeric"),
+                         fields = list(),
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "") {
                              callSuper(fileh5, filebehavior)
@@ -258,7 +268,7 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
 #' @exportClass LoggerWacu
 LoggerWacu <-setRefClass("LoggerWacu",
                          contains = list("Logger"),
-                         fields = list(nbrow = "numeric"),
+                         fields = list(),
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "",...) {
                              callSuper(fileh5, filebehavior,...)
