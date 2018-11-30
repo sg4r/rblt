@@ -92,6 +92,7 @@ Logger <- setRefClass("Logger",
                                     filebehavior = "character",
                                     metriclst ="MetricList",
                                     extmatrix ="matrix",
+                                    extmatrixenable = "logical",
                                     datestart = "POSIXct",
                                     nbrow = "numeric",
                                     nbcol = "numeric",
@@ -119,6 +120,7 @@ Logger <- setRefClass("Logger",
                               metriclst$slctset(metricshow)
                             }
                             extmatrix<<-matrix()
+                            extmatrixenable<<-FALSE
                           }
                         },
                         setextmatrix= function(m) {
@@ -128,6 +130,7 @@ Logger <- setRefClass("Logger",
                             stop ("matrix not good size")
                           } else {
                             extmatrix<<-m
+                            extmatrixenable<<-TRUE
                           }
                         },
                         draw = function() {

@@ -500,6 +500,9 @@ LoggerDataUI <-setRefClass(
           #m=ds[mi,]
           m=f["/data"][mi,]
           h5close(f)
+          if (loglst$.l[[id]]$extmatrixenable) {
+            me=as.matrix(loglst$.l[[id]]$extmatrix[mi,])
+          }
           datedeb=(ldatestart+fmin)
           datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
           datetimes=datetimes[1:fres]
@@ -517,7 +520,11 @@ LoggerDataUI <-setRefClass(
               if (cfin>ncol(m)) {
                 stop("ERROR: Metric index over ncol")
               }
-              wt=xts(m[,cdeb:cfin], order.by = datetimes, tz="GMT" )
+              if (dh$srcin) {
+                wt=xts(m[,cdeb:cfin], order.by = datetimes, tz="GMT" )
+              } else {
+                wt=xts(me[,cdeb:cfin], order.by = datetimes, tz="GMT" )
+              }
               dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%
                 dyOptions(labelsUTC = TRUE)
               dy_graph=list(dy_graph,dyt)
