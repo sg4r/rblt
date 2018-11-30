@@ -111,7 +111,7 @@ Logger <- setRefClass("Logger",
                             filebehavior<<-filebehavior
                             options(digits.secs = 3)
                             nbrow<<-0
-                            nbcol<<- Inf
+                            nbcol<<-Inf
                             h5init()
                             behaviorinit()
                             initmetriclst()
@@ -123,9 +123,9 @@ Logger <- setRefClass("Logger",
                         },
                         setextmatrix= function(m) {
                           if(!is.matrix(m)) {
-                            stop("error: not matrix")
+                            stop("not matrix")
                           } else if (nrow(m)<nbcol) {
-                            stop ("error: matrix not good size")
+                            stop ("matrix not good size")
                           } else {
                             extmatrix<<-m
                           }
@@ -207,6 +207,7 @@ LoggerCats <-setRefClass("LoggerCats",
                                dset=openDataSet(f,"/data")
                                size=dset@dim
                                nbrow<<-size[1]
+                               nbcol<<-size[2]
                              }
                              h5close(f)
                            },
@@ -251,6 +252,7 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                                dset=openDataSet(f,"/data")
                                size=dset@dim
                                nbrow<<-size[1]
+                               nbcol<<-size[2]
                              }
                              h5close(f)
                            },
@@ -291,6 +293,7 @@ LoggerWacu <-setRefClass("LoggerWacu",
                                dset=openDataSet(f,"/data")
                                size=dset@dim
                                nbrow<<-size[1]
+                               nbcol<<-size[2]
                              }
                              h5close(f)
                            },
