@@ -512,7 +512,7 @@ LoggerDataUI <-setRefClass(
               cdeb=dh$colid
               cfin=cdeb
               if (dh$colnb>1) {
-                cfin=cdeb+dh$colnb
+                cfin=cdeb+dh$colnb-1
               }
               if (cfin>ncol(m)) {
                 stop("ERROR: Metric index over ncol")
