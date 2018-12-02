@@ -125,6 +125,9 @@ Logger <- setRefClass("Logger",
                             extmatrixenable<<-FALSE
                           }
                         },
+                        getdata= function() {
+                          stop("getdata virtual function")
+                        },
                         setextmatrix= function(m) {
                           if(!is.matrix(m)) {
                             stop("not matrix")
@@ -216,6 +219,12 @@ LoggerCats <-setRefClass("LoggerCats",
                              }
                              h5close(f)
                            },
+                           getdata= function() {
+                             f=h5file(fileh5,"r")
+                             m=f["/data"][,]
+                             h5close(f)
+                             return(m)
+                           },
                            initmetriclst = function() {
                              lm=MetricList$new()
                              lm$add(Metric("AAccelerometer",1,3,beobs=TRUE))
@@ -267,6 +276,12 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                              lm$add(Metric("axy-Pres",3,1))
                              metriclst<<-lm
                            },
+                           getdata= function() {
+                             f=h5file(fileh5,"r")
+                             m=f["/data"][,]
+                             h5close(f)
+                             return(m)
+                           },
                            draw = function() {
                              return(paste0("t:LoggerAxytrek f:",name," s:",datestart," r:",nbrow))
                            }
@@ -309,6 +324,12 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              lm$add(Metric("wLight intensity",3,1))
                              lm$add(Metric("wAccelerometer",3,3,beobs=TRUE))
                              metriclst<<-lm
+                           },
+                           getdata= function() {
+                             f=h5file(fileh5,"r")
+                             m=f["/data"][,]
+                             h5close(f)
+                             return(m)
                            },
                            draw = function() {
                              return(paste0("t:LoggerWacu f:",name," s:",datestart," r:",nbrow))
