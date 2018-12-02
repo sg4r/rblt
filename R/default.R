@@ -37,7 +37,7 @@ sayhello <- function() {
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  return("0.2.1")
+  return("0.2.2")
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file
@@ -130,6 +130,43 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
   }
 }
 
+#' A axytrek2h5 fonction for convert csv file to h5 file
+#' @export axytrek2h5
+axytrek2h5 = function(filecsv="",fileh5="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    ldsr1=fread(file = filecsv,fill = TRUE, dec = ",")
+    ldsr2=fread(file = filecsv,fill = TRUE, dec = ".")
+    ldsra=ldsr1[seq(1,nrow(ldsr1),15),c(2:6)]
+    ldsrb=ldsr2[seq(1,nrow(ldsr2),15),c(8:9)]
+    lds=cbind(ldsra,ldsrb)
+    rm(ldsr1,ldsr2,ldsra,ldsrb)
+    names(lds)=c("date","time","x","y","z","p","t")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+#   ldm=data.matrix(lds[,c("x","y","z","p","t")])
+    ldm=as.matrix(lds[,3:7])
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="AXYTREK"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5close(h5f)
+  }
+}
+
+
 #' A wacu2h5 fonction for concert wacu csv file to h5 file
 #' @export wacu2h5
 wacu2h5 = function(filewacucsv="",fileh5="") {
@@ -188,7 +225,7 @@ wacu2h5dt = function(filewacucsv="",fileh5="") {
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
-    h5f["/data"]=ldm
+    h5f["/tpl"]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -363,3 +400,71 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # user	7m13,120s
 # sys	0m7,509s
 # version en python 7 minutes
+
+#' A wacu2hacc3 function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc3
+wacu2hacc3 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+  # version rapide qui ne lit que les informations a la seconde
+  # pour préparer la ui et la démo
+  # evolution de la version 2, mais en utilisant wacu2csv en C++ pour reformater les data au format CSV
+  if(!is.character(filewacucsv)){
+    stop("filewacucsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filewacucsv))
+    print(paste("out:",fileh5))
+    #read wacu acc data
+    macc=fread(file=filewacucsv,header = F, select=c(5,6,7))
+    h5f=h5file(fileh5,"a")
+    if (h5attr(h5f["/"], "logger")!="WACU") {
+      stop("h5 file not WACU structure")
+    }else if (h5attr(h5f["/"], "version")!=getversion()){
+      stop("WACU h5 file not good version")
+    }else {
+      #ok all data
+      mtpl=h5f["/tpl"][,1:3]
+      m=cbind(mtpl,macc)
+      m=as.matrix(m)
+      #write new value in "/data
+      h5f["/data"]=m
+      h5close(h5f)
+    }#end else if
+  }
+}
+
+
+#' A demowacu2h5 fonction build demo cats h5 file
+#' @export demowacu2h5
+demowacu2h5 = function(fileh5="",nbrow=10000) {
+  if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("out:",fileh5))
+    t=seq(1,60*10,1)
+    x=t/100
+    y=sin(t/10)+2
+    z=tan(t/25)/40+3.5
+    mx=matrix(x,ncol = 1)
+    my=matrix(y,ncol = 1)
+    mz=matrix(z,ncol = 1)
+    m=data.frame(mx,my,mz,mx,my,mz)
+    nbech=60*10
+    nbloo=round(nbrow/nbech)
+    w=m
+    for (i in 1:nbloo) {
+      w=rbind(w,m)
+    }
+    datestart=Sys.time()
+    #ecriture du fichier H5
+    ldm=data.matrix(w)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")="demowacu2h5"
+    h5close(h5f)
+  }
+}
