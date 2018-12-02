@@ -92,3 +92,24 @@ ll$add(LoggerWacu$new(wdemo))
 ui=LoggerUI$new(ll)
 ui$gui()
 ```
+
+## utilisation avancée :
+calcul de moyenne mobile avec un LoggerWacu
+```
+library(caTools)
+ll=LoggerList$new()
+lg=LoggerWacu$new(wdemo)
+lm=lg$getdata()
+lt=lm[,"l"]
+ltrm5=runmean(lt, 5)
+ltrm10=runmean(lt, 10)
+ltrm20=runmean(lt, 20)
+extm=cbind(lt,ltrm5,ltrm10,ltrm20)
+lg$setextmatrix(extm)
+lg$metriclst$add(Metric(name="RunMeanLight",colid=1,colnb=4,srcin=FALSE))
+ll$add(lg)
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
+
