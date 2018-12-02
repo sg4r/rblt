@@ -167,9 +167,9 @@ axytrek2h5 = function(filecsv="",fileh5="") {
 }
 
 
-#' A wacu2h5 fonction for concert wacu csv file to h5 file
-#' @export wacu2h5
-wacu2h5 = function(filewacucsv="",fileh5="") {
+#' A wacu2h5old fonction for concert wacu csv file to h5 file
+#' @export wacu2h5old
+wacu2h5old = function(filewacucsv="",fileh5="") {
   if(!is.character(filewacucsv)){
     stop("filewacucsv file path")
   }else if (!is.character(fileh5)){
@@ -202,9 +202,9 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
   }
 }
 
-#' A wacu2h5dt fonction for concert wacu csv file to h5 file
-#' @export wacu2h5dt
-wacu2h5dt = function(filewacucsv="",fileh5="") {
+#' A wacu2h5 fonction for concert wacu csv file to h5 file
+#' @export wacu2h5
+wacu2h5 = function(filewacucsv="",fileh5="") {
   if(!is.character(filewacucsv)){
     stop("filewacucsv file path")
   }else if (!is.character(fileh5)){
@@ -401,9 +401,9 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # sys	0m7,509s
 # version en python 7 minutes
 
-#' A wacu2hacc3 function for insert wacu acc csv file to h5 file
-#' @export wacu2hacc3
-wacu2hacc3 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
+#' A wacu2hacc function for insert wacu acc csv file to h5 file
+#' @export wacu2hacc
+wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
   # version rapide qui ne lit que les informations a la seconde
   # pour préparer la ui et la démo
   # evolution de la version 2, mais en utilisant wacu2csv en C++ pour reformater les data au format CSV
