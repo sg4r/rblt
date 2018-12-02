@@ -74,11 +74,21 @@ Il est possible de générer des fichiers de démonstrations de différentes tai
 ## Exemple :
 ```
 #Pour des Bio-loggers CATS
-rblt::democats2h5("~/rtoolbox/democats-10k-pts.h5",nbrow=10000)
-rblt::democats2h5("~/rtoolbox/democats-2600k-pts.h5",nbrow=2600000)
+rblt::democats2h5("~/rtoolbox/democats-10k.h5",nbrow=10000)
+rblt::democats2h5("~/rtoolbox/democats-2600k.h5",nbrow=2600000)
 #Pour des Bio-loggers AXYTREK
-#reste a faire
+ademo="~/rtoolbox/demoaxytrek-1k.h5"
+rblt::demoaxytrek2h5(ademo)
 #Pour des Bio-loggers WACU
 wdemo="~/rtoolbox/wacudemo-1k.h5"
 rblt::demowacu2h5(wdemo)
+
+#définition des bio-loggers à afficher
+ll=LoggerList$new()
+ll$add(LoggerCats$new("~/rtoolbox/democats-10k.h5",filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
+ll$add(LoggerAxytrek$new(ademo))
+ll$add(LoggerWacu$new(wdemo))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
 ```
