@@ -15,11 +15,11 @@ library(xts)
 library(shiny)
 
 
-#' A LoggerUI reference class
-#' @export LoggerUI
-#' @exportClass LoggerUI
-LoggerUI <-setRefClass(
-  "LoggerUI",
+#' A LoggeroldUI reference class
+#' @export LoggeroldUI
+#' @exportClass LoggeroldUI
+LoggeroldUI <-setRefClass(
+  "LoggeroldUI",
    fields = list(loglst = "LoggerList",
                  id = "numeric",
                  ldatestart =  "POSIXct",
@@ -404,11 +404,11 @@ LoggerWacuUI <-setRefClass(
   )
 )
 
-#' A LoggerDataUI reference class
-#' @export LoggerDataUI
-#' @exportClass LoggerDataUI
-LoggerDataUI <-setRefClass(
-  "LoggerDataUI",
+#' A LoggerUI reference class
+#' @export LoggerUI
+#' @exportClass LoggerUI
+LoggerUI <-setRefClass(
+  "LoggerUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",
                 ldatestart =  "POSIXct",

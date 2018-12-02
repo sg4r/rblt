@@ -223,16 +223,17 @@ LoggerCats <-setRefClass("LoggerCats",
                              f=h5file(fileh5,"r")
                              m=f["/data"][,]
                              h5close(f)
+                             colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
                              return(m)
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("AAccelerometer",1,3,beobs=TRUE))
-                             lm$add(Metric("AGyroscope",4,3))
-                             lm$add(Metric("AMagnetometer",7,3))
-                             lm$add(Metric("ATemperature",10,1))
-                             lm$add(Metric("APression",11,1))
-                             lm$add(Metric("ALight intensity",12,1))
+                             lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
+                             lm$add(Metric("Gyroscope",4,3))
+                             lm$add(Metric("Magnetometer",7,3))
+                             lm$add(Metric("Temperature",10,1))
+                             lm$add(Metric("Pression",11,1))
+                             lm$add(Metric("Light intensity",12,1))
                              metriclst<<-lm
                            },
                            draw = function() {
@@ -280,6 +281,7 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
                              f=h5file(fileh5,"r")
                              m=f["/data"][,]
                              h5close(f)
+                             colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
                              return(m)
                            },
                            draw = function() {
@@ -329,6 +331,7 @@ LoggerWacu <-setRefClass("LoggerWacu",
                              f=h5file(fileh5,"r")
                              m=f["/data"][,]
                              h5close(f)
+                             colnames(m)=c("t","p","l","a1","a2","a3")
                              return(m)
                            },
                            draw = function() {
