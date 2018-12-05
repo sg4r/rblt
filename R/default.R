@@ -59,6 +59,9 @@ cats2h5 = function(filecatscsv="",fileh5="") {
     ldscats[,"tick"]=as.numeric(ldscats[,"id"]-datestart)
     nbrow=nrow(ldscats)
     print(paste("nbrow:",nbrow))
+    #inv pression
+    invp=ldscats[,"p"]*(-1)
+    ldscats[,"p"]=invp
     #ecriture du fichier H5
     ldm=data.matrix(ldscats[,c("ax","ay","az","gx","gy","gz","mx","my","mz","t","p","l","tick")])
     if(file.exists(fileh5)) file.remove(fileh5)
