@@ -6,6 +6,11 @@
 \usage{
 cats2h5(filecatscsv = "", fileh5 = "")
 }
+\arguments{
+\item{filecatscsv}{A input CATS csv file.}
+
+\item{fileh5}{A output h5 data file.}
+}
 \description{
 A cats2h5 fonction for concert cats csv file to h5 file
 }

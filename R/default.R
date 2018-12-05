@@ -10,8 +10,7 @@
 #
 #-------------------------------------------------------------------------------
 
-library(h5)
-library("data.table")
+library(hdf5r)
 
 # Hello, world!
 #
@@ -28,6 +27,12 @@ library("data.table")
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
+#' A hello function
+#' @export hello
+hello <- function() {
+  print(paste0("rblt[",getversion(),"]:Hello ","!"))
+}
+
 #' A sayhello function
 #' @export sayhello
 sayhello <- function() {
@@ -41,6 +46,8 @@ getversion = function() {
 }
 
 #' A cats2h5 fonction for concert cats csv file to h5 file
+#' @param filecatscsv  A input CATS csv file.
+#' @param fileh5 A output h5 data file.
 #' @export cats2h5
 cats2h5 = function(filecatscsv="",fileh5="") {
   if(!is.character(filecatscsv)){
@@ -76,6 +83,8 @@ cats2h5 = function(filecatscsv="",fileh5="") {
 }
 
 #' A democats2h5 fonction build demo cats h5 file
+#' @param fileh5 imput data h5 file
+#' @param nbrow number of row
 #' @export democats2h5
 democats2h5 = function(fileh5="",nbrow=10000) {
   if (!is.character(fileh5)){
@@ -134,6 +143,8 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
 }
 
 #' A axytrek2h5 fonction for convert csv file to h5 file
+#' @param filecsv  A input axytrek csv file.
+#' @param fileh5 A output h5 data file.
 #' @export axytrek2h5
 axytrek2h5 = function(filecsv="",fileh5="") {
   if(!is.character(filecsv)){
@@ -170,6 +181,8 @@ axytrek2h5 = function(filecsv="",fileh5="") {
 }
 
 #' A demoaxytrek2h5 fonction build demo cats h5 file
+#' @param fileh5 input data H5 file
+#' @param nbrow number of row
 #' @export demoaxytrek2h5
 demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
   if (!is.character(fileh5)){
@@ -200,6 +213,8 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
 
 
 #' A wacu2h5old fonction for concert wacu csv file to h5 file
+#' @param filewacucsv  A input WACU csv file.
+#' @param fileh5 A output h5 data file.
 #' @export wacu2h5old
 wacu2h5old = function(filewacucsv="",fileh5="") {
   if(!is.character(filewacucsv)){
@@ -235,6 +250,8 @@ wacu2h5old = function(filewacucsv="",fileh5="") {
 }
 
 #' A wacu2h5 fonction for concert wacu csv file to h5 file
+#' @param filewacucsv  A input WACU csv file.
+#' @param fileh5 A output h5 data file.
 #' @export wacu2h5
 wacu2h5 = function(filewacucsv="",fileh5="") {
   if(!is.character(filewacucsv)){
@@ -269,6 +286,10 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
 }
 
 #' A wacu2hacc1 function for insert wacu acc csv file to h5 file
+#' @param filewacucsv  A input WACU csv file.
+#' @param fileh5 A output h5 data file.
+#' @param size the default data size
+#' @param accfreq the default acc frequence
 #' @export wacu2hacc1
 wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # version rapide qui ne lit que les informations a la seconde
@@ -345,6 +366,10 @@ wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 
 
 #' A wacu2hacc2 function for insert wacu acc csv file to h5 file
+#' @param filewacucsv  A input WACU csv file.
+#' @param fileh5 A output h5 data file.
+#' @param size the default data size
+#' @param accfreq the default acc frequence
 #' @export wacu2hacc2
 wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
   # version rapide qui ne lit que les informations a la seconde
@@ -434,6 +459,10 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # version en python 7 minutes
 
 #' A wacu2hacc function for insert wacu acc csv file to h5 file
+#' @param filewacucsv  A input WACU csv file.
+#' @param fileh5 A output h5 data file.
+#' @param size the default data size
+#' @param accfreq the default acc frequence
 #' @export wacu2hacc
 wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
   # version rapide qui ne lit que les informations a la seconde
@@ -467,6 +496,8 @@ wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 
 
 #' A demowacu2h5 fonction build demo cats h5 file
+#' @param fileh5 A h5 data file.
+#' @param nbrow number of row
 #' @export demowacu2h5
 demowacu2h5 = function(fileh5="",nbrow=10000) {
   if (!is.character(fileh5)){

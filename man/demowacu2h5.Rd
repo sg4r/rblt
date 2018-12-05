@@ -6,6 +6,11 @@
 \usage{
 demowacu2h5(fileh5 = "", nbrow = 10000)
 }
+\arguments{
+\item{fileh5}{A h5 data file.}
+
+\item{nbrow}{number of row}
+}
 \description{
 A demowacu2h5 fonction build demo cats h5 file
 }

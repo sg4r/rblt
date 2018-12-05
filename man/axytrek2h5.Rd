@@ -6,6 +6,11 @@
 \usage{
 axytrek2h5(filecsv = "", fileh5 = "")
 }
+\arguments{
+\item{filecsv}{A input axytrek csv file.}
+
+\item{fileh5}{A output h5 data file.}
+}
 \description{
 A axytrek2h5 fonction for convert csv file to h5 file
 }

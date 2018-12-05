@@ -6,6 +6,11 @@
 \usage{
 democats2h5(fileh5 = "", nbrow = 10000)
 }
+\arguments{
+\item{fileh5}{imput data h5 file}
+
+\item{nbrow}{number of row}
+}
 \description{
 A democats2h5 fonction build demo cats h5 file
 }

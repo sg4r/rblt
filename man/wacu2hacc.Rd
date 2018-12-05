@@ -7,6 +7,15 @@
 wacu2hacc(filewacucsv = "", fileh5 = "", size = 11274058,
   accfreq = 25)
 }
+\arguments{
+\item{filewacucsv}{A input WACU csv file.}
+
+\item{fileh5}{A output h5 data file.}
+
+\item{size}{the default data size}
+
+\item{accfreq}{the default acc frequence}
+}
 \description{
 A wacu2hacc function for insert wacu acc csv file to h5 file
 }

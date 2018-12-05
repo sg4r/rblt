@@ -6,6 +6,11 @@
 \usage{
 wacu2h5(filewacucsv = "", fileh5 = "")
 }
+\arguments{
+\item{filewacucsv}{A input WACU csv file.}
+
+\item{fileh5}{A output h5 data file.}
+}
 \description{
 A wacu2h5 fonction for concert wacu csv file to h5 file
 }
