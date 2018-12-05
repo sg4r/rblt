@@ -103,7 +103,7 @@ Logger <- setRefClass("Logger",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", besep=",", metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -116,7 +116,7 @@ Logger <- setRefClass("Logger",
                             nbrow<<-0
                             nbcol<<-Inf
                             h5init()
-                            behaviorinit()
+                            behaviorinit(besep)
                             initmetriclst()
                             if (is.null(metricshow)==F) {
                               metriclst$slctset(metricshow)
@@ -150,14 +150,14 @@ Logger <- setRefClass("Logger",
                           datestart<<-as.POSIXct("2015-04-01", tz="GMT")
                           stop("default class ne doit pas etre executé")
                         },
-                        behaviorinit= function() {
+                        behaviorinit= function(besep) {
                           lchoices=list()
                           lslct=list()
                           becolor<<-""
                           lbeobslst=list()
                           if (nchar(filebehavior)>0) {
                             tryCatch({
-                              dso=read.csv(filebehavior)
+                              dso=read.csv(filebehavior,sep = besep)
                               dsob=levels(dso$Behavior)
                               #get number of different Behavior
                               i=0
