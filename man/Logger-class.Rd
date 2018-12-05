@@ -11,7 +11,7 @@ A Logger reference class
 \section{Fields}{
 
 \describe{
-\item{\code{filedata}}{nom du fichier de donnée}
+\item{\code{filedata}}{nom du fichier de donn??e}
 
 \item{\code{filebehavior}}{nom du chier des comportement}
 }}

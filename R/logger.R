@@ -10,7 +10,8 @@
 #
 #-------------------------------------------------------------------------------
 
-library(h5)
+library(hdf5r)
+
 
 #' A Metric reference class
 #' @export Metric
@@ -83,7 +84,7 @@ MetricList <-setRefClass("MetricList",
 
 
 #' A Logger reference class
-#' @field filedata nom du fichier de donnée
+#' @field filedata nom du fichier de donn??e
 #' @field filebehavior nom du chier des comportement
 #' @export Logger
 #' @exportClass Logger
@@ -143,12 +144,12 @@ Logger <- setRefClass("Logger",
                         },
                         initmetriclst = function() {
                           #definit les grandeurs par defaut
-                          stop("default class ne doit pas etre executé")
+                          stop("default class ne doit pas etre execut??")
                         },
                         h5init = function() {
                           #get info from h5 file
                           datestart<<-as.POSIXct("2015-04-01", tz="GMT")
-                          stop("default class ne doit pas etre executé")
+                          stop("default class ne doit pas etre execut??")
                         },
                         behaviorinit= function(besep) {
                           lchoices=list()
