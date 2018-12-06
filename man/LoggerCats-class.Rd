@@ -3,6 +3,7 @@
 \docType{class}
 \name{LoggerCats-class}
 \alias{LoggerCats-class}
+\alias{LoggerCats}
 \title{A LoggerCats reference class}
 \description{
 A LoggerCats reference class

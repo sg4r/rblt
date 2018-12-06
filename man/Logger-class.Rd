@@ -3,6 +3,7 @@
 \docType{class}
 \name{Logger-class}
 \alias{Logger-class}
+\alias{Logger}
 \title{A Logger reference class}
 \description{
 A Logger reference class

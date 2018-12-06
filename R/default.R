@@ -10,8 +10,6 @@
 #
 #-------------------------------------------------------------------------------
 
-library(h5)
-
 # Hello, world!
 #
 # This is an example function named 'hello'

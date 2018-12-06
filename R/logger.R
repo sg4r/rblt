@@ -10,12 +10,11 @@
 #
 #-------------------------------------------------------------------------------
 
-library(h5)
 
 #' A Metric reference class
 #' @import methods
 #' @export
-setRefClass("Metric",
+Metric <- setRefClass("Metric",
                        fields = list(name = "character",
                                      colid = "numeric",
                                      colnb = "numeric",
@@ -43,7 +42,7 @@ setRefClass("Metric",
 
 #' A MetricList reference class
 #' @export
-setRefClass("MetricList",
+MetricList <- setRefClass("MetricList",
                            fields = list(.l ="list"),
                            methods = list(
                              initialize= function() {
@@ -88,7 +87,7 @@ setRefClass("MetricList",
 #' @import tools
 #' @export
 #' @author sebastien geiger
-setRefClass("Logger",
+Logger <- setRefClass("Logger",
                       fields = list(name = "character",
                                     fileh5 = "character",
                                     filebehavior = "character",
@@ -192,7 +191,7 @@ setRefClass("Logger",
 
 #' A LoggerCats reference class
 #' @export
-setRefClass("LoggerCats",
+LoggerCats <- setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -243,7 +242,7 @@ setRefClass("LoggerCats",
 
 #' A LoggerAxytrek reference class
 #' @export
-setRefClass("LoggerAxytrek",
+LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -290,7 +289,7 @@ setRefClass("LoggerAxytrek",
 
 #' A LoggerWacu reference class
 #' @export
-setRefClass("LoggerWacu",
+LoggerWacu <- setRefClass("LoggerWacu",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -339,7 +338,7 @@ setRefClass("LoggerWacu",
 
 #' A LoggerList reference class
 #' @export
-setRefClass("LoggerList",
+LoggerList <- setRefClass("LoggerList",
                          fields = list(.l ="list"),
                          methods = list(
                            initialize= function() {
