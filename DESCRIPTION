@@ -13,13 +13,18 @@ LazyData: true
 RoxygenNote: 6.1.0
 Depends:
     R (>= 3.2),
+    tools,
+    hdf5r (>= 1.0.0),
+    dygraphs,
+    xts,
+    shiny,
+    data.table
 Imports:
     tools,
     hdf5r (>= 1.0.0),
     dygraphs,
     xts,
     shiny,
-    svMisc,
     data.table
 URL: https://github.com/sebastien45/rblt
 Suggests: knitr, rmarkdown
