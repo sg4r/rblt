@@ -11,7 +11,6 @@
 #-------------------------------------------------------------------------------
 
 library(dygraphs)
-library(xts)
 library(shiny)
 
 
@@ -400,6 +399,8 @@ setRefClass("LoggerWacuUI",
 
 #' A LoggerUI reference class
 #' @export
+#' @import dygraphs
+#' @import shiny
 setRefClass("LoggerUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",

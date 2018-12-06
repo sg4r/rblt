@@ -10,9 +10,10 @@
 #
 #-------------------------------------------------------------------------------
 
-library(hdf5r)
+library(h5)
 
 #' A Metric reference class
+#' @import methods
 #' @export
 setRefClass("Metric",
                        fields = list(name = "character",
@@ -83,7 +84,8 @@ setRefClass("MetricList",
 #' A Logger reference class
 #' @field filedata nom du fichier de donnee
 #' @field filebehavior nom du chier des comportement
-#' @import hdf5r
+#' @import h5
+#' @import tools
 #' @export
 #' @author sebastien geiger
 setRefClass("Logger",

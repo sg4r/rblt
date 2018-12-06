@@ -2,30 +2,27 @@ Package: rblt
 Type: Package
 Title: R Bio-Logging Toolbox
 Version: 0.2.2
-Author: sebastien geiger
-Maintainer: the package maintainer <sebastien.geiger@iphc.cnrs.fr>
-Description: Package de visualisation des données accelero des capteurs bio-logging CATS, WACU
-      Le package rblt R-bio-logging-toolbox est une librairie de fonctions R de visualisation des données accéléros
-      des bio-loggers CATS, des bio-loggers WACU, qui sont fabriqués par le service MIBE de l’IPHC http://www.iphc.cnrs.fr/-MIBE-.html 
-License: GPL3
+Authors@R: c(person("sebastien", "geiger", role = c("aut", "cre"),
+                     email = "sebastien.geiger@iphc.cnrs.fr"))
+Author: sebastien geiger [aut, cre]
+Maintainer: sebastien geiger <sebastien.geiger@iphc.cnrs.fr>
+Description: Contains functions for plot time series temperature and light intensity.
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
+OS_type: windows
 Depends:
     R (>= 3.2),
     tools,
-    hdf5r (>= 1.0.0),
+    h5 (>= 0.9),
     dygraphs,
-    xts,
     shiny,
-    data.table
-Imports:
-    tools,
-    hdf5r (>= 1.0.0),
-    dygraphs,
-    xts,
-    shiny,
+    methods,
     data.table
 URL: https://github.com/sebastien45/rblt
-Suggests: knitr, rmarkdown
+BugReports: https://github.com/sebastien45/rblt/issues
+Suggests: 
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
