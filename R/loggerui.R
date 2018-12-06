@@ -16,10 +16,8 @@ library(shiny)
 
 
 #' A LoggeroldUI reference class
-#' @export LoggeroldUI
-#' @exportClass LoggeroldUI
-LoggeroldUI <-setRefClass(
-  "LoggeroldUI",
+#' @export
+setRefClass("LoggeroldUI",
    fields = list(loglst = "LoggerList",
                  id = "numeric",
                  ldatestart =  "POSIXct",
@@ -151,10 +149,8 @@ LoggeroldUI <-setRefClass(
 )
 
 #' A LoggerAxytrekUI reference class
-#' @export LoggerAxytrekUI
-#' @exportClass LoggerAxytrekUI
-LoggerAxytrekUI <-setRefClass(
-  "LoggerAxytrekUI",
+#' @export
+setRefClass("LoggerAxytrekUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",
                 ldatestart =  "POSIXct",
@@ -277,10 +273,8 @@ LoggerAxytrekUI <-setRefClass(
 
 
 #' A LoggerWacuUI reference class
-#' @export LoggerWacuUI
-#' @exportClass LoggerWacuUI
-LoggerWacuUI <-setRefClass(
-  "LoggerWacuUI",
+#' @export
+setRefClass("LoggerWacuUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",
                 ldatestart =  "POSIXct",
@@ -405,10 +399,8 @@ LoggerWacuUI <-setRefClass(
 )
 
 #' A LoggerUI reference class
-#' @export LoggerUI
-#' @exportClass LoggerUI
-LoggerUI <-setRefClass(
-  "LoggerUI",
+#' @export
+setRefClass("LoggerUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",
                 ldatestart =  "POSIXct",

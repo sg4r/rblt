@@ -48,6 +48,7 @@ getversion = function() {
 #' A cats2h5 fonction for concert cats csv file to h5 file
 #' @param filecatscsv  A input CATS csv file.
 #' @param fileh5 A output h5 data file.
+#' @import utils
 #' @export cats2h5
 cats2h5 = function(filecatscsv="",fileh5="") {
   if(!is.character(filecatscsv)){
@@ -215,6 +216,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
 #' A wacu2h5old fonction for concert wacu csv file to h5 file
 #' @param filewacucsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
+#' @import utils
 #' @export wacu2h5old
 wacu2h5old = function(filewacucsv="",fileh5="") {
   if(!is.character(filewacucsv)){
@@ -297,7 +299,9 @@ wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 # je ferait pour trad;)
 # readlines n'est pas rapide en ligne par ligne
 # pas possible de lire le fichier de 9Go en ram
-  library(svMisc)
+# supp  library(svMisc)
+# supp import svMisc
+
   m=matrix(0,size,3)
   if(!is.character(filewacucsv)){
     stop("filewacucsv file path")
@@ -336,7 +340,8 @@ wacu2hacc1 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
       }
       #print(paste0(nbline,":",nblinetick,"x",nblineacc,":",line))
       #affichage progression en pourcent
-      progress(mid*100/prmax)
+      #supp probleme de compilation
+      #supp progress(mid*100/prmax)
       nbline=nbline-1
     }
     close(con)
@@ -463,6 +468,7 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 #' @param fileh5 A output h5 data file.
 #' @param size the default data size
 #' @param accfreq the default acc frequence
+#' @import data.table
 #' @export wacu2hacc
 wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
   # version rapide qui ne lit que les informations a la seconde

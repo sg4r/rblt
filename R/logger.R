@@ -12,11 +12,9 @@
 
 library(hdf5r)
 
-
 #' A Metric reference class
-#' @export Metric
-#' @exportClass Metric
-Metric <-setRefClass("Metric",
+#' @export
+setRefClass("Metric",
                        fields = list(name = "character",
                                      colid = "numeric",
                                      colnb = "numeric",
@@ -43,9 +41,8 @@ Metric <-setRefClass("Metric",
 
 
 #' A MetricList reference class
-#' @export MetricList
-#' @exportClass MetricList
-MetricList <-setRefClass("MetricList",
+#' @export
+setRefClass("MetricList",
                            fields = list(.l ="list"),
                            methods = list(
                              initialize= function() {
@@ -84,12 +81,12 @@ MetricList <-setRefClass("MetricList",
 
 
 #' A Logger reference class
-#' @field filedata nom du fichier de donn??e
+#' @field filedata nom du fichier de donnee
 #' @field filebehavior nom du chier des comportement
-#' @export Logger
-#' @exportClass Logger
+#' @import hdf5r
+#' @export
 #' @author sebastien geiger
-Logger <- setRefClass("Logger",
+setRefClass("Logger",
                       fields = list(name = "character",
                                     fileh5 = "character",
                                     filebehavior = "character",
@@ -127,7 +124,7 @@ Logger <- setRefClass("Logger",
                           }
                         },
                         getdata= function() {
-                          stop("getdata virtual function")
+                          stop("getdata virtual function should not be called directly")
                         },
                         setextmatrix= function(m) {
                           if(!is.matrix(m)) {
@@ -144,12 +141,12 @@ Logger <- setRefClass("Logger",
                         },
                         initmetriclst = function() {
                           #definit les grandeurs par defaut
-                          stop("default class ne doit pas etre execut??")
+                          stop("initmetriclst virtual function should not be called directly")
                         },
                         h5init = function() {
                           #get info from h5 file
                           datestart<<-as.POSIXct("2015-04-01", tz="GMT")
-                          stop("default class ne doit pas etre execut??")
+                          stop("h5init virtual function should not be called directly")
                         },
                         behaviorinit= function(besep) {
                           lchoices=list()
@@ -192,9 +189,8 @@ Logger <- setRefClass("Logger",
 
 
 #' A LoggerCats reference class
-#' @export LoggerCats
-#' @exportClass LoggerCats
-LoggerCats <-setRefClass("LoggerCats",
+#' @export
+setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -244,9 +240,8 @@ LoggerCats <-setRefClass("LoggerCats",
 )
 
 #' A LoggerAxytrek reference class
-#' @export LoggerAxytrek
-#' @exportClass LoggerAxytrek
-LoggerAxytrek <-setRefClass("LoggerAxytrek",
+#' @export
+setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -292,9 +287,8 @@ LoggerAxytrek <-setRefClass("LoggerAxytrek",
 )
 
 #' A LoggerWacu reference class
-#' @export LoggerWacu
-#' @exportClass LoggerWacu
-LoggerWacu <-setRefClass("LoggerWacu",
+#' @export
+setRefClass("LoggerWacu",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
@@ -342,9 +336,8 @@ LoggerWacu <-setRefClass("LoggerWacu",
 )
 
 #' A LoggerList reference class
-#' @export LoggerList
-#' @exportClass LoggerList
-LoggerList <-setRefClass("LoggerList",
+#' @export
+setRefClass("LoggerList",
                          fields = list(.l ="list"),
                          methods = list(
                            initialize= function() {
