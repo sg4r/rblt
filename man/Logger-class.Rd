@@ -3,7 +3,6 @@
 \docType{class}
 \name{Logger-class}
 \alias{Logger-class}
-\alias{Logger}
 \title{A Logger reference class}
 \description{
 A Logger reference class
@@ -11,7 +10,7 @@ A Logger reference class
 \section{Fields}{
 
 \describe{
-\item{\code{filedata}}{nom du fichier de donn??e}
+\item{\code{filedata}}{nom du fichier de donnee}
 
 \item{\code{filebehavior}}{nom du chier des comportement}
 }}

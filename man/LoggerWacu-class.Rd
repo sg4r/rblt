@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggerWacu-class}
 \alias{LoggerWacu-class}
-\alias{LoggerWacu}
 \title{A LoggerWacu reference class}
 \description{
 A LoggerWacu reference class

@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggerAxytrek-class}
 \alias{LoggerAxytrek-class}
-\alias{LoggerAxytrek}
 \title{A LoggerAxytrek reference class}
 \description{
 A LoggerAxytrek reference class

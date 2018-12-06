@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggerList-class}
 \alias{LoggerList-class}
-\alias{LoggerList}
 \title{A LoggerList reference class}
 \description{
 A LoggerList reference class

@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggeroldUI-class}
 \alias{LoggeroldUI-class}
-\alias{LoggeroldUI}
 \title{A LoggeroldUI reference class}
 \description{
 A LoggeroldUI reference class

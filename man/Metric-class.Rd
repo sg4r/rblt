@@ -3,7 +3,6 @@
 \docType{class}
 \name{Metric-class}
 \alias{Metric-class}
-\alias{Metric}
 \title{A Metric reference class}
 \description{
 A Metric reference class

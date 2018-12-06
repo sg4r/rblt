@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggerWacuUI-class}
 \alias{LoggerWacuUI-class}
-\alias{LoggerWacuUI}
 \title{A LoggerWacuUI reference class}
 \description{
 A LoggerWacuUI reference class

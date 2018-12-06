@@ -3,7 +3,6 @@
 \docType{class}
 \name{LoggerAxytrekUI-class}
 \alias{LoggerAxytrekUI-class}
-\alias{LoggerAxytrekUI}
 \title{A LoggerAxytrekUI reference class}
 \description{
 A LoggerAxytrekUI reference class
