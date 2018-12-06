@@ -395,6 +395,7 @@ setRefClass("LoggerWacuUI",
 
 #' A LoggerUI reference class
 #' @export
+#' @import xts
 #' @import dygraphs
 #' @import shiny
 LoggerUI<-setRefClass("LoggerUI",

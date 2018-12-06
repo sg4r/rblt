@@ -15,9 +15,11 @@ Depends:
     R (>= 3.2),
     tools,
     h5 (>= 0.9),
+    xts,
     dygraphs,
     shiny,
-    methods,
+    methods
+Imports:
     data.table
 URL: https://github.com/sebastien45/rblt
 BugReports: https://github.com/sebastien45/rblt/issues
