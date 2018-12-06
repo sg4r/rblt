@@ -3,6 +3,7 @@
 \docType{class}
 \name{MetricList-class}
 \alias{MetricList-class}
+\alias{MetricList}
 \title{A MetricList reference class}
 \description{
 A MetricList reference class

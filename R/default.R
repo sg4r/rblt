@@ -10,8 +10,6 @@
 #
 #-------------------------------------------------------------------------------
 
-library(h5)
-
 # Hello, world!
 #
 # This is an example function named 'hello'
@@ -155,8 +153,8 @@ axytrek2h5 = function(filecsv="",fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr1=fread(file = filecsv,fill = TRUE, dec = ",")
-    ldsr2=fread(file = filecsv,fill = TRUE, dec = ".")
+    ldsr1=data.table::fread(file = filecsv,fill = TRUE, dec = ",")
+    ldsr2=data.table::fread(file = filecsv,fill = TRUE, dec = ".")
     ldsra=ldsr1[seq(1,nrow(ldsr1),15),c(2:6)]
     ldsrb=ldsr2[seq(1,nrow(ldsr2),15),c(8:9)]
     lds=cbind(ldsra,ldsrb)
@@ -263,7 +261,7 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
   }else {
     print(paste("in:",filewacucsv))
     print(paste("out:",fileh5))
-    lds=fread(file=filewacucsv,skip = 24,header = F, sep="\t")
+    lds=data.table::fread(file=filewacucsv,skip = 24,header = F, sep="\t")
     names(lds)=c("date","time","x","y","z","v1")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
@@ -468,7 +466,6 @@ wacu2hacc2 = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 #' @param fileh5 A output h5 data file.
 #' @param size the default data size
 #' @param accfreq the default acc frequence
-#' @import data.table
 #' @export wacu2hacc
 wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
   # version rapide qui ne lit que les informations a la seconde
@@ -482,7 +479,7 @@ wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
     print(paste("in:",filewacucsv))
     print(paste("out:",fileh5))
     #read wacu acc data
-    macc=fread(file=filewacucsv,header = F, select=c(5,6,7))
+    macc=data.table::fread(file=filewacucsv,header = F, select=c(5,6,7))
     h5f=h5file(fileh5,"a")
     if (h5attr(h5f["/"], "logger")!="WACU") {
       stop("h5 file not WACU structure")

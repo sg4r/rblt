@@ -10,10 +10,6 @@
 #
 #-------------------------------------------------------------------------------
 
-library(dygraphs)
-library(shiny)
-
-
 #' A LoggeroldUI reference class
 #' @export
 setRefClass("LoggeroldUI",
@@ -399,9 +395,10 @@ setRefClass("LoggerWacuUI",
 
 #' A LoggerUI reference class
 #' @export
+#' @import xts
 #' @import dygraphs
 #' @import shiny
-setRefClass("LoggerUI",
+LoggerUI<-setRefClass("LoggerUI",
   fields = list(loglst = "LoggerList",
                 id = "numeric",
                 ldatestart =  "POSIXct",
