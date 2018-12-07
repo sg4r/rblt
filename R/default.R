@@ -81,6 +81,38 @@ cats2h5 = function(filecatscsv="",fileh5="") {
   }
 }
 
+#' A catsn2h5 fonction for convert csv file to h5 file
+#' @param filecsv  A input cats csv file.
+#' @param filecsvres input resolution
+#' @param fileh5 A output h5 data file.
+#' @export catsn2h5
+catsn2h5 = function(filecsv="",filecsvres=50, fileh5="" ) {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    ldsr=data.table::fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22))
+    strdatestart=paste(ldsr[1,1],ldsr[1,2])
+    #print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(ldsr)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=as.matrix(ldsr[,c(3:5,12,13)])
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="CATSN"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5close(h5f)
+  }
+}
+
 #' A democats2h5 fonction build demo cats h5 file
 #' @param fileh5 imput data h5 file
 #' @param nbrow number of row
