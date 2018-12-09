@@ -211,7 +211,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
 #' @param filecsv  A input axytrek csv file.
 #' @param fileh5 A output h5 data file.
 #' @export axytrek2h5
-axytrek2h5 = function(filecsv="",fileh5="") {
+axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
   if(!is.character(filecsv)){
     stop("filecsv file path")
   }else if (!is.character(fileh5)){
@@ -219,12 +219,10 @@ axytrek2h5 = function(filecsv="",fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr1=data.table::fread(file = filecsv,fill = TRUE, dec = ",")
-    ldsr2=data.table::fread(file = filecsv,fill = TRUE, dec = ".")
-    ldsra=ldsr1[seq(1,nrow(ldsr1),15),c(2:6)]
-    ldsrb=ldsr2[seq(1,nrow(ldsr2),15),c(8:9)]
-    lds=cbind(ldsra,ldsrb)
-    rm(ldsr1,ldsr2,ldsra,ldsrb)
+    ldsr1=data.table::fread(file = filecsv,fill = TRUE, dec = ",", select=c(2:6))
+    ldsr2=data.table::fread(file = filecsv,fill = TRUE, dec = ".", select=c(8:9))
+    lds=cbind(ldsr1,ldsr2)
+    rm(ldsr1,ldsr2)
     names(lds)=c("date","time","x","y","z","p","t")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
@@ -241,7 +239,7 @@ axytrek2h5 = function(filecsv="",fileh5="") {
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
-    h5attr(h5f, "accres")=1
+    h5attr(h5f, "accres")=accres
     h5close(h5f)
   }
 }
