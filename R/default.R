@@ -43,12 +43,12 @@ getversion = function() {
   return("0.2.2")
 }
 
-#' A cats2h5 fonction for concert cats csv file to h5 file
+#' A cats2h5old fonction for concert cats csv file to h5 file
 #' @param filecatscsv  A input CATS csv file.
 #' @param fileh5 A output h5 data file.
 #' @import utils
-#' @export cats2h5
-cats2h5 = function(filecatscsv="",fileh5="") {
+#' @export cats2h5old
+cats2h5old = function(filecatscsv="",fileh5="") {
   if(!is.character(filecatscsv)){
     stop("filecatscsv file path")
   }else if (!is.character(fileh5)){
@@ -81,6 +81,38 @@ cats2h5 = function(filecatscsv="",fileh5="") {
   }
 }
 
+#' A cats2h5 fonction for convert csv file to h5 file
+#' @param filecsv  A input cats csv file.
+#' @param accres input resolution
+#' @param fileh5 A output h5 data file.
+#' @export cats2h5
+cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    ldsr=data.table::fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22))
+    strdatestart=paste(ldsr[1,1],ldsr[1,2])
+    datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(ldsr)
+    print(paste("nbrow:",nbrow))
+    #ecriture du fichier H5
+    ldm=as.matrix(ldsr[,c(3:14)])
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="CATS"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "accres")=accres
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5close(h5f)
+  }
+}
+
 #' A catsn2h5 fonction for convert csv file to h5 file
 #' @param filecsv  A input cats csv file.
 #' @param filecsvres input resolution
@@ -108,6 +140,7 @@ catsn2h5 = function(filecsv="",filecsvres=50, fileh5="" ) {
     h5attr(h5f, "logger")="CATSN"
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "accres")=filecsvres
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5close(h5f)
   }
@@ -149,6 +182,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
+    h5attr(h5f, "accres")=1
     h5close(h5f)
   }
 }
@@ -207,6 +241,7 @@ axytrek2h5 = function(filecsv="",fileh5="") {
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
+    h5attr(h5f, "accres")=1
     h5close(h5f)
   }
 }
@@ -238,6 +273,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demoaxytrek2h5"
+    h5attr(h5f, "accres")=1
     h5close(h5f)
   }
 }
@@ -312,6 +348,7 @@ wacu2h5 = function(filewacucsv="",fileh5="") {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filewacucsv)
     h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "accres")=1
     h5close(h5f)
     rm(ldm)
   }
@@ -563,6 +600,7 @@ demowacu2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demowacu2h5"
+    h5attr(h5f, "accres")=1
     h5close(h5f)
   }
 }

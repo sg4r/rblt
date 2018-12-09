@@ -14,6 +14,7 @@
 #' A Metric reference class
 #' @import methods
 #' @export
+#' @exportClass Metric
 Metric <- setRefClass("Metric",
                        fields = list(name = "character",
                                      colid = "numeric",
@@ -42,6 +43,7 @@ Metric <- setRefClass("Metric",
 
 #' A MetricList reference class
 #' @export
+#' @exportClass MetricList
 MetricList <- setRefClass("MetricList",
                            fields = list(.l ="list"),
                            methods = list(
@@ -85,7 +87,8 @@ MetricList <- setRefClass("MetricList",
 #' @field filebehavior nom du chier des comportement
 #' @import h5
 #' @import tools
-#' @export
+#' @export Logger
+#' @exportClass Logger
 #' @author sebastien geiger
 Logger <- setRefClass("Logger",
                       fields = list(name = "character",
@@ -97,6 +100,7 @@ Logger <- setRefClass("Logger",
                                     datestart = "POSIXct",
                                     nbrow = "numeric",
                                     nbcol = "numeric",
+                                    accres = "numeric",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
@@ -114,6 +118,7 @@ Logger <- setRefClass("Logger",
                             options(digits.secs = 3)
                             nbrow<<-0
                             nbcol<<-Inf
+                            accres<<-1
                             h5init()
                             behaviorinit(besep)
                             initmetriclst()
@@ -190,7 +195,8 @@ Logger <- setRefClass("Logger",
 
 
 #' A LoggerCats reference class
-#' @export
+#' @export LoggerCats
+#' @exportClass LoggerCats
 LoggerCats <- setRefClass("LoggerCats",
                          contains = list("Logger"),
                          fields = list(),
@@ -214,6 +220,7 @@ LoggerCats <- setRefClass("LoggerCats",
                                size=dset@dim
                                nbrow<<-size[1]
                                nbcol<<-size[2]
+                               accres<<-h5attr(f["/"], "accres")
                              }
                              h5close(f)
                            },
@@ -238,6 +245,61 @@ LoggerCats <- setRefClass("LoggerCats",
                              return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
                            }
                          )
+)
+
+
+#' A LoggerCats reference class
+#' @export
+#' @exportClass LoggerCatsn
+LoggerCatsn <- setRefClass("LoggerCatsn",
+                          contains = list("Logger"),
+                          fields = list(
+                          ),
+                          methods = list(
+                            initialize = function(fileh5 = "", filebehavior = "",...) {
+                              callSuper(fileh5, filebehavior,...)
+                            },
+                            h5init = function() {
+                              #cat("init version cats")
+                              #get info from h5 file
+                              f=h5file(fileh5,"r")
+                              #list.attributes(f)
+                              if (h5attr(f["/"], "logger")!="CATSN") {
+                                stop("h5 file not CATSN structure")
+                              }else if (h5attr(f["/"], "version")!=getversion()){
+                                stop("CATSN h5 file not good version")
+                              }else {
+                                dt=h5attr(f["/"], "datestart")
+                                datestart<<-as.POSIXct(dt, tz="GMT")
+                                dset=openDataSet(f,"/data")
+                                size=dset@dim
+                                nbrow<<-size[1]
+                                nbcol<<-size[2]
+                                accres<<-h5attr(f["/"], "accres")
+                              }
+                              h5close(f)
+                            },
+                            getdata= function() {
+                              f=h5file(fileh5,"r")
+                              m=f["/data"][,]
+                              h5close(f)
+                              colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
+                              return(m)
+                            },
+                            initmetriclst = function() {
+                              lm=MetricList$new()
+                              lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
+                              #lm$add(Metric("Gyroscope",4,3))
+                              #lm$add(Metric("Magnetometer",7,3))
+                              lm$add(Metric("Temperature",4,1))
+                              lm$add(Metric("Pression",5,1))
+                              #lm$add(Metric("Light intensity",12,1))
+                              metriclst<<-lm
+                            },
+                            draw = function() {
+                              return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
+                            }
+                          )
 )
 
 #' A LoggerAxytrek reference class
@@ -265,6 +327,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                                size=dset@dim
                                nbrow<<-size[1]
                                nbcol<<-size[2]
+                               accres<<-h5attr(f["/"], "accres")
                              }
                              h5close(f)
                            },
@@ -312,6 +375,7 @@ LoggerWacu <- setRefClass("LoggerWacu",
                                size=dset@dim
                                nbrow<<-size[1]
                                nbcol<<-size[2]
+                               accres<<-h5attr(f["/"], "accres")
                              }
                              h5close(f)
                            },
@@ -337,7 +401,8 @@ LoggerWacu <- setRefClass("LoggerWacu",
 )
 
 #' A LoggerList reference class
-#' @export
+#' @export LoggerList
+#' @exportClass LoggerList
 LoggerList <- setRefClass("LoggerList",
                          fields = list(.l ="list"),
                          methods = list(

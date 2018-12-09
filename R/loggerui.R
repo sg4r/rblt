@@ -298,6 +298,7 @@ LoggerUI<-setRefClass("LoggerUI",
 
 #' A nUI reference class
 #' @export
+#' @exportClass nUI
 #' @import xts
 #' @import dygraphs
 #' @import shiny
@@ -319,7 +320,7 @@ nUI<-setRefClass("nUI",
                             loggerchoice[[n$name]]=i
                           }
                           id<<-1
-                          lnbrow=loglst$.l[[1]]$nbrow
+                          lnbrow=loglst$.l[[1]]$nbrow/50
                           lbechoices=loglst$.l[[1]]$behaviorchoices
                           lbeslct=loglst$.l[[1]]$behaviorselected
                           lbecolor=loglst$.l[[1]]$becolor
@@ -356,12 +357,12 @@ nUI<-setRefClass("nUI",
                             })
                             observeEvent(input$btreset, {
                               id<<-as.numeric(input$logger)
-                              lmax=loglst$.l[[id]]$nbrow
+                              lmax=loglst$.l[[id]]$nbrow/50
                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                             })
                             observeEvent(input$logger, {
                               id<<-as.numeric(input$logger)
-                              lmax=loglst$.l[[id]]$nbrow
+                              lmax=loglst$.l[[id]]$nbrow/50
                               nbrow<<-lmax
                               updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
                               lbechoices=loglst$.l[[id]]$behaviorchoices
@@ -378,16 +379,28 @@ nUI<-setRefClass("nUI",
                             })
                             output$dygraph <- renderUI({
                               fres=1000
+                              facc=50
+                              fdt=1
                               fmin=input$time[1]
                               fmax=input$time[2]
                               if ((fmax-fmin) < fres) {
-                                fpas=1
-                                fres=fmax-fmin
+                                fmin=fmin*facc
+                                fmax=fmax*facc
+                                if ((fmax-fmin) < fres) {
+                                  fpas=1
+                                  fres=fmax-fmin
+                                }else {
+                                  fpas=floor((fmax-fmin)/fres)
+                                }
+                                facc=1
+                                fdt =1/50
                               } else {
                                 fpas=floor((fmax-fmin)/fres)
                               }
                               mi=seq(fmin,fmax,fpas)
-                              mi=mi[1:fres]
+                              cat(paste("mim:",length(mi)))
+                              mi=mi[1:fres]*facc
+
                               fileh5=loglst$.l[[id]]$fileh5
                               f=h5file(fileh5,"r")
                               #m=ds[mi,]
@@ -396,8 +409,9 @@ nUI<-setRefClass("nUI",
                               if (loglst$.l[[id]]$extmatrixenable) {
                                 me=as.matrix(loglst$.l[[id]]$extmatrix[mi,])
                               }
-                              datedeb=(ldatestart+fmin)
-                              datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax),fpas)
+                              datedeb=(ldatestart+fmin*fdt)
+                              datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax*fdt),fpas*fdt)
+                              cat(paste("mit:",length(datetimes)))
                               datetimes=datetimes[1:fres]
 
                               mlst=loglst$.l[[id]]$metriclst
