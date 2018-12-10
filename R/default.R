@@ -209,6 +209,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
 
 #' A axytrek2h5 fonction for convert csv file to h5 file
 #' @param filecsv  A input axytrek csv file.
+#' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
 #' @export axytrek2h5
 axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
@@ -316,26 +317,31 @@ wacu2h5old = function(filewacucsv="",fileh5="") {
 }
 
 #' A wacu2h5 fonction for concert wacu csv file to h5 file
-#' @param filewacucsv  A input WACU csv file.
+#' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
 #' @export wacu2h5
-wacu2h5 = function(filewacucsv="",fileh5="") {
-  if(!is.character(filewacucsv)){
-    stop("filewacucsv file path")
+wacu2h5 = function(filecsv="",fileh5="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
   }else if (!is.character(fileh5)){
     stop("fileh5 file path")
   }else {
-    print(paste("in:",filewacucsv))
+    print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filewacucsv,skip = 24,header = F, sep="\t")
-    names(lds)=c("date","time","x","y","z","v1")
+    lds=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
+    names(lds)=c("date","time","t","p","l","v1")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
     datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(lds)
     print(paste("nbrow:",nbrow))
+    #change default value
+    ldm=lds[,"t"]/10
+    lds[,"t"]=ldm
+    ldm=lds[,"p"]*(-1)
+    lds[,"p"]=ldm
     #ecriture du fichier H5
-    ldm=data.matrix(lds[,c("x","y","z")])
+    ldm=data.matrix(lds[,c("t","p","l")])
     rm(lds)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
