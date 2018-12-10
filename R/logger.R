@@ -333,15 +333,16 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("axy-titre",1,1,beobs=TRUE))
-                             lm$add(Metric("axy-Pres",3,1))
+                             lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
+                             lm$add(Metric("Pression",4,1))
+                             lm$add(Metric("Temperature",5,1))
                              metriclst<<-lm
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
                              m=f["/data"][,]
                              h5close(f)
-                             colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
+                             colnames(m)=c("a1","a2","a3","p","t")
                              return(m)
                            },
                            draw = function() {
