@@ -320,7 +320,7 @@ nUI<-setRefClass("nUI",
                             loggerchoice[[n$name]]=i
                           }
                           id<<-1
-                          lnbrow=loglst$.l[[1]]$nbrow/50
+                          lnbrow=loglst$.l[[1]]$nbrow
                           lbechoices=loglst$.l[[1]]$behaviorchoices
                           lbeslct=loglst$.l[[1]]$behaviorselected
                           lbecolor=loglst$.l[[1]]$becolor
@@ -357,12 +357,12 @@ nUI<-setRefClass("nUI",
                             })
                             observeEvent(input$btreset, {
                               id<<-as.numeric(input$logger)
-                              lmax=loglst$.l[[id]]$nbrow/50
+                              lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                             })
                             observeEvent(input$logger, {
                               id<<-as.numeric(input$logger)
-                              lmax=loglst$.l[[id]]$nbrow/50
+                              lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               nbrow<<-lmax
                               updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
                               lbechoices=loglst$.l[[id]]$behaviorchoices
@@ -379,7 +379,7 @@ nUI<-setRefClass("nUI",
                             })
                             output$dygraph <- renderUI({
                               fres=1000
-                              facc=50
+                              facc=loglst$.l[[id]]$accres
                               fdt=1
                               fmin=input$time[1]
                               fmax=input$time[2]
@@ -393,7 +393,7 @@ nUI<-setRefClass("nUI",
                                   fpas=floor((fmax-fmin)/fres)
                                 }
                                 facc=1
-                                fdt =1/50
+                                fdt =1/loglst$.l[[id]]$accres
                               } else {
                                 fpas=floor((fmax-fmin)/fres)
                               }
