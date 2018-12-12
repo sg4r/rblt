@@ -402,6 +402,7 @@ LoggerWacu <- setRefClass("LoggerWacu",
 )
 
 #' A LoggerList reference class
+#' @import methods
 #' @export LoggerList
 #' @exportClass LoggerList
 LoggerList <- setRefClass("LoggerList",

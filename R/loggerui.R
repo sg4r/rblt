@@ -72,7 +72,7 @@ setRefClass("LoggeroldUI",
          })
          observeEvent(input$logger, {
            id<<-as.numeric(input$logger)
-           lmax=loglst$.l[[id]]$nbrow
+           lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
            nbrow<<-lmax
            updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
            lbechoices=loglst$.l[[id]]$behaviorchoices
@@ -297,7 +297,7 @@ LoggerUI<-setRefClass("LoggerUI",
 
 
 #' A nUI reference class
-#' @export
+#' @export nUI
 #' @exportClass nUI
 #' @import xts
 #' @import dygraphs
@@ -409,8 +409,8 @@ nUI<-setRefClass("nUI",
                               if (loglst$.l[[id]]$extmatrixenable) {
                                 me=as.matrix(loglst$.l[[id]]$extmatrix[mi,])
                               }
-                              datedeb=(ldatestart+fmin*fdt)
-                              datetimes <- seq.POSIXt(from=datedeb,(datedeb+fmax*fdt),fpas*fdt)
+                              datedeb=(ldatestart+(fmin*fdt))
+                              datetimes <- seq.POSIXt(from=datedeb,(datedeb+(fmax*fdt)),(fpas*fdt))
                               cat(paste0("[",mict,":",length(datetimes),"] "))
                               datetimes=datetimes[1:fres]
 
