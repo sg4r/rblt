@@ -11,8 +11,9 @@
 #-------------------------------------------------------------------------------
 
 #' A LoggeroldUI reference class
-#' @export
-setRefClass("LoggeroldUI",
+#' @export LoggeroldUI
+#' @exportClass LoggeroldUI
+LoggeroldUI = setRefClass("LoggeroldUI",
    fields = list(loglst = "LoggerList",
                  id = "numeric",
                  ldatestart =  "POSIXct",
@@ -146,7 +147,8 @@ setRefClass("LoggeroldUI",
 
 
 #' A LoggerUI reference class
-#' @export
+#' @export LoggerUI
+#' @exportClass LoggerUI
 #' @import xts
 #' @import dygraphs
 #' @import shiny

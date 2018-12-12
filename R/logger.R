@@ -13,7 +13,7 @@
 
 #' A Metric reference class
 #' @import methods
-#' @export
+#' @export Metric
 #' @exportClass Metric
 Metric <- setRefClass("Metric",
                        fields = list(name = "character",
@@ -42,7 +42,7 @@ Metric <- setRefClass("Metric",
 
 
 #' A MetricList reference class
-#' @export
+#' @export MetricList
 #' @exportClass MetricList
 MetricList <- setRefClass("MetricList",
                            fields = list(.l ="list"),
@@ -249,7 +249,7 @@ LoggerCats <- setRefClass("LoggerCats",
 
 
 #' A LoggerCats reference class
-#' @export
+#' @export LoggerCatsn
 #' @exportClass LoggerCatsn
 LoggerCatsn <- setRefClass("LoggerCatsn",
                           contains = list("Logger"),
@@ -353,7 +353,8 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
 )
 
 #' A LoggerWacu reference class
-#' @export
+#' @export LoggerWacu
+#' @exportClass LoggerWacu
 LoggerWacu <- setRefClass("LoggerWacu",
                          contains = list("Logger"),
                          fields = list(),
