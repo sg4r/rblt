@@ -44,6 +44,7 @@ getversion = function() {
 }
 
 #' A cats2h5 fonction for convert csv file to h5 file
+#' @import utils
 #' @param filecsv  A input cats csv file.
 #' @param accres input resolution
 #' @param fileh5 A output h5 data file.

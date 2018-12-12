@@ -303,7 +303,8 @@ LoggerCatsn <- setRefClass("LoggerCatsn",
 )
 
 #' A LoggerAxytrek reference class
-#' @export
+#' @export LoggerAxytrek
+#' @exportClass LoggerAxytrek
 LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
                          fields = list(),
