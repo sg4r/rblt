@@ -4,10 +4,10 @@
 \alias{wacu2h5}
 \title{A wacu2h5 fonction for concert wacu csv file to h5 file}
 \usage{
-wacu2h5(filewacucsv = "", fileh5 = "")
+wacu2h5(filecsv = "", fileh5 = "")
 }
 \arguments{
-\item{filewacucsv}{A input WACU csv file.}
+\item{filecsv}{A input WACU csv file.}
 
 \item{fileh5}{A output h5 data file.}
 }

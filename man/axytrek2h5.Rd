@@ -4,10 +4,12 @@
 \alias{axytrek2h5}
 \title{A axytrek2h5 fonction for convert csv file to h5 file}
 \usage{
-axytrek2h5(filecsv = "", fileh5 = "")
+axytrek2h5(filecsv = "", accres = 25, fileh5 = "")
 }
 \arguments{
 \item{filecsv}{A input axytrek csv file.}
+
+\item{accres}{input number of data rate in 1 seconde}
 
 \item{fileh5}{A output h5 data file.}
 }
