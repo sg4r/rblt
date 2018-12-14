@@ -247,61 +247,6 @@ LoggerCats <- setRefClass("LoggerCats",
                          )
 )
 
-
-#' A LoggerCats reference class
-#' @export LoggerCatsn
-#' @exportClass LoggerCatsn
-LoggerCatsn <- setRefClass("LoggerCatsn",
-                          contains = list("Logger"),
-                          fields = list(
-                          ),
-                          methods = list(
-                            initialize = function(fileh5 = "", filebehavior = "",...) {
-                              callSuper(fileh5, filebehavior,...)
-                            },
-                            h5init = function() {
-                              #cat("init version cats")
-                              #get info from h5 file
-                              f=h5file(fileh5,"r")
-                              #list.attributes(f)
-                              if (h5attr(f["/"], "logger")!="CATSN") {
-                                stop("h5 file not CATSN structure")
-                              }else if (h5attr(f["/"], "version")!=getversion()){
-                                stop("CATSN h5 file not good version")
-                              }else {
-                                dt=h5attr(f["/"], "datestart")
-                                datestart<<-as.POSIXct(dt, tz="GMT")
-                                dset=openDataSet(f,"/data")
-                                size=dset@dim
-                                nbrow<<-size[1]
-                                nbcol<<-size[2]
-                                accres<<-h5attr(f["/"], "accres")
-                              }
-                              h5close(f)
-                            },
-                            getdata= function() {
-                              f=h5file(fileh5,"r")
-                              m=f["/data"][,]
-                              h5close(f)
-                              colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
-                              return(m)
-                            },
-                            initmetriclst = function() {
-                              lm=MetricList$new()
-                              lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
-                              #lm$add(Metric("Gyroscope",4,3))
-                              #lm$add(Metric("Magnetometer",7,3))
-                              lm$add(Metric("Temperature",4,1))
-                              lm$add(Metric("Pression",5,1))
-                              #lm$add(Metric("Light intensity",12,1))
-                              metriclst<<-lm
-                            },
-                            draw = function() {
-                              return(paste0("t:LoggerCats f:",name," s:",datestart," r:",nbrow))
-                            }
-                          )
-)
-
 #' A LoggerAxytrek reference class
 #' @export LoggerAxytrek
 #' @exportClass LoggerAxytrek
