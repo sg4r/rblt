@@ -34,7 +34,7 @@ hello <- function() {
 #' A sayhello function
 #' @export sayhello
 sayhello <- function() {
-  print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["login"]][1],"!"))
+  print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["user"]][1],"!"))
 }
 
 #' A getversion function
