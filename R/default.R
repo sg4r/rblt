@@ -232,7 +232,7 @@ wacu2h5 = function(filecsv="",fileh5="") {
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=getversion()
     h5attr(h5f, "datestart")=as.character.Date(datestart)
-    h5attr(h5f, "filesrc")=basename(filewacucsv)
+    h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "rtctick")=1
     h5attr(h5f, "accres")=1
     h5close(h5f)
