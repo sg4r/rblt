@@ -2,24 +2,50 @@
 Le package rblt R-bio-logging-toolbox est une librairie de fonctions R de visualisation des données accéléros des bio-loggers AXYTREK, CATS, des  bio-loggers WACU, fabriqués par le service MIBE de l’IPHC http://www.iphc.cnrs.fr/-MIBE-.html 
 ![rblt Logo](rblt.png)
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
+
 # Installation
-Installation depuis R, saisir les instructions suivantes, qui installeront la librairie rblt et ses dépendances.
+2 versions sont disponibles
+
+## Version CRAN
+Version stable en cours de soumission a CRAN
+```
+install.packages(rblt)
+```
+## Version de développement
+Version de développement direction depuis github.
 ```
 install.packages("devtools")
 devtools::install_github("sebastien45/rblt")
 ```
-
-# Utilisation
-Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l'object de la classe LoggerUI qui affichera les différentes données.
+# Démonstration
+Visualisation des métrics depuis un Bio-loggers CATS, AXYTREK et WACU.
+Les données sont simulées pour avoir un apercus des fonctions de visualisations.
 ```
 library(rblt)
 
-l=LoggerList$new()
-l$add(LoggerCats$new("~/rtoolbox/CC-07-48_14-02-2017_1.h5",filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
-l$add(LoggerCats$new("~/rtoolbox/CC-07-48_15-02-2017_1.h5"))
-l$add(LoggerCats$new("~/rtoolbox/democats-10k-pts.h5"))
-lui=LoggerUI$new(l)
-lui$gui()
+#Pour des Bio-loggers CATS
+cdemo10k="~/rtoolbox/democats-10k.h5"
+cdemo2600k="~/rtoolbox/democats-2600k.h5"
+rblt::democats2h5(cdemo10k)
+rblt::democats2h5(cdemo2600k,nbrow=2600000)
+#Pour des Bio-loggers AXYTREK
+ademo="~/rtoolbox/demoaxytrek-10k.h5"
+rblt::demoaxytrek2h5(ademo)
+#Pour des Bio-loggers WACU
+wdemo="~/rtoolbox/wacudemo-10k.h5"
+rblt::demowacu2h5(wdemo)
+
+#definition des bio-loggers a afficher
+ll=LoggerList$new()
+ll$add(LoggerCats$new(cdemo10k,filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
+ll$add(LoggerCats$new(cdemo2600k))
+ll$add(LoggerCats$new(cdemo2600k, filebehavior="~/rtoolbox/Behaviors_CC-07-48_06-10-2018.csv" ,besep=";" ))
+ll$add(LoggerAxytrek$new(ademo))
+ll$add(LoggerWacu$new(wdemo))
+ll$add(LoggerWacu$new("~/rtoolbox/wacu134.h5"))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
 ````
 # Conversion des données
 Dans la mesure où les différents bio-logger n’utilisent pas le même format de données, il est nécessaire de convertir les données au format utilisé par la librairie rblt.
@@ -62,6 +88,7 @@ rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",atreks2)
 ## Pour les bio-logger WACU :
 Convertissez les résultats de vos données au format csv avec la fonction rblt::wacu2h5dt
 Pour ajouter les informations accelero, il est nécéssaire d'utiliser l'utilitaire en C++ wacu2csv
+
 ### Exemple :
 ```
 w134="~/rtoolbox/wacu134.h5"
@@ -69,40 +96,51 @@ wacu2h5("~/rtoolbox/wacu134_TRDDU_cc.txt",w134)
 # voir wacu2csv pour la concersion des données accéléros en csv, puis
 wacu2hacc("~/rtoolbox/wacu134_TRDDU_cc_ACC.csv",w134)
 ```
-# Fichiers de démonstration
-Il est possible de générer des fichiers de démonstrations de différentes tailles afin de tester l’affichage d’un ensemble plus ou moins important d’enregistrements de données.
 
-## Exemple :
+# Utilisation
+Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l'object de la classe LoggerUI qui affichera les différentes données.
 ```
-#Pour des Bio-loggers CATS
-cdemo10k="~/rtoolbox/democats-10k.h5"
-cdemo2600k="~/rtoolbox/democats-2600k.h5"
-rblt::democats2h5(cdemo10k)
-rblt::democats2h5(cdemo2600k,nbrow=2600000)
-#Pour des Bio-loggers AXYTREK
-ademo="~/rtoolbox/demoaxytrek-10k.h5"
-rblt::demoaxytrek2h5(ademo)
-#Pour des Bio-loggers WACU
-wdemo="~/rtoolbox/wacudemo-10k.h5"
-rblt::demowacu2h5(wdemo)
+library(rblt)
 
-#définition des bio-loggers à afficher
+l=LoggerList$new()
+l$add(LoggerCats$new("~/rtoolbox/CC-07-48_14-02-2017_1.h5",filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
+l$add(LoggerCats$new("~/rtoolbox/CC-07-48_15-02-2017_1.h5"))
+l$add(LoggerCats$new("~/rtoolbox/democats-10k-pts.h5"))
+lui=LoggerUI$new(l)
+lui$gui()
+````
+
+## Utilisation avancée :
+exemples d'utilisation avancée
+
+## Selection des metrics à afficher par défaut
+Par défaut tous les métrics du type de Bio-loggers sont affichés.
+Il est possible de limiter les métrics afficher en définissant le vecteur metricshow lors de l'initialisation d'un bio-logger
+Utiliser T pour afficher le métric, et F pour le cacher
+```
 ll=LoggerList$new()
-ll$add(LoggerCats$new(cdemo10k,filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
-ll$add(LoggerCats$new(cdemo2600k))
-ll$add(LoggerAxytrek$new(ademo))
-ll$add(LoggerWacu$new(wdemo))
+ll$add(LoggerCats$new("~/rtoolbox/democats2h5.h5",metricshow=c(T,F,T,F,F,F)))
 #affichage des informations
 ui=LoggerUI$new(ll)
 ui$gui()
 ```
 
-## Utilisation avancée :
-Calcul de moyenne mobile avec un LoggerWacu
+### Acces aux données
+Utiliser getdata() pour avoir une copie de la matrix des données
+```
+ll=LoggerList$new()
+lg=LoggerCats$new(cdemo10k)
+lm=lg$getdata()
+lm
+```
+
+### Ajout d'un metric
+réccuperer les données, puis réaliser divers calcul sur la matrix, puis rajouter le résultat via setextmatrix et metriclst add
+Exemple pour calculer la moyenne mobile avec un LoggerCats
 ```
 library(caTools)
 ll=LoggerList$new()
-lg=LoggerWacu$new(wdemo)
+lg=LoggerCats$new(cdemo10k)
 lm=lg$getdata()
 lt=lm[,"l"]
 ltrm5=runmean(lt, 5)
