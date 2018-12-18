@@ -1,8 +1,9 @@
 #-------------------------------------------------------------------------------
-# rbio-logging-toolbox
-# sebastien GEIGER IPHC CNRS
-# le 29/06/2018
-# Copyright (C) 2018 CNRS
+# Title: Bio-Logging Toolbox
+# Author: Geiger Sebastien [aut, cre]
+# Maintainer: Geiger Sebastien <sebastien.geiger@iphc.cnrs.fr>
+# date: 29/06/2018
+# License: GPL (>= 3)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

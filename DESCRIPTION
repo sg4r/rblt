@@ -1,11 +1,9 @@
 Package: rblt
 Type: Package
-Title: R Bio-Logging Toolbox
+Title: Bio-Logging Toolbox
 Version: 0.2.3.1
-Authors@R: c(person("sebastien", "geiger", role = c("aut", "cre"),
-                     email = "sebastien.geiger@iphc.cnrs.fr"))
-Author: sebastien geiger [aut, cre]
-Maintainer: sebastien geiger <sebastien.geiger@iphc.cnrs.fr>
+Author: Geiger Sebastien [aut, cre]
+Maintainer: Geiger Sebastien <sebastien.geiger@iphc.cnrs.fr>
 Description: Contains functions for plot time series temperature and light intensity.
 License: GPL (>= 3)
 Encoding: UTF-8

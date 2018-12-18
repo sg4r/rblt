@@ -1,8 +1,9 @@
 #-------------------------------------------------------------------------------
-# rbio-logging-toolbox
-# sebastien GEIGER IPHC CNRS
-# le 29/06/2018
-# Copyright (C) 2018 CNRS
+# Title: Bio-Logging Toolbox
+# Author: Geiger Sebastien [aut, cre]
+# Maintainer: Geiger Sebastien <sebastien.geiger@iphc.cnrs.fr>
+# date: 29/06/2018
+# License: GPL (>= 3)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -10,11 +11,6 @@
 #
 #-------------------------------------------------------------------------------
 
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
 # You can learn more about package authoring with RStudio at:
 #
 #   http://r-pkgs.had.co.nz/
@@ -25,22 +21,18 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-#' A hello function
-#' @export hello
-hello <- function() {
-  print(paste0("rblt[",getversion(),"]:Hello ","!"))
+
+
+#' A getversion function
+#' @export getversion
+getversion = function() {
+  return("0.2.3")
 }
 
 #' A sayhello function
 #' @export sayhello
 sayhello <- function() {
   print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["user"]][1],"!"))
-}
-
-#' A getversion function
-#' @export getversion
-getversion = function() {
-  return("0.2.3")
 }
 
 #' A cats2h5 fonction for convert csv file to h5 file
