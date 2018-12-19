@@ -54,8 +54,11 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(ldsr)
     print(paste("nbrow:",nbrow))
-    #ecriture du fichier H5
+    #change default value
     ldm=data.matrix(ldsr[,c(3:14)])
+    ldsr=ldm[,13]*(-1)
+    ldm[,13]=ldsr
+    #ecriture du fichier H5
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
