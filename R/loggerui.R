@@ -414,7 +414,7 @@ nUI<-setRefClass("nUI",
                               }
                               datedeb=(ldatestart+(fmin*fdt))
                               datetimes <- seq.POSIXt(from=datedeb,(datedeb+(fmax*fdt)),(fpas*fdt))
-                              cat(paste0("[",mict,":",length(datetimes),"] "))
+                              #cat(paste0("[",mict,":",length(datetimes),"] "))
                               datetimes=datetimes[1:fres]
 
                               mlst=loglst$.l[[id]]$metriclst

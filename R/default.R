@@ -109,6 +109,11 @@ democats2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
+#' A democatsmkbe fonction for generate ramdom data
+#' @param fbe  A outout be csv file.
+#' @param nbrow input number of data rate in 1 seconde
+#' @param nbseq input sequence lenght
+#' @export democatsmkbe
 democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
   if (!is.character(fbe)){
     stop("fbe must file path")
@@ -121,7 +126,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
       fin=s[i+1]
       dure=fin-deb
       ben=paste0("event-",i)
-      rep=c(rep,paste(i,"1-1-1990,demo,100,20,sub,",ben,",STATE",deb,fin,dure,",",sep=","))
+      rep=c(rep,paste(i,"1-1-1990,demo,100,20,sub",ben,"STATE,",deb,fin,dure,"0,0",sep=","))
     }
     fileConn<-file(fbe)
     writeLines(rep,fileConn)

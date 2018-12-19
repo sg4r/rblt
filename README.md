@@ -25,24 +25,26 @@ library(rblt)
 
 #Pour des Bio-loggers CATS
 cdemo10k="~/rtoolbox/democats-10k.h5"
+cdemo10kbe="~/rtoolbox/democats-10kbe.csv"
 cdemo2600k="~/rtoolbox/democats-2600k.h5"
+cdemo2600kbe="~/rtoolbox/democats-2600kbe.csv"
 rblt::democats2h5(cdemo10k)
 rblt::democats2h5(cdemo2600k,nbrow=2600000)
+rblt::democatsmkbe(fbe = cdemo10kbe,nbrow = 10, nbseq = 20)
+rblt::democatsmkbe(fbe = cdemo2600kbe,nbrow = 10, nbseq = 20)
 #Pour des Bio-loggers AXYTREK
 ademo="~/rtoolbox/demoaxytrek-10k.h5"
 rblt::demoaxytrek2h5(ademo)
 #Pour des Bio-loggers WACU
 wdemo="~/rtoolbox/wacudemo-10k.h5"
 rblt::demowacu2h5(wdemo)
-
 #definition des bio-loggers a afficher
 ll=LoggerList$new()
-ll$add(LoggerCats$new(cdemo10k,filebehavior="~/rtoolbox/CC-07-48_14-02-2018.txt"))
+ll$add(LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe))
 ll$add(LoggerCats$new(cdemo2600k))
-ll$add(LoggerCats$new(cdemo2600k, filebehavior="~/rtoolbox/Behaviors_CC-07-48_06-10-2018.csv" ,besep=";" ))
+ll$add(LoggerCats$new(cdemo2600k, filebehavior=cdemo2600kbe ,besep="," ))
 ll$add(LoggerAxytrek$new(ademo))
 ll$add(LoggerWacu$new(wdemo))
-ll$add(LoggerWacu$new("~/rtoolbox/wacu134.h5"))
 #affichage des informations
 ui=LoggerUI$new(ll)
 ui$gui()
