@@ -12,8 +12,11 @@
 #-------------------------------------------------------------------------------
 
 
-#' A Metric reference class
+#' Metric reference class
 #' @import methods
+#' @field name title metric in chart
+#' @field colid start column id
+#' @field connb number of column for this metric
 #' @export Metric
 #' @exportClass Metric
 Metric <- setRefClass("Metric",
@@ -35,6 +38,8 @@ Metric <- setRefClass("Metric",
                            height<<-height
                          },
                          draw = function() {
+                           "draw the objec value
+                          \\subsection{Return Value}{returns a String object representing the value}"
                            rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
                            return(rep)
                          }
@@ -61,9 +66,15 @@ MetricList <- setRefClass("MetricList",
                                return(.l[id][[1]])
                              },
                              getsize = function() {
+                               "return lenght of element.
+                                \\subsection{Return Value}{returns a non-negativ numeric}"
                                return(length(.l))
                              },
                              slctset =function(v) {
+                               "enable or disable metric view
+                               \\subsection{Parameters}{\\itemize{
+                                 \\item{\\code{v} True or False vector}
+                               }}"
                                if (length(v)!=length(.l)) {
                                  stop("metricList set size dif from internal size")
                                }else {
@@ -75,6 +86,8 @@ MetricList <- setRefClass("MetricList",
                                }
                              },
                              draw = function() {
+                          "draw the objec value
+                          \\subsection{Return Value}{returns a list of String object representing the value}"
                                rep=list()
                                for (i in .l) {rep=c(rep,i$draw())}
                                return(rep)

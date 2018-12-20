@@ -4,8 +4,24 @@
 \name{Metric-class}
 \alias{Metric-class}
 \alias{Metric}
-\title{A Metric reference class}
+\title{Metric reference class}
 \description{
-A Metric reference class
+Metric reference class
 }
+\section{Fields}{
+
+\describe{
+\item{\code{name}}{title metric in chart}
+
+\item{\code{colid}}{start column id}
+
+\item{\code{connb}}{number of column for this metric}
+}}
+
+\section{Methods}{
+
+\describe{
+\item{\code{draw()}}{draw the objec value
+\subsection{Return Value}{returns a String object representing the value}}
+}}
 

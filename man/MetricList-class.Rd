@@ -8,4 +8,18 @@
 \description{
 A MetricList reference class
 }
+\section{Methods}{
+
+\describe{
+\item{\code{draw()}}{draw the objec value
+\subsection{Return Value}{returns a list of String object representing the value}}
+
+\item{\code{getsize()}}{return lenght of element.
+\subsection{Return Value}{returns a non-negativ numeric}}
+
+\item{\code{slctset(v)}}{enable or disable metric view
+\subsection{Parameters}{\itemize{
+  \item{\code{v} True or False vector}
+}}}
+}}
 
