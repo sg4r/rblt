@@ -88,7 +88,7 @@ MetricList <- setRefClass("MetricList",
                              draw = function() {
                           "draw the objec value
                           \\subsection{Return Value}{returns a list of String object representing the value}"
-                               rep=list()
+                               rep=vector()
                                for (i in .l) {rep=c(rep,i$draw())}
                                return(rep)
                              }

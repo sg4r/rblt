@@ -59,13 +59,13 @@ Convertissez les résultats de vos données au format csv avec la fonction rblt:
 ```
 filecatscsv="~/rtoolbox/20180216-004210-CC-07-48_15-02-2017_1.csv"
 filecatsh5="~/rtoolbox/CC-07-48_15-02-2017_1.h5"
-rblt::cats2h5(filecatscsv,filecatsh5)
+rblt::cats2h5(filecatscsv,50,filecatsh5)
 [1] "in: ~/rtoolbox/20180216-004210-CC-07-48_15-02-2017_1.csv"
 [1] "out: ~/rtoolbox/CC-07-48_15-02-2017_1.h5"
 [1] "nbrow: 17099"
 filecatscsv="~/rtoolbox/20180214-222647-CC-07-48_14-02-2017_1.csv"
 filecatsh5="~/rtoolbox/CC-07-48_14-02-2017_1.h5"
-rblt::cats2h5(filecatscsv,filecatsh5)
+rblt::cats2h5(filecatscsv,50,filecatsh5)
 [1] "in: ~/rtoolbox/20180214-222647-CC-07-48_14-02-2017_1.csv"
 [1] "out: ~/rtoolbox/CC-07-48_14-02-2017_1.h5"
 [1] "nbrow: 5868"
@@ -77,12 +77,12 @@ Convertissez les résultats de vos données du format csv avec la fonction rblt:
 ### Exemple:
 ```
 atreks1="~/rtoolbox/axytrec-s1.h5"
-rblt::axytrek2h5("~/rtoolbox/AXYTREK2_S1.csv",atreks1)
+rblt::axytrek2h5("~/rtoolbox/AXYTREK2_S1.csv",25,atreks1)
 [1] "in: ~/rtoolbox/AXYTREK2_S1.csv"
 [1] "out: ~/rtoolbox/axytrec-s1.h5"
 [1] "nbrow: 670051"
 atreks2="~/rtoolbox/axytrec-s2.h5"
-rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",atreks2)
+rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",25,atreks2)
 [1] "in: ~/rtoolbox/AXYTREK5_S1.csv"
 [1] "out: ~/rtoolbox/axytrec-s2.h5"
 [1] "nbrow: 2234282"
@@ -128,20 +128,19 @@ ui$gui()
 ```
 
 ### Acces aux données
-Utiliser getdata() pour avoir une copie de la matrix des données
+Utiliser getdata() pour avoir une copie de la matrice des données
 ```
-ll=LoggerList$new()
 lg=LoggerCats$new(cdemo10k)
 lm=lg$getdata()
 lm
 ```
 
 ### Ajout d'un metric
-réccuperer les données, puis réaliser divers calcul sur la matrix, puis rajouter le résultat via setextmatrix et metriclst add
+réccuperer les données, puis réaliser divers calcul sur la matrice, puis rajouter le résultat via setextmatrix et metriclst add
 Exemple pour calculer la moyenne mobile avec un LoggerCats
 ```
 library(caTools)
-ll=LoggerList$new()
+
 lg=LoggerCats$new(cdemo10k)
 lm=lg$getdata()
 lt=lm[,"l"]
@@ -151,9 +150,45 @@ ltrm20=runmean(lt, 20)
 extm=cbind(lt,ltrm5,ltrm10,ltrm20)
 lg$setextmatrix(extm)
 lg$metriclst$add(Metric(name="RunMeanLight",colid=1,colnb=4,srcin=FALSE))
+#creation de la liste des logger a afficher
+ll=LoggerList$new()
 ll$add(lg)
 #affichage des informations
 ui=LoggerUI$new(ll)
 ui$gui()
 ```
+
+### Afficher la liste des metrics d'un logger
+chaque type de Logger a des metrics par defaut. il est possible de les afficher avec le commande metriclst draw
+```
+lg=LoggerCats$new(cdemo10k)
+lg$metriclst$draw()
+```
+
+### Changer la liste des metrics d'un logger
+Il est possible de redéfinir l'ordre affichage des metrics, sous reserve d'avoir de bien indiquer les bons parramétres
+Il est possible de redefinir l'affichage des comportements pour chaque metric
+```
+lg=LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe)
+lg$metriclst$draw()
+
+
+lm=MetricList$new()
+lm$add(Metric("Gyroscope",4,3,beobs=TRUE))
+lm$add(Metric("Magnetometer",7,3))
+lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
+lg$metriclst=lm
+
+ll=LoggerList$new()
+ll$add(lg)
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
+
+### Conversion des données
+Lors de la conversion des données des fichiers CATS ou AXYTREK il est nécessaire d'indiquer dans la variable accres la fréquence d'échantillonnage utilisée lors de l'acquisition.
+voir les fonction rblt::axytrek2h5 ou rblt::cats2h5
+
+
 
