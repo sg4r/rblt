@@ -184,7 +184,7 @@ Logger <- setRefClass("Logger",
                                 lchoices[[o]]=i
                                 lslct=c(lslct,i)
                               }
-                              becolor<<-rainbow(i)
+                              becolor<<-rainbow(n=i,s=0.3)
                               #build Behavior obs list
                               for(i in 1:nrow(dso)) {
                                 row=dso[i,]
