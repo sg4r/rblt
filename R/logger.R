@@ -47,7 +47,7 @@ Metric <- setRefClass("Metric",
 )
 
 
-#' A MetricList reference class
+#' MetricList reference class
 #' @export MetricList
 #' @exportClass MetricList
 MetricList <- setRefClass("MetricList",
@@ -57,12 +57,17 @@ MetricList <- setRefClass("MetricList",
                                .l<<-list()
                              },
                              add = function(node) {
+                               "add new node in the list."
                                .l<<-c(.l,node)
                              },
                              get = function() {
+                               "get all node from the list.
+                                \\subsection{Return Value}{returns a list of node}"
                                return(.l)
                              },
                              getat = function(id) {
+                               "return element at id index.
+                                \\subsection{Return Value}{returns the node @ id}"
                                return(.l[id][[1]])
                              },
                              getsize = function() {
@@ -97,7 +102,8 @@ MetricList <- setRefClass("MetricList",
 
 
 #' A Logger reference class
-#' @field filedata nom du fichier de donnee
+#' @field name nom afficher
+#' @field fileh5 nom du fichier de donnée
 #' @field filebehavior nom du chier des comportement
 #' @import h5
 #' @import tools
@@ -147,6 +153,7 @@ Logger <- setRefClass("Logger",
                           stop("getdata virtual function should not be called directly")
                         },
                         setextmatrix= function(m) {
+                          "set external matrix"
                           if(!is.matrix(m)) {
                             stop("not matrix")
                           } else if (nrow(m)<nbcol) {
@@ -157,18 +164,23 @@ Logger <- setRefClass("Logger",
                           }
                         },
                         draw = function() {
+                          "draw the objec value
+                          \\subsection{Return Value}{returns a String object representing the value}"
                           return(paste("t:Logger fd:",fileh5))
                         },
                         initmetriclst = function() {
+                          "set metric list for this logger class"
                           #definit les grandeurs par defaut
                           stop("initmetriclst virtual function should not be called directly")
                         },
                         h5init = function() {
+                          "verify if h5 is correct version"
                           #get info from h5 file
                           datestart<<-as.POSIXct("2015-04-01", tz="GMT")
                           stop("h5init virtual function should not be called directly")
                         },
                         behaviorinit= function(besep) {
+                          "init behavior list event"
                           lchoices=list()
                           lslct=list()
                           becolor<<-""
@@ -373,9 +385,12 @@ LoggerList <- setRefClass("LoggerList",
                              .l<<-list()
                            },
                            add = function(node) {
+                             "add new node in the list."
                              .l<<-c(.l,node)
                            },
                            draw = function() {
+                             "draw the objec value
+                          \\subsection{Return Value}{returns a list of String object representing the value}"
                              rep=list()
                              for (i in .l) {rep=c(rep,i$draw())}
                              return(rep)

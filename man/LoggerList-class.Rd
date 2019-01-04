@@ -8,4 +8,12 @@
 \description{
 A LoggerList reference class
 }
+\section{Methods}{
+
+\describe{
+\item{\code{add(node)}}{add new node in the list.}
+
+\item{\code{draw()}}{draw the objec value
+\subsection{Return Value}{returns a list of String object representing the value}}
+}}
 

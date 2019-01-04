@@ -8,4 +8,14 @@
 \description{
 A LoggerCats reference class
 }
+\section{Methods}{
+
+\describe{
+\item{\code{draw()}}{draw the objec value
+\subsection{Return Value}{returns a String object representing the value}}
+
+\item{\code{h5init()}}{verify if h5 is correct version}
+
+\item{\code{initmetriclst()}}{set metric list for this logger class}
+}}
 

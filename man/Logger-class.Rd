@@ -11,11 +11,27 @@ A Logger reference class
 \section{Fields}{
 
 \describe{
-\item{\code{filedata}}{nom du fichier de donnee}
+\item{\code{name}}{nom afficher}
+
+\item{\code{fileh5}}{nom du fichier de donnée}
 
 \item{\code{filebehavior}}{nom du chier des comportement}
 }}
 
+\section{Methods}{
+
+\describe{
+\item{\code{behaviorinit(besep)}}{init behavior list event}
+
+\item{\code{draw()}}{draw the objec value
+\subsection{Return Value}{returns a String object representing the value}}
+
+\item{\code{h5init()}}{verify if h5 is correct version}
+
+\item{\code{initmetriclst()}}{set metric list for this logger class}
+
+\item{\code{setextmatrix(m)}}{set external matrix}
+}}
 
 \author{
 sebastien geiger

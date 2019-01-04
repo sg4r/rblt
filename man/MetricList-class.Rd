@@ -4,15 +4,23 @@
 \name{MetricList-class}
 \alias{MetricList-class}
 \alias{MetricList}
-\title{A MetricList reference class}
+\title{MetricList reference class}
 \description{
-A MetricList reference class
+MetricList reference class
 }
 \section{Methods}{
 
 \describe{
+\item{\code{add(node)}}{add new node in the list.}
+
 \item{\code{draw()}}{draw the objec value
 \subsection{Return Value}{returns a list of String object representing the value}}
+
+\item{\code{get()}}{get all node from the list.
+\subsection{Return Value}{returns a list of node}}
+
+\item{\code{getat(id)}}{return element at id index.
+\subsection{Return Value}{returns the node @ id}}
 
 \item{\code{getsize()}}{return lenght of element.
 \subsection{Return Value}{returns a non-negativ numeric}}
