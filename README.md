@@ -15,7 +15,7 @@ install.packages(rblt)
 Version de développement direction depuis github.
 ```
 install.packages("devtools")
-devtools::install_github("sebastien45/rblt")
+devtools::install_github("sg4r/rblt")
 ```
 # Démonstration
 Visualisation des métrics depuis un Bio-loggers CATS, AXYTREK et WACU.

@@ -163,6 +163,10 @@ OldLoggerUI<-setRefClass("OldLoggerUI",
 
 
 #' A LoggerUI reference class
+#' @field loglst list of logger class
+#' @field id id of curent loger view
+#' @field ldatestart curent start date
+#' @field nbrow courent row number
 #' @export LoggerUI
 #' @exportClass LoggerUI
 #' @import xts
@@ -179,6 +183,7 @@ LoggerUI<-setRefClass("LoggerUI",
                           nbrow<<-12
                         },
                         gui = function() {
+                          "plot logger list"
                           i=0
                           loggerchoice=list()
                           for(n in loglst$.l) {

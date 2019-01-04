@@ -8,4 +8,21 @@
 \description{
 A LoggerUI reference class
 }
+\section{Fields}{
+
+\describe{
+\item{\code{loglst}}{list of logger class}
+
+\item{\code{id}}{id of curent loger view}
+
+\item{\code{ldatestart}}{curent start date}
+
+\item{\code{nbrow}}{courent row number}
+}}
+
+\section{Methods}{
+
+\describe{
+\item{\code{gui()}}{plot logger list}
+}}
 
