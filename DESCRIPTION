@@ -20,8 +20,8 @@ Depends:
     methods
 Imports:
     data.table
-URL: https://github.com/sebastien45/rblt
-BugReports: https://github.com/sebastien45/rblt/issues
+URL: https://github.com/sg4r/rblt
+BugReports: https://github.com/sg4r/rblt/issues
 Suggests: 
     knitr,
     rmarkdown
