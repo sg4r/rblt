@@ -117,6 +117,8 @@ democats2h5 = function(fileh5="",nbrow=10000) {
 #' @param nbrow input number of data rate in 1 seconde
 #' @param nbseq input sequence lenght
 #' @export democatsmkbe
+#' @examples
+#' democatsmkbe("democatsmkbe",nbrow=10,nbseq=2)
 democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
   if (!is.character(fbe)){
     stop("fbe must file path")
@@ -178,6 +180,8 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
 #' @param fileh5 input data H5 file
 #' @param nbrow number of row
 #' @export demoaxytrek2h5
+#' @examples
+#' demoaxytrek2h5("demoaxy.h5",nbrow=100)
 demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
   if (!is.character(fileh5)){
     stop("fileh5 file path")

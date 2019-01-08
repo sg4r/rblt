@@ -14,3 +14,6 @@ demoaxytrek2h5(fileh5 = "", nbrow = 10000)
 \description{
 A demoaxytrek2h5 fonction build demo cats h5 file
 }
+\examples{
+demoaxytrek2h5("demoaxy.h5",nbrow=100)
+}

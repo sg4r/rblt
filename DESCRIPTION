@@ -1,10 +1,14 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.3.3
-Author: Geiger Sebastien [aut, cre]
-Maintainer: Geiger Sebastien <sebastien.geiger@iphc.cnrs.fr>
+Version: 0.2.3.4
+Authors@R: 
+    person(given = "Sebastien",
+           family = "Geiger",
+           role = c("aut", "cre"),
+           email = "sebastien.geiger@iphc.cnrs.fr")
 Description: Contains functions for plot Temperature, Pressure and Light Intensity time series from bio-loggers.
+Maintainer: Sebastien Geiger <sebastien.geiger@iphc.cnrs.fr>
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
