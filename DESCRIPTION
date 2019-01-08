@@ -1,10 +1,10 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.3.2
+Version: 0.2.3.3
 Author: Geiger Sebastien [aut, cre]
 Maintainer: Geiger Sebastien <sebastien.geiger@iphc.cnrs.fr>
-Description: Contains functions for plot "Temperature", "Pression" and "Light Intensity" time series from bio-loggers "CATS", "AXYTREK" or "WACU".
+Description: Contains functions for plot Temperature, Pressure and Light Intensity time series from bio-loggers.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
