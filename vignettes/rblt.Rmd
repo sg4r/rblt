@@ -20,6 +20,9 @@ Le package rblt R-bio-logging-toolbox est une librairie de fonctions R de visual
 
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 
+![rblt main screen](rblt.png)
+
+
 
 # Installation
 2 versions sont disponibles
