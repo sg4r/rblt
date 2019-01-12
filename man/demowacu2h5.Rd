@@ -2,7 +2,7 @@
 % Please edit documentation in R/default.R
 \name{demowacu2h5}
 \alias{demowacu2h5}
-\title{A demowacu2h5 fonction build demo cats h5 file}
+\title{A demowacu2h5 function build demo cats h5 file}
 \usage{
 demowacu2h5(fileh5 = "", nbrow = 10000)
 }
@@ -12,5 +12,5 @@ demowacu2h5(fileh5 = "", nbrow = 10000)
 \item{nbrow}{number of row}
 }
 \description{
-A demowacu2h5 fonction build demo cats h5 file
+A demowacu2h5 function build demo cats h5 file
 }

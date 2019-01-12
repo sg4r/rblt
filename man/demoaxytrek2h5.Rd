@@ -2,7 +2,7 @@
 % Please edit documentation in R/default.R
 \name{demoaxytrek2h5}
 \alias{demoaxytrek2h5}
-\title{A demoaxytrek2h5 fonction build demo cats h5 file}
+\title{A demoaxytrek2h5 function build demo cats h5 file}
 \usage{
 demoaxytrek2h5(fileh5 = "", nbrow = 10000)
 }
@@ -12,7 +12,7 @@ demoaxytrek2h5(fileh5 = "", nbrow = 10000)
 \item{nbrow}{number of row}
 }
 \description{
-A demoaxytrek2h5 fonction build demo cats h5 file
+A demoaxytrek2h5 function build demo cats h5 file
 }
 \examples{
 demoaxytrek2h5("demoaxy.h5",nbrow=100)

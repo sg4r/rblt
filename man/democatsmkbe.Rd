@@ -2,7 +2,7 @@
 % Please edit documentation in R/default.R
 \name{democatsmkbe}
 \alias{democatsmkbe}
-\title{A democatsmkbe fonction for generate ramdom data}
+\title{A democatsmkbe function for generate ramdom data}
 \usage{
 democatsmkbe(fbe = "", nbrow = 10, nbseq = 2)
 }
@@ -14,7 +14,7 @@ democatsmkbe(fbe = "", nbrow = 10, nbseq = 2)
 \item{nbseq}{input sequence lenght}
 }
 \description{
-A democatsmkbe fonction for generate ramdom data
+A democatsmkbe function for generate ramdom data
 }
 \examples{
 democatsmkbe("democatsmkbe",nbrow=10,nbseq=2)

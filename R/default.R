@@ -35,7 +35,7 @@ sayhello <- function() {
   print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["user"]][1],"!"))
 }
 
-#' A cats2h5 fonction for convert csv file to h5 file
+#' A cats2h5 function for convert csv file to h5 file
 #' @import utils
 #' @param filecsv  A input cats csv file.
 #' @param accres input resolution
@@ -71,7 +71,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
   }
 }
 
-#' A democats2h5 fonction build demo cats h5 file
+#' A democats2h5 function build demo cats h5 file
 #' @param fileh5 imput data h5 file
 #' @param nbrow number of row
 #' @export democats2h5
@@ -112,7 +112,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
-#' A democatsmkbe fonction for generate ramdom data
+#' A democatsmkbe function for generate ramdom data
 #' @param fbe  A outout be csv file.
 #' @param nbrow input number of data rate in 1 seconde
 #' @param nbseq input sequence lenght
@@ -139,7 +139,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
   }
 }
 
-#' A axytrek2h5 fonction for convert csv file to h5 file
+#' A axytrek2h5 function for convert csv file to h5 file
 #' @param filecsv  A input axytrek csv file.
 #' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
@@ -176,7 +176,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
   }
 }
 
-#' A demoaxytrek2h5 fonction build demo cats h5 file
+#' A demoaxytrek2h5 function build demo cats h5 file
 #' @param fileh5 input data H5 file
 #' @param nbrow number of row
 #' @export demoaxytrek2h5
@@ -210,7 +210,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
-#' A wacu2h5 fonction for concert wacu csv file to h5 file
+#' A wacu2h5 function for concert wacu csv file to h5 file
 #' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
 #' @export wacu2h5
@@ -289,7 +289,7 @@ wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
 }
 
 
-#' A demowacu2h5 fonction build demo cats h5 file
+#' A demowacu2h5 function build demo cats h5 file
 #' @param fileh5 A h5 data file.
 #' @param nbrow number of row
 #' @export demowacu2h5

@@ -2,7 +2,7 @@
 % Please edit documentation in R/default.R
 \name{cats2h5}
 \alias{cats2h5}
-\title{A cats2h5 fonction for convert csv file to h5 file}
+\title{A cats2h5 function for convert csv file to h5 file}
 \usage{
 cats2h5(filecsv = "", accres = 50, fileh5 = "")
 }
@@ -14,5 +14,5 @@ cats2h5(filecsv = "", accres = 50, fileh5 = "")
 \item{fileh5}{A output h5 data file.}
 }
 \description{
-A cats2h5 fonction for convert csv file to h5 file
+A cats2h5 function for convert csv file to h5 file
 }

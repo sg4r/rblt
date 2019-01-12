@@ -2,7 +2,7 @@
 % Please edit documentation in R/default.R
 \name{wacu2h5}
 \alias{wacu2h5}
-\title{A wacu2h5 fonction for concert wacu csv file to h5 file}
+\title{A wacu2h5 function for concert wacu csv file to h5 file}
 \usage{
 wacu2h5(filecsv = "", fileh5 = "")
 }
@@ -12,5 +12,5 @@ wacu2h5(filecsv = "", fileh5 = "")
 \item{fileh5}{A output h5 data file.}
 }
 \description{
-A wacu2h5 fonction for concert wacu csv file to h5 file
+A wacu2h5 function for concert wacu csv file to h5 file
 }
