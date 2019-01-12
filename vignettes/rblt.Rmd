@@ -33,7 +33,7 @@ Version stable en cours de soumission a CRAN
 install.packages(rblt)
 ```
 ## Version de développement
-Version de développement direction depuis github.
+Version de développement accessible depuis github.
 ```
 install.packages("devtools")
 devtools::install_github("sg4r/rblt")

@@ -196,7 +196,8 @@ Logger <- setRefClass("Logger",
                                 lchoices[[o]]=i
                                 lslct=c(lslct,i)
                               }
-                              becolor<<-rainbow(n=i,s=0.3)
+                              becolor<<-rainbow(n=i)
+                              becolorgr=rainbow(n=i,s=0.2)
                               #build Behavior obs list
                               for(i in 1:nrow(dso)) {
                                 row=dso[i,]
@@ -204,7 +205,7 @@ Logger <- setRefClass("Logger",
                                 lto=paste(datestart+row$Stop..s.)
                                 #verifier index Behavior< confnbcolor
                                 lcode=as.numeric(row$Behavior)
-                                lcolor=substr(becolor[[lcode]],1,7)
+                                lcolor=substr(becolorgr[[lcode]],1,7)
                                 lbeobslst[[i]]=list(from = lfrom , to = lto, color = lcolor, code=lcode)
                               }
                             }, error = function(c) {
