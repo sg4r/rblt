@@ -102,9 +102,9 @@ MetricList <- setRefClass("MetricList",
 
 
 #' A Logger reference class
-#' @field name nom afficher
-#' @field fileh5 nom du fichier de donnée
-#' @field filebehavior nom du chier des comportement
+#' @field name logger display name
+#' @field fileh5 h5 data file name
+#' @field filebehavior behavior file name
 #' @import h5
 #' @import tools
 #' @export Logger
