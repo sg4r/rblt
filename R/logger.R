@@ -121,6 +121,7 @@ Logger <- setRefClass("Logger",
                                     nbrow = "numeric",
                                     nbcol = "numeric",
                                     accres = "numeric",
+                                    version = "character",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
@@ -139,6 +140,7 @@ Logger <- setRefClass("Logger",
                             nbrow<<-0
                             nbcol<<-Inf
                             accres<<-1
+                            version<<-"0.2.3"
                             h5init()
                             behaviorinit(besep)
                             initmetriclst()
@@ -238,7 +240,7 @@ LoggerCats <- setRefClass("LoggerCats",
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="CATS") {
                                stop("h5 file not CATS structure")
-                             }else if (h5attr(f["/"], "version")!=getversion()){
+                             }else if (h5attr(f["/"], "version")!=version){
                                stop("CATS h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
@@ -291,7 +293,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="AXYTREK") {
                                stop("h5 file not AXYTREK structure")
-                             }else if (h5attr(f["/"], "version")!=getversion()){
+                             }else if (h5attr(f["/"], "version")!=version){
                                stop("CATS h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
@@ -341,7 +343,7 @@ LoggerWacu <- setRefClass("LoggerWacu",
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="WACU") {
                                stop("h5 file not WACU structure")
-                             }else if (h5attr(f["/"], "version")!=getversion()){
+                             }else if (h5attr(f["/"], "version")!=version){
                                stop("WACU h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
@@ -373,6 +375,59 @@ LoggerWacu <- setRefClass("LoggerWacu",
                              return(paste0("t:LoggerWacu f:",name," s:",datestart," r:",nbrow))
                            }
                          )
+)
+
+
+#' A LoggerData reference class
+#' @export LoggerData
+#' @exportClass LoggerData
+LoggerData <- setRefClass("LoggerData",
+                          contains = list("Logger"),
+                          fields = list(),
+                          methods = list(
+                            initialize = function(fileh5 = "", filebehavior = "",...) {
+                              callSuper(fileh5, filebehavior,...)
+                            },
+                            h5init = function() {
+                              cat("init version loggerdata")
+                              version<<-"0.1.0"
+                              #get info from h5 file
+                              f=h5file(fileh5,"r")
+                              #list.attributes(f)
+                              if (h5attr(f["/"], "logger")!="LDATA") {
+                                stop("h5 file not LDATA structure")
+                              }else if (h5attr(f["/"], "version")!=version){
+                                stop("LDATA h5 file not good version")
+                              }else {
+                                dt=h5attr(f["/"], "datestart")
+                                datestart<<-as.POSIXct(dt, tz="GMT")
+                                dset=openDataSet(f,"/data")
+                                size=dset@dim
+                                nbrow<<-size[1]
+                                nbcol<<-size[2]
+                                accres<<-h5attr(f["/"], "accres")
+                              }
+                              h5close(f)
+                            },
+                            initmetriclst = function() {
+                              lm=MetricList$new()
+                              lm$add(Metric("wTemperature",1,1))
+                              lm$add(Metric("wPression",2,1))
+                              lm$add(Metric("wLight intensity",3,1))
+                              lm$add(Metric("wAccelerometer",3,3,beobs=TRUE))
+                              metriclst<<-lm
+                            },
+                            getdata= function() {
+                              f=h5file(fileh5,"r")
+                              m=f["/data"][,]
+                              h5close(f)
+                              colnames(m)=c("t","p","l","a1","a2","a3")
+                              return(m)
+                            },
+                            draw = function() {
+                              return(paste0("t:LoggerData f:",name," s:",datestart," r:",nbrow))
+                            }
+                          )
 )
 
 #' A LoggerList reference class

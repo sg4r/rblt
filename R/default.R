@@ -26,7 +26,7 @@
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  return("0.2.3")
+  return("0.2.4")
 }
 
 #' A sayhello function
