@@ -29,12 +29,6 @@ getversion = function() {
   return("0.2.3")
 }
 
-#' A sayhello function
-#' @export sayhello
-sayhello <- function() {
-  print(paste0("rblt[",getversion(),"]:Hello ",Sys.info()[["user"]][1],"!"))
-}
-
 #' A cats2h5 function for convert csv file to h5 file
 #' @import utils
 #' @param filecsv  A input cats csv file.
