@@ -11,11 +11,11 @@ A Logger reference class
 \section{Fields}{
 
 \describe{
-\item{\code{name}}{nom afficher}
+\item{\code{name}}{logger display name}
 
-\item{\code{fileh5}}{nom du fichier de donnée}
+\item{\code{fileh5}}{h5 data file name}
 
-\item{\code{filebehavior}}{nom du chier des comportement}
+\item{\code{filebehavior}}{behavior file name}
 }}
 
 \section{Methods}{
