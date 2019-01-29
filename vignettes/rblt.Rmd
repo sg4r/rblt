@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Le package rblt R-bio-logging-toolbox est une librairie de fonctions R de visualisation des données accéléros des bio-loggers AXYTREK, CATS, des  bio-loggers WACU, fabriqués par le service MIBE de l’IPHC 
+Le package rblt R-bio-logging-toolbox est une application R-shiny de visualisation des données accéléros des bio-loggers AXYTREK, CATS, et des bio-loggers WACU, fabriqués par le service MIBE de l’IPHC 
 
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 
@@ -45,6 +45,7 @@ Les données sont simulées pour avoir un apercus des fonctions de visualisation
 library(rblt)
 
 #Pour des Bio-loggers CATS
+dir.create("~/rtoolbox/")
 cdemo10k="~/rtoolbox/democats-10k.h5"
 cdemo10kbe="~/rtoolbox/democats-10kbe.csv"
 cdemo2600k="~/rtoolbox/democats-2600k.h5"
