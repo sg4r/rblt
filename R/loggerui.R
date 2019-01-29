@@ -208,8 +208,10 @@ LoggerUI<-setRefClass("LoggerUI",
                                             min = 1,
                                             max = lnbrow,
                                             value = c(min,max)),
+                                actionButton("btzg", "<<"),
                                 actionButton("btzoom", "Zoom"),
                                 actionButton("btreset", "Reset"),
+                                actionButton("btzd", ">>"),
                                 checkboxGroupInput("checkGroup", label = "Behavior",
                                                    #choices = lbechoices,
                                                    #selected = lbeslct
@@ -230,6 +232,34 @@ LoggerUI<-setRefClass("LoggerUI",
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
+                            })
+                            observeEvent(input$btzg, {
+                              tmin=input$time[1]
+                              tmax=input$time[2]
+                              tmil=(tmax-tmin)/2
+                              if ((tmin-tmil)>0) {
+                                tmin=tmin-tmil
+                                tmax=tmin+2*tmil
+                              }else{
+                                tmin=1
+                                tmax=2*tmil
+                              }
+                              updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                            })
+                            observeEvent(input$btzd, {
+                              id<<-as.numeric(input$logger)
+                              lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
+                              tmin=input$time[1]
+                              tmax=input$time[2]
+                              tmil=(tmax-tmin)/2
+                              if ((tmax+tmil)<lmax) {
+                                tmin=tmin+tmil
+                                tmax=tmin+2*tmil
+                              }else{
+                                tmax=lmax
+                                tmin=tmax-2*tmil
+                              }
+                              updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
                             })
                             observeEvent(input$logger, {
                               id<<-as.numeric(input$logger)
