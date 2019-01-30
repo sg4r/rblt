@@ -176,6 +176,8 @@ LoggerUI<-setRefClass("LoggerUI",
                       fields = list(loglst = "LoggerList",
                                     id = "numeric",
                                     ldatestart =  "POSIXct",
+                                    cslidermin = "numeric",
+                                    cslidermax = "numeric",
                                     nbrow = "numeric"),
                       methods = list(
                         initialize = function(loglst) {
@@ -198,6 +200,8 @@ LoggerUI<-setRefClass("LoggerUI",
                           lbechnames=list()
                           lbechvalues=list()
                           ldatestart<<-loglst$.l[[1]]$datestart
+                          cslidermin<<-1
+                          cslidermax<<-lnbrow
                           ui <- fluidPage(
                             sidebarLayout(
                               sidebarPanel(
@@ -209,7 +213,8 @@ LoggerUI<-setRefClass("LoggerUI",
                                             max = lnbrow,
                                             value = c(min,max)),
                                 actionButton("btzg", "<<"),
-                                actionButton("btzoom", "Zoom"),
+                                actionButton("btzoom", "Zoom+"),
+                                actionButton("btzoomout", "Zoom-"),
                                 actionButton("btreset", "Reset"),
                                 actionButton("btzd", ">>"),
                                 checkboxGroupInput("checkGroup", label = "Behavior",
@@ -226,17 +231,26 @@ LoggerUI<-setRefClass("LoggerUI",
                             observeEvent(input$btzoom, {
                               lmin=input$time[1]
                               lmax=input$time[2]
+                              cslidermin<<-lmin
+                              cslidermax<<-lmax
                               updateSliderInput(session, "time",min=lmin,max=lmax,step = 1)
                             })
                             observeEvent(input$btreset, {
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
+                              cslidermin<<-1
+                              cslidermax<<-lmax
                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                             })
                             observeEvent(input$btzg, {
                               tmin=input$time[1]
                               tmax=input$time[2]
                               tmil=(tmax-tmin)/2
+                              lbfullzomm=FALSE
+                              if((cslidermin==tmin)&&(cslidermax==tmax)) {
+                                lbfullzomm=TRUE
+                                #cat(file=stderr(), "btzgfullmode\n")
+                              }
                               if ((tmin-tmil)>0) {
                                 tmin=tmin-tmil
                                 tmax=tmin+2*tmil
@@ -244,14 +258,26 @@ LoggerUI<-setRefClass("LoggerUI",
                                 tmin=1
                                 tmax=2*tmil
                               }
-                              updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                              if (lbfullzomm) {
+                                cslidermin<<-tmin
+                                cslidermax<<-tmax
+                                updateSliderInput(session, "time",min=tmin,max=tmax,value = c(tmin,tmax),step = 1)
+                              }else {
+                                updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                              }
                             })
                             observeEvent(input$btzd, {
+                              #cat(file=stderr(), paste0("btzd-min:",cslidermin," max:",cslidermax))
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               tmin=input$time[1]
                               tmax=input$time[2]
                               tmil=(tmax-tmin)/2
+                              lbfullzomm=FALSE
+                              if((cslidermin==tmin)&&(cslidermax==tmax)) {
+                                lbfullzomm=TRUE
+                                #cat(file=stderr(), "btzdfullmode\n")
+                              }
                               if ((tmax+tmil)<lmax) {
                                 tmin=tmin+tmil
                                 tmax=tmin+2*tmil
@@ -259,12 +285,20 @@ LoggerUI<-setRefClass("LoggerUI",
                                 tmax=lmax
                                 tmin=tmax-2*tmil
                               }
-                              updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
-                            })
+                              if (lbfullzomm) {
+                                cslidermin<<-tmin
+                                cslidermax<<-tmax
+                                updateSliderInput(session, "time",min=tmin,max=tmax,value = c(tmin,tmax),step = 1)
+                              }else {
+                                updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                              }
+                            })#observeEvent
                             observeEvent(input$logger, {
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               nbrow<<-lmax
+                              cslidermin<<-1
+                              cslidermax<<-lmax
                               updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
                               lbechoices=loglst$.l[[id]]$behaviorchoices
                               lbeslct=loglst$.l[[id]]$behaviorselected
