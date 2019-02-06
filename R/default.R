@@ -204,6 +204,89 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
+#' A lul2h5 function for concert lul csv file to h5 file
+#' @param filecsv  A input LUL csv file.
+#' @param accres input number of data rate in 1 seconde
+#' @param fileh5 A output h5 data file.
+#' @export lul2h5
+lul2h5 = function(filecsv="", accres=25, fileh5="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
+  }else if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("in:",filecsv))
+    print(paste("out:",fileh5))
+    lds=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
+    names(lds)=c("date","time","t","p","l","v1")
+    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    print(strdatestart)
+    datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #change default value
+    ldm=lds[,"t"]/10
+    lds[,"t"]=ldm
+    ldm=lds[,"p"]*(-1)
+    lds[,"p"]=ldm
+    #ecriture du fichier H5
+    ldm=data.matrix(lds[,c("t","p","l")])
+    rm(lds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
+    h5f["/data"]=ldm
+    h5attr(h5f, "logger")="LUL"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "accres")=1
+    h5close(h5f)
+    rm(ldm)
+  }
+}
+
+#' A demolul2h5 function build demo lul h5 file
+#' @param fileh5 A h5 data file.
+#' @param nbrow number of row
+#' @export demolul2h5
+demolul2h5 = function(fileh5="",nbrow=10000) {
+  if (!is.character(fileh5)){
+    stop("fileh5 file path")
+  }else {
+    print(paste("out:",fileh5))
+    t=seq(1,60*10,1)
+    x=t/100
+    y=sin(t/10)+2
+    z=tan(t/25)/40+3.5
+    mx=matrix(x,ncol = 1)
+    my=matrix(y,ncol = 1)
+    mz=matrix(z,ncol = 1)
+    m=data.frame(mx,my,mz)
+    nbech=60*10
+    nbloo=round(nbrow/nbech)
+    w=m
+    for (i in 1:nbloo) {
+      print(i)
+      w=rbind(w,m)
+    }
+    datestart=Sys.time()
+    #ecriture du fichier H5
+    ldm=data.matrix(w)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["data"]=ldm
+    h5attr(h5f, "logger")="LUL"
+    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")="demolul2h5"
+    h5attr(h5f, "accres")=1
+    h5close(h5f)
+  }
+}
+
+
 #' A wacu2h5 function for concert wacu csv file to h5 file
 #' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.

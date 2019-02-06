@@ -324,6 +324,56 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          )
 )
 
+#' A LoggerLul reference class
+#' @export LoggerLul
+#' @exportClass LoggerLul
+LoggerLul <- setRefClass("LoggerLul",
+                          contains = list("Logger"),
+                          fields = list(),
+                          methods = list(
+                            initialize = function(fileh5 = "", filebehavior = "",...) {
+                              callSuper(fileh5, filebehavior,...)
+                            },
+                            h5init = function() {
+                              cat("init version Lul")
+                              #get info from h5 file
+                              f=h5file(fileh5,"r")
+                              #list.attributes(f)
+                              if (h5attr(f["/"], "logger")!="LUL") {
+                                stop("h5 file not Lul structure")
+                              }else if (h5attr(f["/"], "version")!=getversion()){
+                                stop("WACU h5 file not good version")
+                              }else {
+                                dt=h5attr(f["/"], "datestart")
+                                datestart<<-as.POSIXct(dt, tz="GMT")
+                                dset=openDataSet(f,"/data")
+                                size=dset@dim
+                                nbrow<<-size[1]
+                                nbcol<<-size[2]
+                                accres<<-h5attr(f["/"], "accres")
+                              }
+                              h5close(f)
+                            },
+                            initmetriclst = function() {
+                              lm=MetricList$new()
+                              lm$add(Metric("Temperature",1,1,beobs=TRUE))
+                              lm$add(Metric("Pression",2,1))
+                              lm$add(Metric("Light intensity",3,1))
+                              metriclst<<-lm
+                            },
+                            getdata= function() {
+                              f=h5file(fileh5,"r")
+                              m=f["/data"][,]
+                              h5close(f)
+                              colnames(m)=c("t","p","l")
+                              return(m)
+                            },
+                            draw = function() {
+                              return(paste0("t:LoggerLul f:",name," s:",datestart," r:",nbrow))
+                            }
+                          )
+)
+
 #' A LoggerWacu reference class
 #' @export LoggerWacu
 #' @exportClass LoggerWacu
