@@ -256,24 +256,14 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
     stop("fileh5 file path")
   }else {
     print(paste("out:",fileh5))
-    t=seq(1,60*10,1)
-    x=t/100
-    y=sin(t/10)+2
-    z=tan(t/25)/40+3.5
-    mx=matrix(x,ncol = 1)
-    my=matrix(y,ncol = 1)
-    mz=matrix(z,ncol = 1)
-    m=data.frame(mx,my,mz)
-    nbech=60*10
-    nbloo=round(nbrow/nbech)
-    w=m
-    for (i in 1:nbloo) {
-      print(i)
-      w=rbind(w,m)
-    }
+    xseq=seq(1,nbrow)
+    ds=data.frame(xseq)
+    #tpl
+    ds[,2]=nbrow-ds[,1]
+    ds[,3]=nbrow/2
     datestart=Sys.time()
     #ecriture du fichier H5
-    ldm=data.matrix(w)
+    ldm=data.matrix(ds)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
