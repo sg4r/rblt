@@ -217,8 +217,8 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
-    names(lds)=c("date","time","t","p","l","v1")
+    lds=data.table::fread(file=filecsv,skip = 27,header = F, sep="\t")
+    names(lds)=c("date","time","t","p","l")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
     datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
