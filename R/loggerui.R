@@ -297,9 +297,9 @@ LoggerUI<-setRefClass("LoggerUI",
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               nbrow<<-lmax
-                              cslidermin<<-1
-                              cslidermax<<-lmax
-                              updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
+                              cslidermin<<-loglst$.l[[id]]$uizoomstart/loglst$.l[[id]]$accres
+                              cslidermax<<-loglst$.l[[id]]$uizoomend/loglst$.l[[id]]$accres
+                              updateSliderInput(session, "time",min=1,max=lmax,value=c(cslidermin,cslidermax))
                               lbechoices=loglst$.l[[id]]$behaviorchoices
                               lbeslct=loglst$.l[[id]]$behaviorselected
                               ldatestart<<-loglst$.l[[id]]$datestart

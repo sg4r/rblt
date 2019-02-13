@@ -105,6 +105,8 @@ MetricList <- setRefClass("MetricList",
 #' @field name logger display name
 #' @field fileh5 h5 data file name
 #' @field filebehavior behavior file name
+#' @uizoomstart uizoomstart default value
+#' @uizoomend uizoomend default value
 #' @import h5
 #' @import tools
 #' @export Logger
@@ -121,12 +123,14 @@ Logger <- setRefClass("Logger",
                                     nbrow = "numeric",
                                     nbcol = "numeric",
                                     accres = "numeric",
+                                    uizoomstart = "numeric",
+                                    uizoomend = "numeric",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", besep=",", metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", besep=",", uizoomstart=0, uizoomend=0, metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -140,6 +144,16 @@ Logger <- setRefClass("Logger",
                             nbcol<<-Inf
                             accres<<-1
                             h5init()
+                            if (uizoomstart>0) {
+                              uizoomstart<<-uizoomstart
+                            }else {
+                              uizoomstart<<-1
+                            }
+                            if (uizoomend>0) {
+                              uizoomend<<-uizoomend
+                            }else {
+                              uizoomend<<-nbrow
+                            }
                             behaviorinit(besep)
                             initmetriclst()
                             if (is.null(metricshow)==F) {
