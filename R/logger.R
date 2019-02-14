@@ -105,8 +105,8 @@ MetricList <- setRefClass("MetricList",
 #' @field name logger display name
 #' @field fileh5 h5 data file name
 #' @field filebehavior behavior file name
-#' @uizoomstart uizoomstart default value
-#' @uizoomend uizoomend default value
+#' @field uizoomstart uizoomstart default value
+#' @field uizoomend uizoomend default value
 #' @import h5
 #' @import tools
 #' @export Logger

@@ -16,6 +16,10 @@ A Logger reference class
 \item{\code{fileh5}}{h5 data file name}
 
 \item{\code{filebehavior}}{behavior file name}
+
+\item{\code{uizoomstart}}{uizoomstart default value}
+
+\item{\code{uizoomend}}{uizoomend default value}
 }}
 
 \section{Methods}{

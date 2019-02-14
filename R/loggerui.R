@@ -12,6 +12,47 @@
 #-------------------------------------------------------------------------------
 
 
+
+#' A ZoomHistory reference class
+#' @import methods
+#' @export ZoomHistory
+#' @exportClass ZoomHistory
+ZoomHistory <- setRefClass("ZoomHistory",
+                           fields = list(.m ="matrix"),
+                           methods = list(
+                             initialize = function(s=0,e=0) {
+                               .m<<-matrix(c(s,e),ncol = 2)
+                               colnames(.m) <<- c("s","e")
+                             },
+                             push = function(s,e) {
+                               "push new history position in array."
+                               .m<<-rbind(.m, c(s, e))
+                             },
+                             pop =function() {
+                               "pop one history position"
+                               d=dim(.m)[1]
+                               rep=.m[1,]
+                               if(d>2) {
+                                 rep=.m[d,]
+                                 d=d-1
+                                 .m<<-.m[1:d,]
+                               }else if(d==2) {
+                                 rep=.m[2,]
+                                 .m<<-matrix(.m[1,],ncol = 2)
+                                 colnames(.m) <<- c("s","e")
+                               }
+                               return(rep)
+                             },
+                             draw = function() {
+                               "draw the objec value
+                          \\subsection{Return Value}{returns a matrix of value}"
+                               return(.m)
+                             }
+                           )
+)
+
+
+
 #' A OldLoggerUI reference class
 #' @import xts
 #' @import dygraphs
@@ -167,6 +208,7 @@ OldLoggerUI<-setRefClass("OldLoggerUI",
 #' @field id id of curent loger view
 #' @field ldatestart curent start date
 #' @field nbrow courent row number
+#' @field zoomhistory history storage
 #' @export LoggerUI
 #' @exportClass LoggerUI
 #' @import xts
@@ -178,6 +220,7 @@ LoggerUI<-setRefClass("LoggerUI",
                                     ldatestart =  "POSIXct",
                                     cslidermin = "numeric",
                                     cslidermax = "numeric",
+                                    zoomhistory = "ZoomHistory",
                                     nbrow = "numeric"),
                       methods = list(
                         initialize = function(loglst) {
@@ -233,7 +276,16 @@ LoggerUI<-setRefClass("LoggerUI",
                               lmax=input$time[2]
                               cslidermin<<-lmin
                               cslidermax<<-lmax
+                              zoomhistory$push(lmin,lmax)
                               updateSliderInput(session, "time",min=lmin,max=lmax,step = 1)
+                            })
+                            observeEvent(input$btzoomout, {
+                              p=zoomhistory$pop()
+                              lstart=p[[1]]
+                              lend=p[[2]]
+                              #debug
+                              #cat(file=stderr(), "btzout", lstart,lend , "\n")
+                              updateSliderInput(session, "time",min=lstart,max=lend,value = c(lstart,lend),step = 1)
                             })
                             observeEvent(input$btreset, {
                               id<<-as.numeric(input$logger)
@@ -300,6 +352,7 @@ LoggerUI<-setRefClass("LoggerUI",
                               cslidermin<<-loglst$.l[[id]]$uizoomstart/loglst$.l[[id]]$accres
                               cslidermax<<-loglst$.l[[id]]$uizoomend/loglst$.l[[id]]$accres
                               updateSliderInput(session, "time",min=1,max=lmax,value=c(cslidermin,cslidermax))
+                              zoomhistory<<-ZoomHistory$new(1,lmax)
                               lbechoices=loglst$.l[[id]]$behaviorchoices
                               lbeslct=loglst$.l[[id]]$behaviorselected
                               ldatestart<<-loglst$.l[[id]]$datestart
@@ -393,44 +446,6 @@ LoggerUI<-setRefClass("LoggerUI",
                           shinyApp(ui = ui, server = server)
                         }
                       )
-)
-
-#' A ZoomHistory reference class
-#' @import methods
-#' @export ZoomHistory
-#' @exportClass ZoomHistory
-ZoomHistory <- setRefClass("ZoomHistory",
-                          fields = list(.m ="matrix"),
-                          methods = list(
-                            initialize= function(s,e) {
-                              .m<<-matrix(c(s,e),ncol = 2)
-                              colnames(.m) <<- c("s","e")
-                            },
-                            push = function(s,e) {
-                              "push new history position in array."
-                              .m<<-rbind(.m, c(s, e))
-                            },
-                            pop =function() {
-                              "pop one history position"
-                              d=dim(.m)[1]
-                              rep=.m[1,]
-                              if(d>2) {
-                                rep=.m[d,]
-                                d=d-1
-                                .m<<-.m[1:d,]
-                              }else if(d==2) {
-                                rep=.m[2,]
-                                .m<<-matrix(.m[1,],ncol = 2)
-                                colnames(.m) <<- c("s","e")
-                              }
-                              return(rep)
-                            },
-                            draw = function() {
-                              "draw the objec value
-                          \\subsection{Return Value}{returns a matrix of value}"
-                              return(.m)
-                            }
-                          )
 )
 
 

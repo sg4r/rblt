@@ -18,6 +18,8 @@ A LoggerUI reference class
 \item{\code{ldatestart}}{curent start date}
 
 \item{\code{nbrow}}{courent row number}
+
+\item{\code{zoomhistory}}{history storage}
 }}
 
 \section{Methods}{

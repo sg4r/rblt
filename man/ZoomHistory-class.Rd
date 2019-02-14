@@ -12,8 +12,10 @@ A ZoomHistory reference class
 
 \describe{
 \item{\code{draw()}}{draw the objec value
-\subsection{Return Value}{returns a list of String object representing the value}}
+\subsection{Return Value}{returns a matrix of value}}
 
-\item{\code{push(s, e)}}{push new history position in the list.}
+\item{\code{pop()}}{pop one history position}
+
+\item{\code{push(s, e)}}{push new history position in array.}
 }}
 
