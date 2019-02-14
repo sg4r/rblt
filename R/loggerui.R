@@ -394,3 +394,42 @@ LoggerUI<-setRefClass("LoggerUI",
                         }
                       )
 )
+
+#' A ZoomHistory reference class
+#' @import methods
+#' @export ZoomHistory
+#' @exportClass ZoomHistory
+ZoomHistory <- setRefClass("ZoomHistory",
+                          fields = list(.m ="matrix"),
+                          methods = list(
+                            initialize= function(s,e) {
+                              .m<<-matrix(c(s,e),ncol = 2)
+                              colnames(.m) <<- c("s","e")
+                            },
+                            push = function(s,e) {
+                              "push new history position in array."
+                              .m<<-rbind(.m, c(s, e))
+                            },
+                            pop =function() {
+                              "pop one history position"
+                              d=dim(.m)[1]
+                              rep=.m[1,]
+                              if(d>2) {
+                                rep=.m[d,]
+                                d=d-1
+                                .m<<-.m[1:d,]
+                              }else if(d==2) {
+                                .m<<-matrix(.m[1,],ncol = 2)
+                                colnames(.m) <<- c("s","e")
+                              }
+                              return(rep)
+                            },
+                            draw = function() {
+                              "draw the objec value
+                          \\subsection{Return Value}{returns a matrix of value}"
+                              return(.m)
+                            }
+                          )
+)
+
+
