@@ -419,6 +419,7 @@ ZoomHistory <- setRefClass("ZoomHistory",
                                 d=d-1
                                 .m<<-.m[1:d,]
                               }else if(d==2) {
+                                rep=.m[2,]
                                 .m<<-matrix(.m[1,],ncol = 2)
                                 colnames(.m) <<- c("s","e")
                               }
