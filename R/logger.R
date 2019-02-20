@@ -42,6 +42,12 @@ Metric <- setRefClass("Metric",
                           \\subsection{Return Value}{returns a String object representing the value}"
                            rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
                            return(rep)
+                         },
+                         getmatrix = function() {
+                           "get matrix of elements"
+                           m=matrix(data= c(name,colid,colnb,enable,srcin,beobs,height),nrow = 1)
+                           colnames(m)=c("name","colid","colnb","enable","srcin","beobs","height")
+                           return(m)
                          }
                        )
 )
@@ -89,6 +95,20 @@ MetricList <- setRefClass("MetricList",
                                    i=i+1
                                  }
                                }
+                             },
+                             getmatrix = function() {
+                               "get matrix of elements"
+                               rep=matrix()
+                               repinit=FALSE
+                               for(i in lm$.l) {
+                                 if(repinit) {
+                                   rep=rbind(rep,i$getmatrix())
+                                 }else{
+                                   rep=i$getmatrix()
+                                   repinit=TRUE
+                                 }
+                               }
+                               return(rep)
                              },
                              draw = function() {
                           "draw the objec value

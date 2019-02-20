@@ -23,5 +23,7 @@ Metric reference class
 \describe{
 \item{\code{draw()}}{draw the objec value
 \subsection{Return Value}{returns a String object representing the value}}
+
+\item{\code{getmatrix()}}{get matrix of elements}
 }}
 
