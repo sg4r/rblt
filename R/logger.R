@@ -43,9 +43,9 @@ Metric <- setRefClass("Metric",
                            rep=paste0("name:",name,",colid:",colid,",colnb:",colnb)
                            return(rep)
                          },
-                         getmatrix = function() {
+                         getmatrix = function(id) {
                            "get matrix of elements"
-                           m=matrix(data= c(name,colid,colnb,enable,srcin,beobs,height),nrow = 1)
+                           m=matrix(data= c(name,id,colnb,enable,"TRUE",beobs,height),nrow = 1)
                            colnames(m)=c("name","colid","colnb","enable","srcin","beobs","height")
                            return(m)
                          }
@@ -100,12 +100,19 @@ MetricList <- setRefClass("MetricList",
                                "get matrix of elements"
                                rep=matrix()
                                repinit=FALSE
-                               for(i in lm$.l) {
+                               id=1
+                               for(i in .l) {
                                  if(repinit) {
-                                   rep=rbind(rep,i$getmatrix())
+                                   if (i$enable) {
+                                     rep=rbind(rep,i$getmatrix(id))
+                                     id=id+i$colnb
+                                   }
                                  }else{
-                                   rep=i$getmatrix()
-                                   repinit=TRUE
+                                   if (i$enable) {
+                                     rep=i$getmatrix(id)
+                                     id=id+i$colnb
+                                     repinit=TRUE
+                                   }
                                  }
                                }
                                return(rep)
@@ -120,6 +127,11 @@ MetricList <- setRefClass("MetricList",
                            )
 )
 
+#const
+VersionLCATS="0.2.3"
+VersionLAxytrek="0.2.3"
+VersionLWacu="0.2.3"
+VersionLDATA="0.1.0"
 
 #' A Logger reference class
 #' @field name logger display name
@@ -202,12 +214,16 @@ Logger <- setRefClass("Logger",
                           stop("h5init virtual function should not be called directly")
                         },
                         saveasloggerdata = function(fileld) {
+                          m=getdata()
+                          if (extmatrixenable) {
+                            m=cbind(m,extmatrix)
+                          }
                           #ecriture du fichier H5
                           if(file.exists(fileld)) file.remove(fileld)
                           h5f <- h5file(name = fileld, mode = "a")
-                          h5f["data"]=matrix(data=1:10,ncol = 1)
+                          h5f["data"]=m
                           h5attr(h5f, "logger")="LDATA"
-                          h5attr(h5f, "version")="0.1.0"
+                          h5attr(h5f, "version")=VersionLDATA
                           h5attr(h5f, "datestart")=as.character.Date(datestart)
                           h5attr(h5f, "accres")=accres
                           h5attr(h5f, "filesrc")=fileh5
@@ -268,6 +284,7 @@ LoggerCats <- setRefClass("LoggerCats",
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "",...) {
                              callSuper(fileh5, filebehavior,...)
+                             version<<-VersionLCATS
                            },
                            h5init = function() {
                              #cat("init version cats")
@@ -321,6 +338,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "") {
                              callSuper(fileh5, filebehavior)
+                             version<<-VersionLAxytrek
                            },
                            h5init = function() {
                              #cat("init version cats")
@@ -426,7 +444,7 @@ LoggerData <- setRefClass("LoggerData",
                             },
                             h5init = function() {
                               cat("init version loggerdata")
-                              version<<-"0.1.0"
+                              version<<-VersionLDATA
                               #get info from h5 file
                               f=h5file(fileh5,"r")
                               #list.attributes(f)
@@ -442,16 +460,26 @@ LoggerData <- setRefClass("LoggerData",
                                 nbrow<<-size[1]
                                 nbcol<<-size[2]
                                 accres<<-h5attr(f["/"], "accres")
+                                #metriclst
+                                lm=MetricList$new()
+                                lmt=f["/metriclst"][,]
+                                for(r in 1:nrow(lmt)) {
+                                  rname=lmt[r,1]
+                                  rcolid=as.numeric(lmt[r,2])
+                                  rcolnb=as.numeric(lmt[r,3])
+                                  renable=as.logical(lmt[r,4])
+                                  rsrcin=as.logical(lmt[r,5])
+                                  rbeobs=as.logical(lmt[r,6])
+                                  rheight=as.numeric(lmt[r,7])
+                                  nm=Metric$new(name=rname,colid=rcolid,colnb=rcolnb,height=rheight,enable=renable,beobs=rbeobs,srcin=rsrcin)
+                                  lm$add(nm)
+                                }
+                                metriclst<<-lm
                               }
                               h5close(f)
                             },
                             initmetriclst = function() {
-                              lm=MetricList$new()
-                              lm$add(Metric("wTemperature",1,1))
-                              lm$add(Metric("wPression",2,1))
-                              lm$add(Metric("wLight intensity",3,1))
-                              lm$add(Metric("wAccelerometer",3,3,beobs=TRUE))
-                              metriclst<<-lm
+                              #rien a faire, voir h5init
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
