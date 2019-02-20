@@ -201,6 +201,22 @@ Logger <- setRefClass("Logger",
                           datestart<<-as.POSIXct("2015-04-01", tz="GMT")
                           stop("h5init virtual function should not be called directly")
                         },
+                        saveasloggerdata = function(fileld) {
+                          #ecriture du fichier H5
+                          if(file.exists(fileld)) file.remove(fileld)
+                          h5f <- h5file(name = fileld, mode = "a")
+                          h5f["data"]=matrix(data=1:10,ncol = 1)
+                          h5attr(h5f, "logger")="LDATA"
+                          h5attr(h5f, "version")="0.1.0"
+                          h5attr(h5f, "datestart")=as.character.Date(datestart)
+                          h5attr(h5f, "accres")=accres
+                          h5attr(h5f, "filesrc")=fileh5
+                          #metrics
+                          lmt=metriclst$getmatrix()
+                          h5f["metriclst"]=lmt
+                          h5f["metriccol"]=colnames(lmt)
+                          h5close(h5f)
+                        },
                         behaviorinit= function(besep) {
                           "init behavior list event"
                           lchoices=list()
