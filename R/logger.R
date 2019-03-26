@@ -21,6 +21,7 @@
 #' @exportClass Metric
 Metric <- setRefClass("Metric",
                        fields = list(name = "character",
+                                     colname ="character",
                                      colid = "numeric",
                                      colnb = "numeric",
                                      enable = "logical",
@@ -28,8 +29,9 @@ Metric <- setRefClass("Metric",
                                      beobs = "logical",
                                      height ="numeric"),
                        methods = list(
-                         initialize= function(name,colid,colnb,height=200,enable=TRUE,beobs=FALSE,srcin=TRUE) {
+                         initialize= function(name,colname,colid,colnb,height=200,enable=TRUE,beobs=FALSE,srcin=TRUE) {
                            name<<-name
+                           colname<<-colname
                            colid<<-colid
                            colnb<<-colnb
                            enable<<-enable
@@ -45,8 +47,8 @@ Metric <- setRefClass("Metric",
                          },
                          getmatrix = function(id) {
                            "get matrix of elements"
-                           m=matrix(data= c(name,id,colnb,enable,"TRUE",beobs,height),nrow = 1)
-                           colnames(m)=c("name","colid","colnb","enable","srcin","beobs","height")
+                           m=matrix(data= c(name,colname,id,colnb,enable,"TRUE",beobs,height),nrow = 1)
+                           colnames(m)=c("name","colname","colid","colnb","enable","srcin","beobs","height")
                            return(m)
                          }
                        )
@@ -315,12 +317,12 @@ LoggerCats <- setRefClass("LoggerCats",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
-                             lm$add(Metric("Gyroscope",4,3))
-                             lm$add(Metric("Magnetometer",7,3))
-                             lm$add(Metric("Temperature",10,1))
-                             lm$add(Metric("Pression",11,1))
-                             lm$add(Metric("Light intensity",12,1))
+                             lm$add(Metric("Accelerometer","a",1,3,beobs=TRUE))
+                             lm$add(Metric("Gyroscope","g",4,3))
+                             lm$add(Metric("Magnetometer","m",7,3))
+                             lm$add(Metric("Temperature","t",10,1))
+                             lm$add(Metric("Pression","p",11,1))
+                             lm$add(Metric("Light intensity","l",12,1))
                              metriclst<<-lm
                            },
                            draw = function() {
@@ -362,9 +364,9 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("Accelerometer",1,3,beobs=TRUE))
-                             lm$add(Metric("Pression",4,1))
-                             lm$add(Metric("Temperature",5,1))
+                             lm$add(Metric("Accelerometer","a",1,3,beobs=TRUE))
+                             lm$add(Metric("Pression","p",4,1))
+                             lm$add(Metric("Temperature","t",5,1))
                              metriclst<<-lm
                            },
                            getdata= function() {
@@ -412,10 +414,10 @@ LoggerWacu <- setRefClass("LoggerWacu",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("wTemperature",1,1))
-                             lm$add(Metric("wPression",2,1))
-                             lm$add(Metric("wLight intensity",3,1))
-                             lm$add(Metric("wAccelerometer",3,3,beobs=TRUE))
+                             lm$add(Metric("wTemperature","t",1,1))
+                             lm$add(Metric("wPression","p",2,1))
+                             lm$add(Metric("wLight intensity","l",3,1))
+                             lm$add(Metric("wAccelerometer","a",3,3,beobs=TRUE))
                              metriclst<<-lm
                            },
                            getdata= function() {
@@ -465,13 +467,14 @@ LoggerData <- setRefClass("LoggerData",
                                 lmt=f["/metriclst"][,]
                                 for(r in 1:nrow(lmt)) {
                                   rname=lmt[r,1]
-                                  rcolid=as.numeric(lmt[r,2])
-                                  rcolnb=as.numeric(lmt[r,3])
-                                  renable=as.logical(lmt[r,4])
-                                  rsrcin=as.logical(lmt[r,5])
-                                  rbeobs=as.logical(lmt[r,6])
-                                  rheight=as.numeric(lmt[r,7])
-                                  nm=Metric$new(name=rname,colid=rcolid,colnb=rcolnb,height=rheight,enable=renable,beobs=rbeobs,srcin=rsrcin)
+                                  rcolname=lmt[r,2]
+                                  rcolid=as.numeric(lmt[r,3])
+                                  rcolnb=as.numeric(lmt[r,4])
+                                  renable=as.logical(lmt[r,5])
+                                  rsrcin=as.logical(lmt[r,6])
+                                  rbeobs=as.logical(lmt[r,7])
+                                  rheight=as.numeric(lmt[r,8])
+                                  nm=Metric$new(name=rname,colname=rcolname,colid=rcolid,colnb=rcolnb,height=rheight,enable=renable,beobs=rbeobs,srcin=rsrcin)
                                   lm$add(nm)
                                 }
                                 metriclst<<-lm
