@@ -173,6 +173,8 @@ VersionLDATA="0.1.0"
 #' @field name logger display name
 #' @field fileh5 h5 data file name
 #' @field filebehavior behavior file name
+#' @field uizoomstart uizoomstart default value
+#' @field uizoomend uizoomend default value
 #' @import h5
 #' @import tools
 #' @export Logger
@@ -190,12 +192,14 @@ Logger <- setRefClass("Logger",
                                     nbcol = "numeric",
                                     accres = "numeric",
                                     version = "character",
+                                    uizoomstart = "numeric",
+                                    uizoomend = "numeric",
                                     becolor = "character",
                                     beobslst = "list",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", besep=",", metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", besep=",", uizoomstart=0, uizoomend=0, metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -210,6 +214,16 @@ Logger <- setRefClass("Logger",
                             accres<<-1
                             version<<-"0.2.3"
                             h5init()
+                            if (uizoomstart>0) {
+                              uizoomstart<<-uizoomstart
+                            }else {
+                              uizoomstart<<-1
+                            }
+                            if (uizoomend>0) {
+                              uizoomend<<-uizoomend
+                            }else {
+                              uizoomend<<-nbrow
+                            }
                             behaviorinit(besep)
                             initmetriclst()
                             if (is.null(metricshow)==F) {
@@ -416,6 +430,56 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                              return(paste0("t:LoggerAxytrek f:",name," s:",datestart," r:",nbrow))
                            }
                          )
+)
+
+#' A LoggerLul reference class
+#' @export LoggerLul
+#' @exportClass LoggerLul
+LoggerLul <- setRefClass("LoggerLul",
+                          contains = list("Logger"),
+                          fields = list(),
+                          methods = list(
+                            initialize = function(fileh5 = "", filebehavior = "",...) {
+                              callSuper(fileh5, filebehavior,...)
+                            },
+                            h5init = function() {
+                              cat("init version Lul")
+                              #get info from h5 file
+                              f=h5file(fileh5,"r")
+                              #list.attributes(f)
+                              if (h5attr(f["/"], "logger")!="LUL") {
+                                stop("h5 file not Lul structure")
+                              }else if (h5attr(f["/"], "version")!=getversion()){
+                                stop("WACU h5 file not good version")
+                              }else {
+                                dt=h5attr(f["/"], "datestart")
+                                datestart<<-as.POSIXct(dt, tz="GMT")
+                                dset=openDataSet(f,"/data")
+                                size=dset@dim
+                                nbrow<<-size[1]
+                                nbcol<<-size[2]
+                                accres<<-h5attr(f["/"], "accres")
+                              }
+                              h5close(f)
+                            },
+                            initmetriclst = function() {
+                              lm=MetricList$new()
+                              lm$add(Metric("Temperature",1,1,beobs=TRUE))
+                              lm$add(Metric("Pression",2,1))
+                              lm$add(Metric("Light intensity",3,1))
+                              metriclst<<-lm
+                            },
+                            getdata= function() {
+                              f=h5file(fileh5,"r")
+                              m=f["/data"][,]
+                              h5close(f)
+                              colnames(m)=c("t","p","l")
+                              return(m)
+                            },
+                            draw = function() {
+                              return(paste0("t:LoggerLul f:",name," s:",datestart," r:",nbrow))
+                            }
+                          )
 )
 
 #' A LoggerWacu reference class

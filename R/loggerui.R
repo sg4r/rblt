@@ -12,6 +12,47 @@
 #-------------------------------------------------------------------------------
 
 
+
+#' A ZoomHistory reference class
+#' @import methods
+#' @export ZoomHistory
+#' @exportClass ZoomHistory
+ZoomHistory <- setRefClass("ZoomHistory",
+                           fields = list(.m ="matrix"),
+                           methods = list(
+                             initialize = function(s=0,e=0) {
+                               .m<<-matrix(c(s,e),ncol = 2)
+                               colnames(.m) <<- c("s","e")
+                             },
+                             push = function(s,e) {
+                               "push new history position in array."
+                               .m<<-rbind(.m, c(s, e))
+                             },
+                             pop =function() {
+                               "pop one history position"
+                               d=dim(.m)[1]
+                               rep=.m[1,]
+                               if(d>2) {
+                                 rep=.m[d,]
+                                 d=d-1
+                                 .m<<-.m[1:d,]
+                               }else if(d==2) {
+                                 rep=.m[2,]
+                                 .m<<-matrix(.m[1,],ncol = 2)
+                                 colnames(.m) <<- c("s","e")
+                               }
+                               return(rep)
+                             },
+                             draw = function() {
+                               "draw the objec value
+                          \\subsection{Return Value}{returns a matrix of value}"
+                               return(.m)
+                             }
+                           )
+)
+
+
+
 #' A OldLoggerUI reference class
 #' @import xts
 #' @import dygraphs
@@ -167,6 +208,7 @@ OldLoggerUI<-setRefClass("OldLoggerUI",
 #' @field id id of curent loger view
 #' @field ldatestart curent start date
 #' @field nbrow courent row number
+#' @field zoomhistory history storage
 #' @export LoggerUI
 #' @exportClass LoggerUI
 #' @import xts
@@ -176,6 +218,9 @@ LoggerUI<-setRefClass("LoggerUI",
                       fields = list(loglst = "LoggerList",
                                     id = "numeric",
                                     ldatestart =  "POSIXct",
+                                    cslidermin = "numeric",
+                                    cslidermax = "numeric",
+                                    zoomhistory = "ZoomHistory",
                                     nbrow = "numeric"),
                       methods = list(
                         initialize = function(loglst) {
@@ -198,6 +243,8 @@ LoggerUI<-setRefClass("LoggerUI",
                           lbechnames=list()
                           lbechvalues=list()
                           ldatestart<<-loglst$.l[[1]]$datestart
+                          cslidermin<<-1
+                          cslidermax<<-lnbrow
                           ui <- fluidPage(
                             sidebarLayout(
                               sidebarPanel(
@@ -208,8 +255,11 @@ LoggerUI<-setRefClass("LoggerUI",
                                             min = 1,
                                             max = lnbrow,
                                             value = c(min,max)),
-                                actionButton("btzoom", "Zoom"),
+                                actionButton("btzg", "<<"),
+                                actionButton("btzoom", "Zoom+"),
+                                actionButton("btzoomout", "Zoom-"),
                                 actionButton("btreset", "Reset"),
+                                actionButton("btzd", ">>"),
                                 checkboxGroupInput("checkGroup", label = "Behavior",
                                                    #choices = lbechoices,
                                                    #selected = lbeslct
@@ -224,18 +274,85 @@ LoggerUI<-setRefClass("LoggerUI",
                             observeEvent(input$btzoom, {
                               lmin=input$time[1]
                               lmax=input$time[2]
+                              cslidermin<<-lmin
+                              cslidermax<<-lmax
+                              zoomhistory$push(lmin,lmax)
                               updateSliderInput(session, "time",min=lmin,max=lmax,step = 1)
+                            })
+                            observeEvent(input$btzoomout, {
+                              p=zoomhistory$pop()
+                              lstart=p[[1]]
+                              lend=p[[2]]
+                              #debug
+                              #cat(file=stderr(), "btzout", lstart,lend , "\n")
+                              updateSliderInput(session, "time",min=lstart,max=lend,value = c(lstart,lend),step = 1)
                             })
                             observeEvent(input$btreset, {
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
+                              cslidermin<<-1
+                              cslidermax<<-lmax
                               updateSliderInput(session, "time",min=1,max=lmax,value = c(1,lmax),step = 1)
                             })
+                            observeEvent(input$btzg, {
+                              tmin=input$time[1]
+                              tmax=input$time[2]
+                              tmil=(tmax-tmin)/2
+                              lbfullzomm=FALSE
+                              if((cslidermin==tmin)&&(cslidermax==tmax)) {
+                                lbfullzomm=TRUE
+                                #cat(file=stderr(), "btzgfullmode\n")
+                              }
+                              if ((tmin-tmil)>0) {
+                                tmin=tmin-tmil
+                                tmax=tmin+2*tmil
+                              }else{
+                                tmin=1
+                                tmax=2*tmil
+                              }
+                              if (lbfullzomm) {
+                                cslidermin<<-tmin
+                                cslidermax<<-tmax
+                                updateSliderInput(session, "time",min=tmin,max=tmax,value = c(tmin,tmax),step = 1)
+                              }else {
+                                updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                              }
+                            })
+                            observeEvent(input$btzd, {
+                              #cat(file=stderr(), paste0("btzd-min:",cslidermin," max:",cslidermax))
+                              id<<-as.numeric(input$logger)
+                              lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
+                              tmin=input$time[1]
+                              tmax=input$time[2]
+                              tmil=(tmax-tmin)/2
+                              lbfullzomm=FALSE
+                              if((cslidermin==tmin)&&(cslidermax==tmax)) {
+                                lbfullzomm=TRUE
+                                #cat(file=stderr(), "btzdfullmode\n")
+                              }
+                              if ((tmax+tmil)<lmax) {
+                                tmin=tmin+tmil
+                                tmax=tmin+2*tmil
+                              }else{
+                                tmax=lmax
+                                tmin=tmax-2*tmil
+                              }
+                              if (lbfullzomm) {
+                                cslidermin<<-tmin
+                                cslidermax<<-tmax
+                                updateSliderInput(session, "time",min=tmin,max=tmax,value = c(tmin,tmax),step = 1)
+                              }else {
+                                updateSliderInput(session, "time",value = c(tmin,tmax),step = 1)
+                              }
+                            })#observeEvent
                             observeEvent(input$logger, {
                               id<<-as.numeric(input$logger)
                               lmax=loglst$.l[[id]]$nbrow/loglst$.l[[id]]$accres
                               nbrow<<-lmax
-                              updateSliderInput(session, "time",min=1,max=lmax,value=c(1,lmax))
+                              cslidermin<<-loglst$.l[[id]]$uizoomstart/loglst$.l[[id]]$accres
+                              cslidermax<<-loglst$.l[[id]]$uizoomend/loglst$.l[[id]]$accres
+                              updateSliderInput(session, "time",min=1,max=lmax,value=c(cslidermin,cslidermax))
+                              zoomhistory<<-ZoomHistory$new(1,lmax)
                               lbechoices=loglst$.l[[id]]$behaviorchoices
                               lbeslct=loglst$.l[[id]]$behaviorselected
                               ldatestart<<-loglst$.l[[id]]$datestart
@@ -330,3 +447,5 @@ LoggerUI<-setRefClass("LoggerUI",
                         }
                       )
 )
+
+

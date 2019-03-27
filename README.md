@@ -24,6 +24,7 @@ Les données sont simulées pour avoir un apercus des fonctions de visualisation
 library(rblt)
 
 #Pour des Bio-loggers CATS
+dir.create("~/rtoolbox/")
 cdemo10k="~/rtoolbox/democats-10k.h5"
 cdemo10kbe="~/rtoolbox/democats-10kbe.csv"
 cdemo2600k="~/rtoolbox/democats-2600k.h5"
