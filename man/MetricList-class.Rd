@@ -22,6 +22,8 @@ MetricList reference class
 \item{\code{getat(id)}}{return element at id index.
 \subsection{Return Value}{returns the node @ id}}
 
+\item{\code{getmatrix()}}{get matrix of elements}
+
 \item{\code{getsize()}}{return lenght of element.
 \subsection{Return Value}{returns a non-negativ numeric}}
 

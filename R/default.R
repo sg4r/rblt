@@ -26,7 +26,7 @@
 #' A getversion function
 #' @export getversion
 getversion = function() {
-  return("0.2.3")
+  return("0.2.4")
 }
 
 #' A cats2h5 function for convert csv file to h5 file
@@ -57,7 +57,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "accres")=accres
     h5attr(h5f, "filesrc")=basename(filecsv)
@@ -98,7 +98,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="CATS"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5attr(h5f, "accres")=1
@@ -162,7 +162,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="AXYTREK"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLAxytrek
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "accres")=accres
@@ -196,7 +196,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     h5f <- h5file(name = fileh5, mode = "a")
     h5f["data"]=ldm
     h5attr(h5f, "logger")="AXYTREK"
-    h5attr(h5f, "version")=getversion()
+    h5attr(h5f, "version")=VersionLAxytrek
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demoaxytrek2h5"
     h5attr(h5f, "accres")=1
