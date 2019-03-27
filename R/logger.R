@@ -464,16 +464,16 @@ LoggerLul <- setRefClass("LoggerLul",
                             },
                             initmetriclst = function() {
                               lm=MetricList$new()
-                              lm$add(Metric("Temperature",1,1,beobs=TRUE))
-                              lm$add(Metric("Pression",2,1))
-                              lm$add(Metric("Light intensity",3,1))
+                              lm$add(Metric("Temperature","t",1,1,beobs=TRUE))
+                              lm$add(Metric("Pression","p",2,1))
+                              lm$add(Metric("Light intensity","l",3,1))
                               metriclst<<-lm
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
                               m=f["/data"][,]
                               h5close(f)
-                              colnames(m)=c("t","p","l")
+                              colnames(m)=metriclst$getcolnames()
                               return(m)
                             },
                             draw = function() {
