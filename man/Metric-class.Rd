@@ -24,6 +24,6 @@ Metric reference class
 \item{\code{draw()}}{draw the objec value
 \subsection{Return Value}{returns a String object representing the value}}
 
-\item{\code{getmatrix()}}{get matrix of elements}
+\item{\code{getmatrix(id)}}{get matrix of elements}
 }}
 

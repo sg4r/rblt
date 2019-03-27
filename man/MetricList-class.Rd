@@ -22,6 +22,10 @@ MetricList reference class
 \item{\code{getat(id)}}{return element at id index.
 \subsection{Return Value}{returns the node @ id}}
 
+\item{\code{getcolactive()}}{get matrix col enable}
+
+\item{\code{getcolnames()}}{get matrix col name}
+
 \item{\code{getmatrix()}}{get matrix of elements}
 
 \item{\code{getsize()}}{return lenght of element.
