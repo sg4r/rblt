@@ -43,7 +43,6 @@ Visualisation des métrics depuis un Bio-loggers CATS, AXYTREK, LUL et WACU.
 Les données sont simulées pour avoir un apercus des fonctions de visualisations.
 ```
 library(rblt)
-
 rblt::demo_gui()
 ````
 # Utilisation
@@ -61,15 +60,15 @@ lui$gui()
 ````
 
 ## Utilisation avancée :
-exemples d'utilisation avancée
+Différents exemples d'utilisation avancée
 
 ### Afficher la liste des metrics d'un logger
-chaque type de Logger a des metrics par defaut. il est possible de les afficher avec le commande metriclst draw
+chaque type de Logger a des metrics par defaut. il est possible d'afficher la liste de metrics avec le commande metriclst draw
 ```
 lg=LoggerCats$new(cdemo10k)
 lg$metriclst$draw()
 ```
-## Selection des metrics à afficher par défaut
+## Sélection des metrics à afficher par défaut
 Par défaut tous les métrics du type de Bio-loggers sont affichés.
 Il est possible de limiter les métrics afficher en définissant le vecteur 'metricshow' lors de l'initialisation d'un bio-logger
 Utiliser T pour afficher le métric, et F pour le cacher
@@ -82,8 +81,8 @@ ui$gui()
 ```
 
 ### Changer la liste des metrics d'un logger
-Il est possible de redéfinir l'ordre affichage des metrics, sous reserve d'avoir de bien indiquer les bons parramétres
-Pour cela il est nécéssaire de redefinir la liste de metrics a afficher et leur ordre. Lorsque le boolean 'beobs' est défini a 'TRUE' les comportements sont affiché pour ce  metric.
+Il est possible de redéfinir l'ordre affichage des metrics, sous reserve d'avoir bien indiqué les bons parramétres.
+Pour cela il est nécéssaire de redéfinir la liste de metrics a afficher et leur ordre. Lorsque le boolean 'beobs' est définit a 'TRUE' les comportements sont affichés pour ce metric.
 ```
 lg=LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe)
 lg$metriclst$draw()
@@ -109,7 +108,7 @@ head(lm)
 ```
 
 ### Ajout d'un metric
-réccuperer les données, puis réaliser divers calcul sur la matrice, puis rajouter le résultat via setextmatrix et metriclst add
+réccuperer les données, puis réaliser divers calcul sur la matrice. Il est possible de visualiser les nouveaux metrics en rajoutant les resultat via la fonction 'Pour rajouter le résultat via 'setextmatrix', puis en ajoutant les informations concernant les metrics via la fonction 'metriclst$add'
 Exemple pour calculer la moyenne mobile avec un LoggerCats
 ```
 library(caTools)
@@ -131,9 +130,9 @@ ui=LoggerUI$new(ll)
 ui$gui()
 ```
 ### Enregistrement des metrics
-A partir de la version 0.4, il est possible d'enregistrer une selection des metrics a enregistrer dans un fichier de donné. Les métrics calculés peuvent également être inclus dans la selection.
+A partir de la version 0.4, il est possible d'enregistrer une selection des metrics dans un fichier de donné. Les métrics calculés peuvent également être inclus dans la selection.
 ```
-#utiliser l'exemple précédant pour calxuler la moyenne mobile
+#utiliser l'exemple précédant pour calculer la moyenne mobile
 metricshow=c(F,F,F,T,F,F,T)
 lg$metriclst$slctset(metricshow)
 ldata="~/rtoolbox/ldata.h5"
@@ -141,7 +140,7 @@ lg$saveasloggerdata(ldata)
 ```
 
 ### Lecture des metrics
-Pour relire les donner enregistrer depuis la fonction 'saveasloggerdata' il est nécéssaire d'utiliser le Logger type 'LoggerData'. Le 'LoggerData' est une structure permettant de stocker plusieurs metrics dans un même fichier de donner.
+Pour relire les donner enregistrer depuis la fonction 'saveasloggerdata' il est nécéssaire d'utiliser le Logger type 'LoggerData'. Le 'LoggerData' est une structure permettant de stocker plusieurs metrics dans un même fichier de donné.
 ```
 ll=LoggerList$new()
 ll$add(LoggerData$new(ldata))
