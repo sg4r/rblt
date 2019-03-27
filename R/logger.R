@@ -119,6 +119,40 @@ MetricList <- setRefClass("MetricList",
                                }
                                return(rep)
                              },
+                             getcolactive = function() {
+                               "get matrix col enable"
+                               rep=vector()
+                               msize=0
+                               for (i in .l) {
+                                 if (i$srcin) {
+                                   lcolnb=i$colnb-1
+                                   msize=i$colid+lcolnb
+                                 }
+                                 if (i$enable) {
+                                   if (i$srcin) {
+                                     rep=c(rep,(i$colid):(i$colid+i$colnb-1))
+                                   }
+                                   else{
+                                     rep=c(rep,(msize+i$colid):(msize+i$colid+i$colnb-1))
+                                   }
+                                 }#if
+                               }#for
+                               return(rep)
+                             },
+                             getcolnames = function() {
+                               "get matrix col name"
+                               rep=vector()
+                               for (i in .l) {
+                                 if (i$colnb>1) {
+                                   for (j in 1:i$colnb) {
+                                     rep=c(rep,paste0(i$colname,j))
+                                   }
+                                 }else {
+                                   rep=c(rep,i$colname)
+                                 }
+                               }#for
+                               return(rep)
+                             },
                              draw = function() {
                           "draw the objec value
                           \\subsection{Return Value}{returns a list of String object representing the value}"
@@ -220,6 +254,8 @@ Logger <- setRefClass("Logger",
                           if (extmatrixenable) {
                             m=cbind(m,extmatrix)
                           }
+                          lcol=metriclst$getcolactive()
+                          m=m[,lcol]
                           #ecriture du fichier H5
                           if(file.exists(fileld)) file.remove(fileld)
                           h5f <- h5file(name = fileld, mode = "a")
@@ -488,7 +524,7 @@ LoggerData <- setRefClass("LoggerData",
                               f=h5file(fileh5,"r")
                               m=f["/data"][,]
                               h5close(f)
-                              colnames(m)=c("t","p","l","a1","a2","a3")
+                              colnames(m)=metriclst$getcolnames()
                               return(m)
                             },
                             draw = function() {
