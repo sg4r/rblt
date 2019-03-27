@@ -167,6 +167,7 @@ MetricList <- setRefClass("MetricList",
 VersionLCATS="0.2.3"
 VersionLAxytrek="0.2.3"
 VersionLWacu="0.2.3"
+VersionLLul="0.2.3"
 VersionLDATA="0.1.0"
 
 #' A Logger reference class
@@ -441,15 +442,16 @@ LoggerLul <- setRefClass("LoggerLul",
                           methods = list(
                             initialize = function(fileh5 = "", filebehavior = "",...) {
                               callSuper(fileh5, filebehavior,...)
+                              version<<-VersionLLul
                             },
                             h5init = function() {
-                              cat("init version Lul")
+                              #cat("init version Lul")
                               #get info from h5 file
                               f=h5file(fileh5,"r")
                               #list.attributes(f)
                               if (h5attr(f["/"], "logger")!="LUL") {
                                 stop("h5 file not Lul structure")
-                              }else if (h5attr(f["/"], "version")!=getversion()){
+                              }else if (h5attr(f["/"], "version")!=version){
                                 stop("WACU h5 file not good version")
                               }else {
                                 dt=h5attr(f["/"], "datestart")
@@ -491,9 +493,10 @@ LoggerWacu <- setRefClass("LoggerWacu",
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "",...) {
                              callSuper(fileh5, filebehavior,...)
+                             version<<-VersionLWacu
                            },
                            h5init = function() {
-                             cat("init version wacu")
+                             #cat("init version wacu")
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
@@ -543,10 +546,10 @@ LoggerData <- setRefClass("LoggerData",
                           methods = list(
                             initialize = function(fileh5 = "", filebehavior = "",...) {
                               callSuper(fileh5, filebehavior,...)
+                              version<<-VersionLDATA
                             },
                             h5init = function() {
                               cat("init version loggerdata")
-                              version<<-VersionLDATA
                               #get info from h5 file
                               f=h5file(fileh5,"r")
                               #list.attributes(f)
