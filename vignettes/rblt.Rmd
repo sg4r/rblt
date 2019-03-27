@@ -62,6 +62,16 @@ lui$gui()
 ## Utilisation avancée :
 Différents exemples d'utilisation avancée
 
+### Préinitialiser la zone d'affichage
+Il est possible de définir la zone d'affichage en initilisant les variables 'uizoomstart' et 'uizoomend' avec les valeurs ntrick
+
+```
+ll=LoggerList$new()
+ll$add(LoggerCats$new(cdemo10k, uizoomstart=1, uizoomend=500))
+lui=LoggerUI$new(ll)
+lui$gui()
+```
+
 ### Afficher la liste des metrics d'un logger
 chaque type de Logger a des metrics par defaut. il est possible d'afficher la liste de metrics avec le commande metriclst draw
 ```
