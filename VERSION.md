@@ -1,7 +1,11 @@
 # version
 
 ## chanlog
-### version 0.2 du 01.02.2019
+### version 0.1 du 29/06/2018
+* définition des class
+* définition du stockage
+* définition de l'affichage
+### version 0.2 du 20.10.2018
 * Acces aux données
 * Ajout d'un metric
 ### version 0.3 du 01.03.2019
