@@ -17,6 +17,10 @@ A Logger reference class
 
 \item{\code{filebehavior}}{behavior file name}
 
+\item{\code{besep}}{behavior field separator character}
+
+\item{\code{besaturation}}{the ‘saturation’ value from 0 to 1}
+
 \item{\code{uizoomstart}}{uizoomstart default value}
 
 \item{\code{uizoomend}}{uizoomend default value}
@@ -25,7 +29,7 @@ A Logger reference class
 \section{Methods}{
 
 \describe{
-\item{\code{behaviorinit(besep)}}{init behavior list event}
+\item{\code{behaviorinit(besep, besaturation)}}{init behavior list event}
 
 \item{\code{draw()}}{draw the objec value
 \subsection{Return Value}{returns a String object representing the value}}

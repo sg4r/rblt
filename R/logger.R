@@ -174,6 +174,8 @@ VersionLDATA="0.1.0"
 #' @field name logger display name
 #' @field fileh5 h5 data file name
 #' @field filebehavior behavior file name
+#' @field besep behavior field separator character
+#' @field besaturation the ‘saturation’ value from 0 to 1
 #' @field uizoomstart uizoomstart default value
 #' @field uizoomend uizoomend default value
 #' @import h5
@@ -200,7 +202,7 @@ Logger <- setRefClass("Logger",
                                     behaviorchoices = "list",
                                     behaviorselected = "list" ),
                       methods = list(
-                        initialize= function(fileh5 = "", filebehavior = "", besep=",", uizoomstart=0, uizoomend=0, metricshow=NULL ) {
+                        initialize= function(fileh5 = "", filebehavior = "", besep=",", besaturation=0.2, uizoomstart=0, uizoomend=0, metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
                           }else if (!is.h5file(fileh5)){
@@ -225,7 +227,7 @@ Logger <- setRefClass("Logger",
                             }else {
                               uizoomend<<-nbrow
                             }
-                            behaviorinit(besep)
+                            behaviorinit(besep, besaturation)
                             initmetriclst()
                             if (is.null(metricshow)==F) {
                               metriclst$slctset(metricshow)
@@ -286,7 +288,7 @@ Logger <- setRefClass("Logger",
                           h5f["metriccol"]=colnames(lmt)
                           h5close(h5f)
                         },
-                        behaviorinit= function(besep) {
+                        behaviorinit= function(besep, besaturation) {
                           "init behavior list event"
                           lchoices=list()
                           lslct=list()
@@ -304,7 +306,7 @@ Logger <- setRefClass("Logger",
                                 lslct=c(lslct,i)
                               }
                               becolor<<-rainbow(n=i)
-                              becolorgr=rainbow(n=i,s=0.2)
+                              becolorgr=rainbow(n=i,s=besaturation)
                               #build Behavior obs list
                               for(i in 1:nrow(dso)) {
                                 row=dso[i,]
