@@ -392,18 +392,18 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          fields = list(),
                          methods = list(
                            initialize = function(fileh5 = "", filebehavior = "") {
-                             callSuper(fileh5, filebehavior)
+                             callSuper(fileh5, filebehavior,...)
                              version<<-VersionLAxytrek
                            },
                            h5init = function() {
-                             #cat("init version cats")
+                             #cat("init version Axytrek)
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
                              if (h5attr(f["/"], "logger")!="AXYTREK") {
                                stop("h5 file not AXYTREK structure")
                              }else if (h5attr(f["/"], "version")!=version){
-                               stop("CATS h5 file not good version")
+                               stop("Axytrek h5 file not good version")
                              }else {
                                dt=h5attr(f["/"], "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
@@ -454,7 +454,7 @@ LoggerLul <- setRefClass("LoggerLul",
                               if (h5attr(f["/"], "logger")!="LUL") {
                                 stop("h5 file not Lul structure")
                               }else if (h5attr(f["/"], "version")!=version){
-                                stop("WACU h5 file not good version")
+                                stop("LUL h5 file not good version")
                               }else {
                                 dt=h5attr(f["/"], "datestart")
                                 datestart<<-as.POSIXct(dt, tz="GMT")
