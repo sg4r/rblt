@@ -391,7 +391,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                          contains = list("Logger"),
                          fields = list(),
                          methods = list(
-                           initialize = function(fileh5 = "", filebehavior = "") {
+                           initialize = function(fileh5 = "", filebehavior = "",...) {
                              callSuper(fileh5, filebehavior,...)
                              version<<-VersionLAxytrek
                            },
