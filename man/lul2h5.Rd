@@ -4,14 +4,14 @@
 \alias{lul2h5}
 \title{A lul2h5 function for concert lul csv file to h5 file}
 \usage{
-lul2h5(filecsv = "", accres = 25, fileh5 = "")
+lul2h5(filecsv = "", fileh5 = "", sep = "\\t")
 }
 \arguments{
 \item{filecsv}{A input LUL csv file.}
 
-\item{accres}{input number of data rate in 1 seconde}
-
 \item{fileh5}{A output h5 data file.}
+
+\item{sep}{input the field separator character.}
 }
 \description{
 A lul2h5 function for concert lul csv file to h5 file

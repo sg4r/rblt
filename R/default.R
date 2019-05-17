@@ -206,10 +206,10 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
 
 #' A lul2h5 function for concert lul csv file to h5 file
 #' @param filecsv  A input LUL csv file.
-#' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
+#' @param sep input the field separator character.
 #' @export lul2h5
-lul2h5 = function(filecsv="", accres=25, fileh5="") {
+lul2h5 = function(filecsv="", fileh5="", sep="\t") {
   if(!is.character(filecsv)){
     stop("filecsv file path")
   }else if (!is.character(fileh5)){
@@ -223,7 +223,21 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
       stop("ERROR read lul head file")
     }
     headskip=as.numeric(lulheadnbline[[1]][1])
-    lds=data.table::fread(file=filecsv,skip = headskip,header = F, sep="\t",select=c(1,2,3,4,5))
+    lulhead=readLines(filecsv, n=headskip)
+    lulhead=iconv(lulhead, "latin1", "ASCII", "")
+    rtctick=0
+    for(i in lulhead) {
+      if(substr(i,1,29)=="$    RTC tick period (in s): ") {
+        rtctick=as.numeric(substr(i,30,35))
+        }
+    }
+    if (rtctick==0) {
+      stop("ERROR Lul head rtctick not found")
+    }
+    if (rtctick!=1) {
+      stop(cat("info: rtctick ",rtctick," Not Implemented"))
+    }
+    lds=data.table::fread(file=filecsv,skip = headskip,header = F, sep=sep,select=c(1,2,3,4,5))
     names(lds)=c("date","time","t","p","l")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
@@ -246,7 +260,7 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
     h5attr(h5f, "version")=VersionLLul
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
-    h5attr(h5f, "rtctick")=1
+    h5attr(h5f, "rtctick")=rtctick
     h5attr(h5f, "accres")=1
     h5close(h5f)
     rm(ldm)
