@@ -217,7 +217,13 @@ lul2h5 = function(filecsv="", accres=25, fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv,skip = 27,header = F, sep="\t")
+    lulhead=readLines(filecsv, n=1)
+    lulheadnbline=regmatches(lulhead,gregexpr("[0-9]+",text = lulhead))
+    if (length(lulheadnbline[[1]])<1) {
+      stop("ERROR read lul head file")
+    }
+    headskip=as.numeric(lulheadnbline[[1]][1])
+    lds=data.table::fread(file=filecsv,skip = headskip,header = F, sep="\t",select=c(1,2,3,4,5))
     names(lds)=c("date","time","t","p","l")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
