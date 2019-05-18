@@ -60,6 +60,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "accres")=accres
+    h5attr(h5f, "rtctick")=1
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5close(h5f)
   }
@@ -102,6 +103,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="democats2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -166,6 +168,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")=basename(filecsv)
     h5attr(h5f, "accres")=accres
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -200,6 +203,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demoaxytrek2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -233,9 +237,6 @@ lul2h5 = function(filecsv="", fileh5="", sep="\t") {
     }
     if (rtctick==0) {
       stop("ERROR Lul head rtctick not found")
-    }
-    if (rtctick!=1) {
-      stop(cat("info: rtctick ",rtctick," Not Implemented"))
     }
     lds=data.table::fread(file=filecsv,skip = headskip,header = F, sep=sep,select=c(1,2,3,4,5))
     names(lds)=c("date","time","t","p","l")
@@ -292,6 +293,7 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demolul2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }
@@ -410,6 +412,7 @@ demowacu2h5 = function(fileh5="",nbrow=10000) {
     h5attr(h5f, "datestart")=as.character.Date(datestart)
     h5attr(h5f, "filesrc")="demowacu2h5"
     h5attr(h5f, "accres")=1
+    h5attr(h5f, "rtctick")=1
     h5close(h5f)
   }
 }

@@ -368,7 +368,7 @@ LoggerUI<-setRefClass("LoggerUI",
                             output$dygraph <- renderUI({
                               fres=1000
                               facc=loglst$.l[[id]]$accres
-                              fdt=1
+                              fdt=loglst$.l[[id]]$rtctick
                               fmin=input$time[1]
                               fmax=input$time[2]
                               if ((fmax-fmin) < fres) {
@@ -381,7 +381,7 @@ LoggerUI<-setRefClass("LoggerUI",
                                   fpas=floor((fmax-fmin)/fres)
                                 }
                                 facc=1
-                                fdt =1/loglst$.l[[id]]$accres
+                                fdt =loglst$.l[[id]]$rtctick/loglst$.l[[id]]$accres
                               } else {
                                 fpas=floor((fmax-fmin)/fres)
                               }
