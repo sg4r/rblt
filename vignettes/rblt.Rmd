@@ -177,7 +177,7 @@ Le package 'rblt' permet de générer les fichiers données depuis les fichiers 
 ## Pour les bio-logger CATS :
 Convertissez les résultats de vos données au format csv avec la fonction rblt::cats2h5
 
-### Exemple :
+### Exemple d'importation
 ```
 filecatscsv="~/rtoolbox/20180216-004210-CC-07-48_15-02-2017_1.csv"
 filecatsh5="~/rtoolbox/CC-07-48_15-02-2017_1.h5"
@@ -193,10 +193,19 @@ rblt::cats2h5(filecatscsv,50,filecatsh5)
 [1] "nbrow: 5868"
 ```
 
+### Exemple de visualisation
+```
+ll=LoggerList$new()
+ll$add(LoggerCats$new(fileacatsh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
+
 ## Pour les bio-logger AXYTREK :
 Convertissez les résultats de vos données du format csv avec la fonction rblt::axytrek2h5
 
-### Exemple:
+### Exemple d'imporation
 ```
 atreks1="~/rtoolbox/axytrec-s1.h5"
 rblt::axytrek2h5("~/rtoolbox/AXYTREK2_S1.csv",25,atreks1)
@@ -209,27 +218,67 @@ rblt::axytrek2h5("~/rtoolbox/AXYTREK5_S1.csv",25,atreks2)
 [1] "out: ~/rtoolbox/axytrec-s2.h5"
 [1] "nbrow: 2234282"
 ```
+### Exemple de visualisation
+```
+ll=LoggerList$new()
+ll$add(LoggerAxytrek$new(fileaxyh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
 
 ## Pour les bio-logger LUL :
-Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5
+Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5. Attention, le formation csv change en fonction des versions. il est nécéssaire de renseigner le caractère de séparation utilisé.
 
-### Exemple :
+### Exemple d'importation
 ```
-# a completer
+filelulcsv="~/rtoolbox/lul34.txt"
+filelulh5="~/rtoolbox/lul34.h5"
+rblt::lul2h5(filelulcsv,filelulh5,sep=";")
+```
+### Exemple de visualisation
+```
+ll=LoggerList$new()
+ll$add(LoggerLul$new(filelulh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
 ```
 
 ## Pour les bio-logger WACU :
-Convertissez les résultats de vos données au format csv avec la fonction rblt::wacu2h5dt
-Pour ajouter les informations accelero, il est nécéssaire d'utiliser l'utilitaire en C++ wacu2csv
+Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Il est nécessaire d'utiliser l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d'importer les données combinées.
 
-### Exemple :
+### Exemple d'importation
 ```
-w134="~/rtoolbox/wacu134.h5"
-wacu2h5("~/rtoolbox/wacu134_TRDDU_cc.txt",w134)
-# voir wacu2csv pour la concersion des données accéléros en csv, puis
-wacu2hacc("~/rtoolbox/wacu134_TRDDU_cc_ACC.csv",w134)
+# combiner les données TPL et ACC
+wacu2csv -d ~/rtoolbox/wacu161.txt -a ~/rtoolbox/wacu161_ACC.txt  -o /rtoolbox/w161.csv
+#lors du traitement des données, l'utilitaire affichera les informations rtc_period,rtc_ticks et start_at qu'il faudra repporter dans le fonction wacu2h5 sous R
+rtc_period:1
+rtc_ticks:50
+start_at:29/03/2016 00:00:01
+
+# import des données depuis R
+filewacucsv="~/rtoolbox/w161.csv"
+filewacuh5="~/rtoolbox/wacu161.h5"
+datestartstring="29/03/2016 00:00:01"
+rblt::wacu2h5(filewacucsv,filewacuh5,rtctick=1, accres=50, datestartstring)
+[1] "in: ~/rtoolbox/w161.csv"
+[1] "out: ~/rtoolbox/wacu161.h5"
+|--------------------------------------------------|
+|==================================================|
+[1] "29/03/2016 00:00:01"
+[1] "nbrow: 64802850"
 ```
-### Conversion des données
+### Exemple de visualisation
+```
+ll=LoggerList$new()
+ll$add(LoggerWacu$new(filewacuh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
+
+## Conversion des données
 Lors de la conversion des données des fichiers CATS ou AXYTREK il est nécessaire d'indiquer pour le moment dans la variable 'accres' la fréquence d'échantillonnage utilisée lors de l'acquisition.
 voir les fonction rblt::axytrek2h5 ou rblt::cats2h5
 
