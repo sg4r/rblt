@@ -526,10 +526,10 @@ LoggerWacu <- setRefClass("LoggerWacu",
                            },
                            initmetriclst = function() {
                              lm=MetricList$new()
-                             lm$add(Metric("wTemperature","t",1,1))
-                             lm$add(Metric("wPression","p",2,1))
-                             lm$add(Metric("wLight intensity","l",3,1))
-                             lm$add(Metric("wAccelerometer","a",3,3,beobs=TRUE))
+                             lm$add(Metric("Temperature","t",1,1))
+                             lm$add(Metric("Pression","p",2,1))
+                             lm$add(Metric("Light intensity","l",3,1))
+                             lm$add(Metric("Accelerometer","a",4,3,beobs=TRUE))
                              metriclst<<-lm
                            },
                            getdata= function() {

@@ -298,38 +298,46 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
   }
 }
 
-
-#' A wacu2h5 function for concert wacu csv file to h5 file
+#' A wacupre2h5 function for concert a preview from wacu csv file to h5 file
 #' @param filecsv  A input WACU csv file.
+#' @param fileacccsv A input WACU ACC csv file.
 #' @param fileh5 A output h5 data file.
-#' @export wacu2h5
-wacu2h5 = function(filecsv="",fileh5="") {
+#' @export wacupre2h5
+wacupre2h5 = function(filecsv="", fileacccsv="",fileh5="") {
   if(!is.character(filecsv)){
     stop("filecsv file path")
+  }else if (!is.character(fileacccsv)) {
+    stop("fileacccsv file path")
   }else if (!is.character(fileh5)){
     stop("fileh5 file path")
   }else {
     print(paste("in:",filecsv))
+    print(paste("inacc:",fileacccsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
-    names(lds)=c("date","time","t","p","l","v1")
-    strdatestart=paste(lds[1,"date"],lds[1,"time"])
+    #lecture tpl
+    ldstpl=data.table::fread(file=filecsv,skip = 24,header = F, sep="\t")
+    names(ldstpl)=c("date","time","t","p","l","v1")
+    strdatestart=paste(ldstpl[1,"date"],ldstpl[1,"time"])
     print(strdatestart)
     datestart=as.POSIXct(strdatestart,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
-    nbrow=nrow(lds)
+    nbrow=nrow(ldstpl)
     print(paste("nbrow:",nbrow))
     #change default value
-    ldm=lds[,"t"]/10
-    lds[,"t"]=ldm
-    ldm=lds[,"p"]*(-1)
-    lds[,"p"]=ldm
+    ldm=ldstpl[,"t"]/10
+    ldstpl[,"t"]=ldm
+    ldm=ldstpl[,"p"]*(-1)
+    ldstpl[,"p"]=ldm
+    ldstpl=ldstpl[,3:5]
+    #read wacu acc data
+    ldsacc=data.table::fread(file=fileacccsv,skip = 2,header = F, select=c(5,6,7))
+    accstep=round(nrow(ldsacc)/nbrow)
+    accid=seq.int(1, nrow(ldsacc), by = accstep)
+    ldsaccrtc=ldsacc[accid][1:nbrow]
+    ldm=as.matrix(cbind(ldstpl,ldsaccrtc))
     #ecriture du fichier H5
-    ldm=data.matrix(lds[,c("t","p","l")])
-    rm(lds)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
-    #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
-    h5f["/tpl"]=ldm
+    h5f["/data"]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -341,42 +349,45 @@ wacu2h5 = function(filecsv="",fileh5="") {
   }
 }
 
-#' A wacu2hacc function for insert wacu acc csv file to h5 file
-#' @param filewacucsv  A input WACU csv file.
+#' A wacu2h5 function for concert wacu csv file to h5 file
+#' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
-#' @param size the default data size
-#' @param accfreq the default acc frequence
-#' @export wacu2hacc
-wacu2hacc = function(filewacucsv= "", fileh5="", size=11274058, accfreq=25 ) {
-  # version rapide qui ne lit que les informations a la seconde
-  # pour préparer la ui et la démo
-  # evolution de la version 2, mais en utilisant wacu2csv en C++ pour reformater les data au format CSV
-  if(!is.character(filewacucsv)){
-    stop("filewacucsv file path")
+#' @export wacu2h5
+wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") {
+  if(!is.character(filecsv)){
+    stop("filecsv file path")
   }else if (!is.character(fileh5)){
     stop("fileh5 file path")
   }else {
-    print(paste("in:",filewacucsv))
+    print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    #read wacu acc data
-    macc=data.table::fread(file=filewacucsv,header = F, select=c(5,6,7))
-    h5f=h5file(fileh5,"a")
-    if (h5attr(h5f["/"], "logger")!="WACU") {
-      stop("h5 file not WACU structure")
-    }else if (h5attr(h5f["/"], "version")!=VersionLWacu){
-      stop("WACU h5 file not good version")
-    }else {
-      #ok all data
-      mtpl=h5f["/tpl"][,1:3]
-      m=cbind(mtpl,macc)
-      m=as.matrix(m)
-      #write new value in "/data
-      h5f["/data"]=m
-      h5close(h5f)
-    }#end else if
+    lds=data.table::fread(file=filecsv)
+    names(lds)=c("t","p","l","x","y","z")
+    print(datestartstring)
+    datestart=as.POSIXct(datestartstring,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
+    nbrow=nrow(lds)
+    print(paste("nbrow:",nbrow))
+    #change default value
+    ldm=lds[,"t"]/10
+    lds[,"t"]=ldm
+    ldm=lds[,"p"]*(-1)
+    lds[,"p"]=ldm
+    #ecriture du fichier H5
+    ldm=as.matrix(lds)
+    rm(lds)
+    if(file.exists(fileh5)) file.remove(fileh5)
+    h5f <- h5file(name = fileh5, mode = "a")
+    h5f["/data"]=ldm
+    h5attr(h5f, "logger")="WACU"
+    h5attr(h5f, "version")=VersionLWacu
+    h5attr(h5f, "datestart")=as.character.Date(datestart)
+    h5attr(h5f, "filesrc")=basename(filecsv)
+    h5attr(h5f, "rtctick")=rtctick
+    h5attr(h5f, "accres")=accres
+    h5close(h5f)
+    rm(ldm)
   }
 }
-
 
 #' A demowacu2h5 function build demo cats h5 file
 #' @param fileh5 A h5 data file.
