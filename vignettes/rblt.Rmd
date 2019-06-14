@@ -246,7 +246,22 @@ ui$gui()
 ```
 
 ## Pour les bio-logger WACU :
-Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Il est nécessaire d'utiliser l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d'importer les données combinées.
+Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Pour une visualisation détaillé des données accélérométriques, il est nécessaire d'utiliser l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d'importer les données combinées.
+Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d'une seconde. Cela permet d'avoir une vue d'emble des données rapidement, ainsi que de localiser les zones d'activités, sans passer par la phase de recombinaison des fichiers TPL et ACC. Il peux être envisagé de rajouter une option pour exporter ces zones d'activités.
+
+### Exemple de prévisualisation
+```
+filecsv"~/rtoolbox/wacu161.txt"
+fileacccsv="~/rtoolbox/wacu161_ACC.txt"
+filewacuh5="~/rtoolbox/wacu161.h5"
+rblt::wacupre2h5(filecsv, fileacccsv,fileh)
+#visualisation
+ll=LoggerList$new()
+ll$add(LoggerWacu$new(filewacuh5))
+#affichage des informations
+ui=LoggerUI$new(ll)
+ui$gui()
+```
 
 ### Exemple d'importation
 ```
