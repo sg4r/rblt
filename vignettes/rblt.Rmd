@@ -247,27 +247,13 @@ ui$gui()
 
 ## Pour les bio-logger WACU :
 Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Pour une visualisation détaillé des données accélérométriques, il est nécessaire d'utiliser l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d'importer les données combinées.
-Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d'une seconde. Cela permet d'avoir une vue d'emble des données rapidement, ainsi que de localiser les zones d'activités, sans passer par la phase de recombinaison des fichiers TPL et ACC. Il peux être envisagé de rajouter une option pour exporter ces zones d'activités.
-
-### Exemple de prévisualisation
-```
-filecsv"~/rtoolbox/wacu161.txt"
-fileacccsv="~/rtoolbox/wacu161_ACC.txt"
-filewacuh5="~/rtoolbox/wacu161.h5"
-rblt::wacupre2h5(filecsv, fileacccsv,fileh)
-#visualisation
-ll=LoggerList$new()
-ll$add(LoggerWacu$new(filewacuh5))
-#affichage des informations
-ui=LoggerUI$new(ll)
-ui$gui()
-```
+Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d'une seconde. Cela permet d'avoir une vue d'emble des données rapidement, ainsi que de localiser les zones d'activités. Pour cela utiliser l'option "-p" de l'utilitaire wacu2csv pour combiener les fichiers TPL et ACC avec une résolution d'un seconde. Il peux être envisagé de rajouter une option pour exporter ces zones d'activités.
 
 ### Exemple d'importation
 ```
 # combiner les données TPL et ACC
 wacu2csv -d ~/rtoolbox/wacu161.txt -a ~/rtoolbox/wacu161_ACC.txt  -o /rtoolbox/w161.csv
-#lors du traitement des données, l'utilitaire affichera les informations rtc_period,rtc_ticks et start_at qu'il faudra repporter dans le fonction wacu2h5 sous R
+#lors du traitement des données, l'utilitaire affichera les informations rtc_period,rtc_ticks et start_at qu'il faudra reporter dans le fonction wacu2h5 sous R
 rtc_period:1
 rtc_ticks:50
 start_at:29/03/2016 00:00:01
@@ -292,6 +278,30 @@ ll$add(LoggerWacu$new(filewacuh5))
 ui=LoggerUI$new(ll)
 ui$gui()
 ```
+
+### Exemple de prévisualisation
+```
+# combiner les données TPL et ACC
+wacu2csv -p -d ~/rtoolbox/wacu161.txt -a ~/rtoolbox/wacu161_ACC.txt  -o /rtoolbox/w161.csv
+rtc_period:1
+rtc_ticks:1
+start_at:29/03/2016 00:00:01
+
+#import des données depuis R
+filewacucsv="~/rtoolbox/w161.csv"
+filewacuh5="~/rtoolbox/wacu161.h5"
+datestartstring="29/03/2016 00:00:01"
+rblt::wacu2h5(filewacucsv,filewacuh5,rtctick=1, accres=1, datestartstring)
+[1] "in: ~/rtoolbox/w161.csv"
+[1] "out: ~/rtoolbox/wacu161.h5"
+|--------------------------------------------------|
+|==================================================|
+[1] "29/03/2016 00:00:01"
+[1] "nbrow: 1296057"
+
+#visualisation: utiliser la même méthode que précédament.
+```
+
 
 ## Conversion des données
 Lors de la conversion des données des fichiers CATS ou AXYTREK il est nécessaire d'indiquer pour le moment dans la variable 'accres' la fréquence d'échantillonnage utilisée lors de l'acquisition.
