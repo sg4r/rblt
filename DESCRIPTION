@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.1
+Version: 0.2.4.2
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",
@@ -22,6 +22,7 @@ Depends:
     R (>= 3.2),
     tools,
     h5 (>= 0.9),
+    data.table,
     xts,
     dygraphs,
     shiny,
