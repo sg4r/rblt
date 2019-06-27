@@ -26,7 +26,7 @@ Depends:
     dygraphs,
     shiny,
     methods
-Import:
+Imports:
     tools
 URL: https://github.com/sg4r/rblt
 BugReports: https://github.com/sg4r/rblt/issues
