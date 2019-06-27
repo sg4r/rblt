@@ -16,6 +16,3 @@ democatsmkbe(fbe = "", nbrow = 10, nbseq = 2)
 \description{
 A democatsmkbe function for generate ramdom data
 }
-\examples{
-democatsmkbe("democatsmkbe",nbrow=10,nbseq=2)
-}
