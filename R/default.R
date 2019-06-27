@@ -31,6 +31,7 @@ getversion = function() {
 
 #' A cats2h5 function for convert csv file to h5 file
 #' @import utils
+#' @importFrom data.table fread
 #' @param filecsv  A input cats csv file.
 #' @param accres input resolution
 #' @param fileh5 A output h5 data file.
@@ -43,7 +44,7 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr=data.table::fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
+    ldsr=fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
     strdatestart=paste(ldsr[1,1],ldsr[1,2])
     datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(ldsr)
@@ -136,6 +137,7 @@ democatsmkbe = function(fbe="",nbrow=10,nbseq=2) {
 }
 
 #' A axytrek2h5 function for convert csv file to h5 file
+#' @importFrom data.table fread
 #' @param filecsv  A input axytrek csv file.
 #' @param accres input number of data rate in 1 seconde
 #' @param fileh5 A output h5 data file.
@@ -148,8 +150,8 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr1=data.table::fread(file = filecsv,fill = TRUE, dec = ",", select=c(2:6), colClasses=list(character=2:3,numeric=4:6))
-    ldsr2=data.table::fread(file = filecsv,fill = TRUE, dec = ".", select=c(8:9), colClasses=list(numeric=8:9))
+    ldsr1=fread(file = filecsv,fill = TRUE, dec = ",", select=c(2:6), colClasses=list(character=2:3,numeric=4:6))
+    ldsr2=fread(file = filecsv,fill = TRUE, dec = ".", select=c(8:9), colClasses=list(numeric=8:9))
     lds=cbind(ldsr1,ldsr2)
     rm(ldsr1,ldsr2)
     names(lds)=c("date","time","x","y","z","p","t")
@@ -238,7 +240,7 @@ lul2h5 = function(filecsv="", fileh5="", sep="\t") {
     if (rtctick==0) {
       stop("ERROR Lul head rtctick not found")
     }
-    lds=data.table::fread(file=filecsv,skip = headskip,header = F, sep=sep,select=c(1,2,3,4,5))
+    lds=fread(file=filecsv,skip = headskip,header = F, sep=sep,select=c(1,2,3,4,5))
     names(lds)=c("date","time","t","p","l")
     strdatestart=paste(lds[1,"date"],lds[1,"time"])
     print(strdatestart)
@@ -299,8 +301,12 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
 }
 
 #' A wacu2h5 function for concert wacu csv file to h5 file
+#' @importFrom data.table fread :=
 #' @param filecsv  A input WACU csv file.
 #' @param fileh5 A output h5 data file.
+#' @param rtctick tpl frequence
+#' @param accres  acc frequence
+#' @param datestartstring A Date string in GMT
 #' @export wacu2h5
 wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") {
   if(!is.character(filecsv)){
@@ -310,15 +316,15 @@ wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") 
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    lds=data.table::fread(file=filecsv)
+    lds=fread(file=filecsv)
     names(lds)=c("t","p","l","x","y","z")
     print(datestartstring)
     datestart=as.POSIXct(datestartstring,format="%d/%m/%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(lds)
     print(paste("nbrow:",nbrow))
     #change default value
-    lds[,c("t"):=.(t/10)]
-    lds[,c("p"):=.(p*(-1))]
+    lds[,c("t"):=list(t/10)]
+    lds[,c("p"):=list(p*(-1))]
     #ecriture du fichier H5
     h5buf=1000000
     h5dd=1
