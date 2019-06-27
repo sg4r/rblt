@@ -39,14 +39,14 @@ install.packages("devtools")
 devtools::install_github("sg4r/rblt")
 ```
 # Démonstration
-Visualisation des métrics depuis un Bio-loggers CATS, AXYTREK, LUL et WACU.
-Les données sont simulées pour avoir un apercus des fonctions de visualisations.
+Visualisation des métriques depuis un Bio-loggers CATS, AXYTREK, LUL et WACU.
+Les données sont simulées pour avoir un aperçus des fonctions de visualisations.
 ```
 library(rblt)
 rblt::demo_gui()
 ````
 # Utilisation
-Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l'object de la classe LoggerUI qui affichera les différentes données.
+Créer un objet de la classe LoggerList qui va contenir la listes des fichiers de données a visualiser. Puis créer une vue avec l’objet de la classe LoggerUI qui affichera les différentes données.
 ```
 library(rblt)
 
@@ -62,8 +62,8 @@ lui$gui()
 ## Utilisation avancée :
 Différents exemples d'utilisation avancée
 
-### Préinitialiser la zone d'affichage
-Il est possible de définir la zone d'affichage en initilisant les variables 'uizoomstart' et 'uizoomend' avec les valeurs ntrick
+### Pré initialiser la zone d'affichage
+Il est possible de définir la zone d'affichage en initialisant les variables 'uizoomstart' et 'uizoomend' avec les valeurs ntrick
 
 ```
 ll=LoggerList$new()
@@ -72,7 +72,7 @@ lui=LoggerUI$new(ll)
 lui$gui()
 ```
 ### changer la saturation des couleurs des comportements
-Pour augmenter la saturation des couleurs des comportements, utiliser la variable 'besaturation'. la valeur doit entre comprise en 0.1 et 1.0. elle est de 0.2 par defaut.
+Pour augmenter la saturation des couleurs des comportements, utiliser la variable 'besaturation'. la valeur doit entre comprise en 0.1 et 1.0. elle est de 0.2 par défaut.
 
 ```
 library(rblt)
@@ -84,16 +84,16 @@ lui=LoggerUI$new(ll)
 lui$gui()
 ```
 
-### Afficher la liste des metrics d'un logger
-chaque type de Logger a des metrics par defaut. il est possible d'afficher la liste de metrics avec le commande metriclst draw
+### Afficher la liste des métriques d'un logger
+chaque type de Logger a des métriques par défaut. il est possible d'afficher la liste de métriques avec le commande metriclst draw
 ```
 lg=LoggerCats$new(cdemo10k)
 lg$metriclst$draw()
 ```
-## Sélection des metrics à afficher par défaut
-Par défaut tous les métrics du type de Bio-loggers sont affichés.
-Il est possible de limiter les métrics afficher en définissant le vecteur 'metricshow' lors de l'initialisation d'un bio-logger
-Utiliser T pour afficher le métric, et F pour le cacher
+## Sélection des métriques à afficher par défaut
+Par défaut tous les métriques du type de Bio-loggers sont affichés.
+Il est possible de limiter les métriques afficher en définissant le vecteur 'metricshow' lors de l'initialisation d'un bio-logger
+Utiliser T pour afficher le métrique, et F pour le cacher
 ```
 ll=LoggerList$new()
 ll$add(LoggerCats$new("~/rtoolbox/democats2h5.h5",metricshow=c(T,F,T,F,F,F)))
@@ -102,9 +102,9 @@ ui=LoggerUI$new(ll)
 ui$gui()
 ```
 
-### Changer la liste des metrics d'un logger
-Il est possible de redéfinir l'ordre affichage des metrics, sous reserve d'avoir bien indiqué les bons parramétres.
-Pour cela il est nécéssaire de redéfinir la liste de metrics a afficher et leur ordre. Lorsque le boolean 'beobs' est définit a 'TRUE' les comportements sont affichés pour ce metric.
+### Changer la liste des métriques d'un logger
+Il est possible de redéfinir l'ordre affichage des métriques, sous réserve d'avoir bien indiqué les bons paramètres.
+Pour cela il est nécessaire de redéfinir la liste de métriques a afficher et leur ordre. Lorsque le boolean 'beobs' est définit a 'TRUE' les comportements sont affichés pour ce métrique.
 ```
 lg=LoggerCats$new(cdemo10k,filebehavior=cdemo10kbe)
 lg$metriclst$draw()
@@ -129,8 +129,8 @@ lm=lg$getdata()
 head(lm)
 ```
 
-### Ajout d'un metric
-réccuperer les données, puis réaliser divers calcul sur la matrice. Il est possible de visualiser les nouveaux metrics en rajoutant les resultat via la fonction 'Pour rajouter le résultat via 'setextmatrix', puis en ajoutant les informations concernant les metrics via la fonction 'metriclst$add'
+### Ajout d'un métrique
+récupérer les données, puis réaliser divers calcul sur la matrice. Il est possible de visualiser les nouveaux métriques en rajoutant les résultat via la fonction 'Pour rajouter le résultat via 'setextmatrix', puis en ajoutant les informations concernant les métriques via la fonction 'metriclst$add'
 Exemple pour calculer la moyenne mobile avec un LoggerCats
 ```
 library(caTools)
@@ -151,8 +151,8 @@ ll$add(lg)
 ui=LoggerUI$new(ll)
 ui$gui()
 ```
-### Enregistrement des metrics
-A partir de la version 0.4, il est possible d'enregistrer une selection des metrics dans un fichier de donné. Les métrics calculés peuvent également être inclus dans la selection.
+### Enregistrement des métriques
+A partir de la version 0.4, il est possible d'enregistrer une sélection des métriques dans un fichier de donné. Les métriques calculés peuvent également être inclus dans la sélection.
 ```
 #utiliser l'exemple précédant pour calculer la moyenne mobile
 metricshow=c(F,F,F,T,F,F,T)
@@ -162,7 +162,7 @@ lg$saveasloggerdata(ldata)
 ```
 
 ### Lecture des metrics
-Pour relire les donner enregistrer depuis la fonction 'saveasloggerdata' il est nécéssaire d'utiliser le Logger type 'LoggerData'. Le 'LoggerData' est une structure permettant de stocker plusieurs metrics dans un même fichier de donné.
+Pour relire les donner enregistrer depuis la fonction 'saveasloggerdata' il est nécessaire d'utiliser le Logger type 'LoggerData'. Le 'LoggerData' est une structure permettant de stocker plusieurs métriques dans un même fichier de donné.
 ```
 ll=LoggerList$new()
 ll$add(LoggerData$new(ldata))
@@ -228,7 +228,7 @@ ui$gui()
 ```
 
 ## Pour les bio-logger LUL :
-Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5. Attention, le formation csv change en fonction des versions. il est nécéssaire de renseigner le caractère de séparation utilisé.
+Convertissez les résultats de vos données du format csv avec la fonction rblt::lul2h5. Attention, le formation csv change en fonction des versions. il est nécessaire de renseigner le caractère de séparation utilisé.
 
 ### Exemple d'importation
 ```
@@ -247,7 +247,7 @@ ui$gui()
 
 ## Pour les bio-logger WACU :
 Ces bio-loggers fournissent leurs données dans 2 fichiers TXT séparés. Les données TPL et les données ACC. Pour une visualisation détaillé des données accélérométriques, il est nécessaire d'utiliser l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC dans un fichier temporaire, a partir duquel il serra possible d'importer les données combinées.
-Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d'une seconde. Cela permet d'avoir une vue d'emble des données rapidement, ainsi que de localiser les zones d'activités. Pour cela utiliser l'option "-p" de l'utilitaire wacu2csv pour combiener les fichiers TPL et ACC avec une résolution d'un seconde. Il peux être envisagé de rajouter une option pour exporter ces zones d'activités.
+Pour les fichiers de données de plusieurs mois, il est possible de faire une prévisualisation des données avec une résolution maximale d'une seconde. Cela permet d'avoir rapidement une vue d'ensemble des données, ainsi que de localiser les zones d'activités. Pour cela utiliser l'option "-p" de l'utilitaire wacu2csv pour combiner les fichiers TPL et ACC avec une résolution d'un seconde. Il peut être envisagé de rajouter une option pour exporter ces zones d'activités.
 
 ### Exemple d'importation
 ```
@@ -299,7 +299,7 @@ rblt::wacu2h5(filewacucsv,filewacuh5,rtctick=1, accres=1, datestartstring)
 [1] "29/03/2016 00:00:01"
 [1] "nbrow: 1296057"
 
-#visualisation: utiliser la même méthode que précédament.
+#visualisation: utiliser la même méthode que précédemment.
 ```
 
 
