@@ -20,15 +20,14 @@ RoxygenNote: 6.1.1
 SystemRequirements: libhdf5 (>= 1.8.12)
 Depends:
     R (>= 3.2),
-    tools,
     h5 (>= 0.9),
     data.table,
     xts,
     dygraphs,
     shiny,
     methods
-Imports:
-    data.table
+Import:
+    tools
 URL: https://github.com/sg4r/rblt
 BugReports: https://github.com/sg4r/rblt/issues
 Suggests: 

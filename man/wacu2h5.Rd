@@ -11,6 +11,12 @@ wacu2h5(filecsv = "", fileh5 = "", rtctick = 1, accres = 50,
 \item{filecsv}{A input WACU csv file.}
 
 \item{fileh5}{A output h5 data file.}
+
+\item{rtctick}{tpl frequence}
+
+\item{accres}{acc frequence}
+
+\item{datestartstring}{A Date string in GMT}
 }
 \description{
 A wacu2h5 function for concert wacu csv file to h5 file
