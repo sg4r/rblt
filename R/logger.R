@@ -564,7 +564,7 @@ LoggerData <- setRefClass("LoggerData",
                               #list.attributes(f)
                               if (h5attr(f["/"], "logger")!="LDATA") {
                                 stop("h5 file not LDATA structure")
-                              }else if (h5attr(f["/"], "version")!=version){
+                              }else if (h5attr(f["/"], "version")!=VersionLDATA){
                                 stop("LDATA h5 file not good version")
                               }else {
                                 dt=h5attr(f["/"], "datestart")
