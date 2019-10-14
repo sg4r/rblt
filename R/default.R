@@ -22,13 +22,6 @@
 #   Test Package:              'Ctrl + Shift + T'
 
 
-
-#' A getversion function
-#' @export getversion
-getversion = function() {
-  return("0.2.4")
-}
-
 #' A cats2h5 function for convert csv file to h5 file
 #' @import utils
 #' @importFrom data.table fread
@@ -44,15 +37,15 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
   }else {
     print(paste("in:",filecsv))
     print(paste("out:",fileh5))
-    ldsr=fread(file = filecsv, dec = ",", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
+    ldsr=fread(file = filecsv, dec = ".", select=c(1:2,5:14,20,22), colClasses=list(character=1:2,numeric=5:14,20,22) )
     strdatestart=paste(ldsr[1,1],ldsr[1,2])
     datestart=as.POSIXct(strdatestart,format="%d.%m.%Y %H:%M:%OS",tz="GMT")
     nbrow=nrow(ldsr)
     print(paste("nbrow:",nbrow))
     #change default value
     ldm=data.matrix(ldsr[,c(3:14)])
-    ldsr=ldm[,13]*(-1)
-    ldm[,13]=ldsr
+    ldsr=ldm[,11]*(-1)
+    ldm[,11]=ldsr
     #ecriture du fichier H5
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- h5file(name = fileh5, mode = "a")
