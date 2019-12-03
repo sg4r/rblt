@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.4
+Version: 0.2.4.5
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",
@@ -20,7 +20,7 @@ RoxygenNote: 6.1.1
 SystemRequirements: libhdf5 (>= 1.8.12)
 Depends:
     R (>= 3.2),
-    h5 (>= 0.9),
+    hdf5r (>= 1.0),
     data.table,
     xts,
     dygraphs,

@@ -178,7 +178,7 @@ VersionLDATA="0.1.0"
 #' @field besaturation the ‘saturation’ value from 0 to 1
 #' @field uizoomstart uizoomstart default value
 #' @field uizoomend uizoomend default value
-#' @import h5
+#' @import hdf5r
 #' @import tools
 #' @export Logger
 #' @exportClass Logger
