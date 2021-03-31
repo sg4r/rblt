@@ -6,7 +6,9 @@ Il est possible d’associé à ces données la vision des comportements des ani
 ![rblt main screen](rblt.png)
 
 # Keywords
-biologging Accelerometer, Gyroscope, Magnetometer, Temperature, Pressure, Light intensity, Data visualization, GPS, biologger, movement ecology
+Biologging Accelerometer, Gyroscope, Magnetometer, Temperature, Pressure, Light intensity, Data visualization, GPS, biologger, movement ecology, Animal Tracking
+Trajectory Analysis
+
 
 # Publications
 Behavioural inference from signal processing using animal-borne multi-sensor loggers: a novel solution to extend the knowledge of sea turtle ecology
