@@ -11,15 +11,12 @@ Trajectory Analysis
 
 
 # Publications
-Behavioural inference from signal processing using animal-borne multi-sensor loggers: a novel solution to extend the knowledge of sea turtle ecology
-
-Lorène Jeantet, Víctor Planas-Bielsa, Simon Benhamou,  Sebastien Geiger, Jordan Martin, Flora Siegwalt, Pierre Lelong, Julie Gresser, Denis Etienne, Gaëlle Hiélard, Alexandre Arqué, Sidney Régis, Nicolas Lecerf,  Cédric Frouin, Abdelwahab Benhalilou, Céline Murgale, Thomas Maillet, Lucas Andreani, Guilhem Campistron, Hélène Delvaux, Christelle Guyon, Sandrine Richard, Fabien Lefebvre, Nathalie Aubert, Caroline Habold, Yvon Le Maho, Damien Chevallier
+Behavioural inference from signal processing using animal-borne multi-sensor loggers: a novel solution to extend the knowledge of sea turtle ecology  
+Lorène Jeantet, Víctor Planas-Bielsa, Simon Benhamou,  Sebastien Geiger, Jordan Martin, Flora Siegwalt, Pierre Lelong, Julie Gresser, Denis Etienne, Gaëlle Hiélard, Alexandre Arqué, Sidney Régis, Nicolas Lecerf,  Cédric Frouin, Abdelwahab Benhalilou, Céline Murgale, Thomas Maillet, Lucas Andreani, Guilhem Campistron, Hélène Delvaux, Christelle Guyon, Sandrine Richard, Fabien Lefebvre, Nathalie Aubert, Caroline Habold, Yvon Le Maho, Damien Chevallier  
 https://royalsocietypublishing.org/doi/10.1098/rsos.200139
 
-Fully Convolutional Neural Network: A solution to infer animal behaviours from multi-sensor data
-
-Lorène Jeantet, Vincent Vigon, Sébastien Geiger, Damien Chevallier
-
+Fully Convolutional Neural Network: A solution to infer animal behaviours from multi-sensor data  
+Lorène Jeantet, Vincent Vigon, Sébastien Geiger, Damien Chevallier  
 https://doi.org/10.1016/j.ecolmodel.2021.109555
 
 # Installation
