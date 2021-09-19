@@ -254,7 +254,7 @@ LoggerUI<-setRefClass("LoggerUI",
                                 sliderInput("time", "RTCtick:",
                                             min = 1,
                                             max = lnbrow,
-                                            value = c(min,max)),
+                                            value = c(1,lnbrow)),
                                 actionButton("btzg", "<<"),
                                 actionButton("btzoom", "Zoom+"),
                                 actionButton("btzoomout", "Zoom-"),
@@ -392,8 +392,8 @@ LoggerUI<-setRefClass("LoggerUI",
                               fileh5=loglst$.l[[id]]$fileh5
                               f=h5file(fileh5,"r")
                               #m=ds[mi,]
-                              m=f["/data"][mi,]
-                              h5close(f)
+                              m=f[["data"]][mi,]
+                              f$close_all()
                               if (loglst$.l[[id]]$extmatrixenable) {
                                 me=as.matrix(loglst$.l[[id]]$extmatrix[mi,])
                               }

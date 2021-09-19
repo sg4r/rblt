@@ -206,11 +206,11 @@ Logger <- setRefClass("Logger",
                         initialize= function(fileh5 = "", filebehavior = "", besep=",", besaturation=0.2, uizoomstart=0, uizoomend=0, metricshow=NULL ) {
                           if(!is.character(fileh5)){
                             stop("fileh5 file path")
-                          }else if (!is.h5file(fileh5)){
+                          }else if (!1){ #is.h5file(fileh5)
                             stop("fileh5 is not h5 format")
                           } else {
                             fileh5<<-fileh5
-                            name<<-file_path_sans_ext(basename(fileh5))
+                            name<<-tools::file_path_sans_ext(basename(fileh5))
                             filebehavior<<-filebehavior
                             options(digits.secs = 3)
                             nbrow<<-0
@@ -349,21 +349,21 @@ LoggerCats <- setRefClass("LoggerCats",
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
-                             if (h5attr(f["/"], "logger")!="CATS") {
+                             if (h5attr(f, "logger")!="CATS") {
                                stop("h5 file not CATS structure")
-                             }else if (h5attr(f["/"], "version")!=version){
+                             }else if (h5attr(f, "version")!=version){
                                stop("CATS h5 file not good version")
                              }else {
-                               dt=h5attr(f["/"], "datestart")
+                               dt=h5attr(f, "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
-                               dset=openDataSet(f,"/data")
-                               size=dset@dim
+                               dset=f[["data"]]
+                               size=dset$dims
                                nbrow<<-size[1]
                                nbcol<<-size[2]
-                               accres<<-h5attr(f["/"], "accres")
+                               accres<<-h5attr(f, "accres")
                                rtctick<<-1
                              }
-                             h5close(f)
+                             f$close_all()
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
@@ -404,18 +404,18 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
-                             if (h5attr(f["/"], "logger")!="AXYTREK") {
+                             if (h5attr(f, "logger")!="AXYTREK") {
                                stop("h5 file not AXYTREK structure")
-                             }else if (h5attr(f["/"], "version")!=version){
+                             }else if (h5attr(f, "version")!=version){
                                stop("Axytrek h5 file not good version")
                              }else {
-                               dt=h5attr(f["/"], "datestart")
+                               dt=h5attr(f, "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
-                               dset=openDataSet(f,"/data")
-                               size=dset@dim
+                               dset=f[["data"]]
+                               size=dset$dims
                                nbrow<<-size[1]
                                nbcol<<-size[2]
-                               accres<<-h5attr(f["/"], "accres")
+                               accres<<-h5attr(f, "accres")
                                rtctick<<-1
                              }
                              h5close(f)
@@ -429,7 +429,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
-                             m=f["/data"][,]
+                             m=f[["data"]][,]
                              h5close(f)
                              colnames(m)=c("a1","a2","a3","p","t")
                              return(m)
@@ -456,19 +456,19 @@ LoggerLul <- setRefClass("LoggerLul",
                               #get info from h5 file
                               f=h5file(fileh5,"r")
                               #list.attributes(f)
-                              if (h5attr(f["/"], "logger")!="LUL") {
+                              if (h5attr(f, "logger")!="LUL") {
                                 stop("h5 file not Lul structure")
-                              }else if (h5attr(f["/"], "version")!=version){
+                              }else if (h5attr(f, "version")!=version){
                                 stop("LUL h5 file not good version")
                               }else {
-                                dt=h5attr(f["/"], "datestart")
+                                dt=h5attr(f, "datestart")
                                 datestart<<-as.POSIXct(dt, tz="GMT")
-                                dset=openDataSet(f,"/data")
-                                size=dset@dim
+                                dset=f[["data"]]
+                                size=dset$dims
                                 nbrow<<-size[1]
                                 nbcol<<-size[2]
-                                accres<<-h5attr(f["/"], "accres")
-                                rtctick<<-h5attr(f["/"], "rtctick")
+                                accres<<-h5attr(f, "accres")
+                                rtctick<<-h5attr(f, "rtctick")
                               }
                               h5close(f)
                             },
@@ -481,7 +481,7 @@ LoggerLul <- setRefClass("LoggerLul",
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
-                              m=f["/data"][,]
+                              m=f[["data"]][,]
                               h5close(f)
                               colnames(m)=metriclst$getcolnames()
                               return(m)
@@ -508,19 +508,19 @@ LoggerWacu <- setRefClass("LoggerWacu",
                              #get info from h5 file
                              f=h5file(fileh5,"r")
                              #list.attributes(f)
-                             if (h5attr(f["/"], "logger")!="WACU") {
+                             if (h5attr(f, "logger")!="WACU") {
                                stop("h5 file not WACU structure")
-                             }else if (h5attr(f["/"], "version")!=version){
+                             }else if (h5attr(f, "version")!=version){
                                stop("WACU h5 file not good version")
                              }else {
-                               dt=h5attr(f["/"], "datestart")
+                               dt=h5attr(f, "datestart")
                                datestart<<-as.POSIXct(dt, tz="GMT")
-                               dset=openDataSet(f,"/data")
-                               size=dset@dim
+                               dset=f[["data"]]
+                               size=dset$dims
                                nbrow<<-size[1]
                                nbcol<<-size[2]
-                               accres<<-h5attr(f["/"], "accres")
-                               rtctick<<-h5attr(f["/"], "rtctick")
+                               accres<<-h5attr(f, "accres")
+                               rtctick<<-h5attr(f, "rtctick")
                              }
                              h5close(f)
                            },
@@ -534,7 +534,7 @@ LoggerWacu <- setRefClass("LoggerWacu",
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
-                             m=f["/data"][,]
+                             m=f[["data"]][,]
                              h5close(f)
                              colnames(m)=c("t","p","l","a1","a2","a3")
                              return(m)
@@ -562,22 +562,22 @@ LoggerData <- setRefClass("LoggerData",
                               #get info from h5 file
                               f=h5file(fileh5,"r")
                               #list.attributes(f)
-                              if (h5attr(f["/"], "logger")!="LDATA") {
+                              if (h5attr(f, "logger")!="LDATA") {
                                 stop("h5 file not LDATA structure")
-                              }else if (h5attr(f["/"], "version")!=VersionLDATA){
+                              }else if (h5attr(f, "version")!=VersionLDATA){
                                 stop("LDATA h5 file not good version")
                               }else {
-                                dt=h5attr(f["/"], "datestart")
+                                dt=h5attr(f, "datestart")
                                 datestart<<-as.POSIXct(dt, tz="GMT")
-                                dset=openDataSet(f,"/data")
-                                size=dset@dim
+                                dset=f[["data"]]
+                                size=dset$dims
                                 nbrow<<-size[1]
                                 nbcol<<-size[2]
-                                accres<<-h5attr(f["/"], "accres")
-                                rtctick<<-h5attr(f["/"], "rtctick")
+                                accres<<-h5attr(f, "accres")
+                                rtctick<<-h5attr(f, "rtctick")
                                 #metriclst
                                 lm=MetricList$new()
-                                lmt=f["/metriclst"][,]
+                                lmt=f[["metriclst"]][,]
                                 for(r in 1:nrow(lmt)) {
                                   rname=lmt[r,1]
                                   rcolname=lmt[r,2]
@@ -599,7 +599,7 @@ LoggerData <- setRefClass("LoggerData",
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
-                              m=f["/data"][,]
+                              m=f[["data"]][,]
                               h5close(f)
                               colnames(m)=metriclst$getcolnames()
                               return(m)
