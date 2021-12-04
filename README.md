@@ -1,16 +1,23 @@
 # rblt
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/rblt)](https://CRAN.R-project.org/package=rblt)
+[![CRAN monthly downloads](https://cranlogs.r-pkg.org/badges/rblt)](https://CRAN.R-project.org/package=rblt)
+[![CRAN total downloads](https://cranlogs.r-pkg.org/badges/grand-total/rblt)](https://CRAN.R-project.org/package=rblt)
+<!-- badges: end -->
+
+## Introduction
 Le package rblt R-bio-logging-toolbox est une application R-shiny de visualisation des données accéléros des bio-loggers AXYTREK, CATS, et des bio-loggers LUL et WACU, fabriqués par le service MIBE de l’IPHC 
 
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 
 ![rblt main screen](rblt.png)
 
-# Keywords
+## Keywords
 Biologging Accelerometer, Gyroscope, Magnetometer, Temperature, Pressure, Light intensity, Data visualization, GPS, biologger, movement ecology, Animal Tracking
 Trajectory Analysis
 
 
-# Publications
+## Publications
 Behavioural inference from signal processing using animal-borne multi-sensor loggers: a novel solution to extend the knowledge of sea turtle ecology  
 Lorène Jeantet, Víctor Planas-Bielsa, Simon Benhamou,  Sebastien Geiger, Jordan Martin, Flora Siegwalt, Pierre Lelong, Julie Gresser, Denis Etienne, Gaëlle Hiélard, Alexandre Arqué, Sidney Régis, Nicolas Lecerf,  Cédric Frouin, Abdelwahab Benhalilou, Céline Murgale, Thomas Maillet, Lucas Andreani, Guilhem Campistron, Hélène Delvaux, Christelle Guyon, Sandrine Richard, Fabien Lefebvre, Nathalie Aubert, Caroline Habold, Yvon Le Maho, Damien Chevallier  
 https://royalsocietypublishing.org/doi/10.1098/rsos.200139
