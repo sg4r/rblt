@@ -16,8 +16,11 @@ Il est possible d’associé à ces données la vision des comportements des ani
 Biologging Accelerometer, Gyroscope, Magnetometer, Temperature, Pressure, Light intensity, Data visualization, GPS, biologger, movement ecology, Animal Tracking
 Trajectory Analysis
 
-
 ## Publications
+Estimation of the Maternal Investment of Sea Turtles by Automatic Identification of Nesting Behavior and Number of Eggs Laid from a Tri-Axial Accelerometer
+by Lorène Jeantet, Vadym Hadetskyi, Vincent Vigon, François Korysko, Nicolas Paranthoen, Damien Chevallier
+https://www.mdpi.com/2076-2615/12/4/520/htm
+
 Thèse : Identification automatique des comportements à partir de bio-loggers, une solution pour améliorer les connaissances sur l'écologie des tortues marines
 Lorène JEANTET, le 17/12/2021
 Jury: CHEVALLIER Damien (CNRS Borea), GASPAR Philippe (Mercator-Océan Toulouse), LIGNOT Jehan-Hervé (Université Montpellier), LE BOHEC Céline (CNRS Strasbourg),
