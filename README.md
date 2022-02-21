@@ -18,7 +18,7 @@ Trajectory Analysis
 
 ## Publications
 Estimation of the Maternal Investment of Sea Turtles by Automatic Identification of Nesting Behavior and Number of Eggs Laid from a Tri-Axial Accelerometer
-by Lorène Jeantet, Vadym Hadetskyi, Vincent Vigon, François Korysko, Nicolas Paranthoen, Damien Chevallier
+by Lorène Jeantet, Vadym Hadetskyi, Vincent Vigon, François Korysko, Nicolas Paranthoen, Damien Chevallier  
 Published:20 February 2022, https://www.mdpi.com/2076-2615/12/4/520/htm
 
 Thèse : Identification automatique des comportements à partir de bio-loggers, une solution pour améliorer les connaissances sur l'écologie des tortues marines
