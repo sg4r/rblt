@@ -300,7 +300,7 @@ Logger <- setRefClass("Logger",
                           if (nchar(filebehavior)>0) {
                             tryCatch({
                               dso=read.csv(filebehavior,sep = besep)
-                              dsob=levels(dso$Behavior)
+                              dsob=levels(factor(dso$Behavior))
                               #get number of different Behavior
                               i=0
                               for(o in dsob) {
@@ -316,7 +316,7 @@ Logger <- setRefClass("Logger",
                                 lfrom=paste(datestart+row$Start..s.)
                                 lto=paste(datestart+row$Stop..s.)
                                 #verifier index Behavior< confnbcolor
-                                lcode=as.numeric(row$Behavior)
+                                lcode=lchoices[[row$Behavior]]
                                 lcolor=substr(becolorgr[[lcode]],1,7)
                                 lbeobslst[[i]]=list(from = lfrom , to = lto, color = lcolor, code=lcode)
                               }

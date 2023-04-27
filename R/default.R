@@ -394,7 +394,7 @@ demo_gui = function() {
   cdemo2600kbe="~/rtoolbox/democats-2600kbe.csv"
   democats2h5(cdemo10k)
   democats2h5(cdemo2600k,nbrow=2600000)
-  democatsmkbe(fbe = cdemo10kbe,nbrow = 10, nbseq = 20)
+  democatsmkbe(fbe = cdemo10kbe,nbrow = 100, nbseq = 20)
   democatsmkbe(fbe = cdemo2600kbe,nbrow = 100, nbseq = 10)
   #create AXYTREK
   ademo="~/rtoolbox/demoaxytrek-10k.h5"
