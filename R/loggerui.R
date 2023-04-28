@@ -427,7 +427,8 @@ LoggerUI<-setRefClass("LoggerUI",
                                     wt=xts(me[,cdeb:cfin], order.by = datetimes, tz="GMT" )
                                   }
                                   dyt=dygraphs::dygraph(wt,main = dh$name, group = "wac",height = 200)%>%
-                                    dyOptions(labelsUTC = TRUE)
+                                    dyOptions(labelsUTC = TRUE) %>%
+                                    dyOptions(useDataTimezone = TRUE)
                                   if (dh$beobs==T) {
                                     #add obs
                                     lobs=loglst$.l[[id]]$beobslst
