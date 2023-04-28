@@ -48,8 +48,8 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     ldm[,11]=ldsr
     #ecriture du fichier H5
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- h5file(name = fileh5, mode = "a")
-    h5f["data"]=ldm
+    h5f=h5file(filename  = fileh5, mode = "w")
+    h5f[["data"]]=ldm
     h5attr(h5f, "logger")="CATS"
     h5attr(h5f, "version")=VersionLCATS
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -90,7 +90,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     #ecriture du fichier H5
     ldm=data.matrix(ds)
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- H5File$new(filename = fileh5, mode = "a")
+    h5f=h5file(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
     h5attr(h5f, "logger")="CATS"
     h5attr(h5f, "version")=VersionLCATS
@@ -154,8 +154,8 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     #ecriture du fichier H5
     ldm=data.matrix(lds[,c(3:7)])
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- h5file(name = fileh5, mode = "a")
-    h5f["data"]=ldm
+    h5f=h5file(filename = fileh5, mode = "w")
+    h5f[["data"]]=ldm
     h5attr(h5f, "logger")="AXYTREK"
     h5attr(h5f, "version")=VersionLAxytrek
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -187,7 +187,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     #ecriture du fichier H5
     ldm=data.matrix(ds)
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- H5File$new(filename = fileh5, mode = "a")
+    h5f= h5file(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
     h5attr(h5f, "logger")="AXYTREK"
     h5attr(h5f, "version")=VersionLAxytrek
@@ -245,7 +245,7 @@ lul2h5 = function(filecsv="", fileh5="", sep="\t") {
     ldm=data.matrix(lds[,c("t","p","l")])
     rm(lds)
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- h5file(filename = fileh5, mode = "a")
+    h5f=h5file(filename = fileh5, mode = "a")
     #h5f["/data", chunksize = c(4096,1), maxdimensions=c(nrow(ldm), ncol(ldm)), compression = 6]=ldm
     h5f[["/data"]]=ldm
     h5attr(h5f, "logger")="LUL"
@@ -319,18 +319,18 @@ wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") 
     h5dd=1
     h5df=h5buf
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- h5file(fileh5, mode = "w")
+    h5f=h5file(filename=fileh5, mode = "w")
     createDataSet(h5f,datasetname = "/data", type = "double", dimensions = c(nbrow,6), chunksize = c(h5buf,1) )
     while (h5df<nbrow) {
       cat(".")
       ldm=as.matrix(lds[h5dd:h5df,])
-      h5f["/data"][h5dd:h5df,]=ldm
+      h5f[["/data"]][h5dd:h5df,]=ldm
       h5dd=h5df
       h5df=h5dd+h5buf
     }
     h5df=nbrow
     ldm=as.matrix(lds[h5dd:h5df,])
-    h5f["/data"][h5dd:h5df,]=ldm
+    h5f[["/data"]][h5dd:h5df,]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
