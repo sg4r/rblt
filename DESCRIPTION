@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.5.1
+Version: 0.2.4.6
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",

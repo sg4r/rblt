@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^VERSION\.md$
+^rblt\.png$
+^LICENSE$
