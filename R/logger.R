@@ -278,7 +278,7 @@ Logger <- setRefClass("Logger",
                           #ecriture du fichier H5
                           if(file.exists(fileld)) file.remove(fileld)
                           h5f <- h5file(name = fileld, mode = "a")
-                          h5f["data"]=m
+                          h5f["data"]=t(m)
                           h5attr(h5f, "logger")="LDATA"
                           h5attr(h5f, "version")=VersionLDATA
                           h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -358,8 +358,8 @@ LoggerCats <- setRefClass("LoggerCats",
                                datestart<<-as.POSIXct(dt, tz="GMT")
                                dset=f[["data"]]
                                size=dset$dims
-                               nbrow<<-size[1]
-                               nbcol<<-size[2]
+                               nbrow<<-size[2]
+                               nbcol<<-size[1]
                                accres<<-h5attr(f, "accres")
                                rtctick<<-1
                              }
@@ -367,7 +367,7 @@ LoggerCats <- setRefClass("LoggerCats",
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
-                             m=f["/data"][,]
+                             m=t(f["/data"][,])
                              h5close(f)
                              colnames(m)=c("a1","a2","a3","g1","g2","g3","m1","m2","m3","t","p","l")
                              return(m)
@@ -413,8 +413,8 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                                datestart<<-as.POSIXct(dt, tz="GMT")
                                dset=f[["data"]]
                                size=dset$dims
-                               nbrow<<-size[1]
-                               nbcol<<-size[2]
+                               nbrow<<-size[2]
+                               nbcol<<-size[1]
                                accres<<-h5attr(f, "accres")
                                rtctick<<-1
                              }
@@ -429,7 +429,7 @@ LoggerAxytrek <- setRefClass("LoggerAxytrek",
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
-                             m=f[["data"]][,]
+                             m=t(f[["data"]][,])
                              h5close(f)
                              colnames(m)=c("a1","a2","a3","p","t")
                              return(m)
@@ -465,8 +465,8 @@ LoggerLul <- setRefClass("LoggerLul",
                                 datestart<<-as.POSIXct(dt, tz="GMT")
                                 dset=f[["data"]]
                                 size=dset$dims
-                                nbrow<<-size[1]
-                                nbcol<<-size[2]
+                                nbrow<<-size[2]
+                                nbcol<<-size[1]
                                 accres<<-h5attr(f, "accres")
                                 rtctick<<-h5attr(f, "rtctick")
                               }
@@ -481,7 +481,7 @@ LoggerLul <- setRefClass("LoggerLul",
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
-                              m=f[["data"]][,]
+                              m=t(f[["data"]][,])
                               h5close(f)
                               colnames(m)=metriclst$getcolnames()
                               return(m)
@@ -517,8 +517,8 @@ LoggerWacu <- setRefClass("LoggerWacu",
                                datestart<<-as.POSIXct(dt, tz="GMT")
                                dset=f[["data"]]
                                size=dset$dims
-                               nbrow<<-size[1]
-                               nbcol<<-size[2]
+                               nbrow<<-size[2]
+                               nbcol<<-size[1]
                                accres<<-h5attr(f, "accres")
                                rtctick<<-h5attr(f, "rtctick")
                              }
@@ -534,7 +534,7 @@ LoggerWacu <- setRefClass("LoggerWacu",
                            },
                            getdata= function() {
                              f=h5file(fileh5,"r")
-                             m=f[["data"]][,]
+                             m=t(f[["data"]][,])
                              h5close(f)
                              colnames(m)=c("t","p","l","a1","a2","a3")
                              return(m)
@@ -571,8 +571,8 @@ LoggerData <- setRefClass("LoggerData",
                                 datestart<<-as.POSIXct(dt, tz="GMT")
                                 dset=f[["data"]]
                                 size=dset$dims
-                                nbrow<<-size[1]
-                                nbcol<<-size[2]
+                                nbrow<<-size[2]
+                                nbcol<<-size[1]
                                 accres<<-h5attr(f, "accres")
                                 rtctick<<-h5attr(f, "rtctick")
                                 #metriclst
@@ -599,7 +599,7 @@ LoggerData <- setRefClass("LoggerData",
                             },
                             getdata= function() {
                               f=h5file(fileh5,"r")
-                              m=f[["data"]][,]
+                              m=t(f[["data"]][,])
                               h5close(f)
                               colnames(m)=metriclst$getcolnames()
                               return(m)

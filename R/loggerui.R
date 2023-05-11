@@ -392,7 +392,7 @@ LoggerUI<-setRefClass("LoggerUI",
                               fileh5=loglst$.l[[id]]$fileh5
                               f=h5file(fileh5,"r")
                               #m=ds[mi,]
-                              m=f[["data"]][mi,]
+                              m=t(f[["data"]][,mi])
                               f$close_all()
                               if (loglst$.l[[id]]$extmatrixenable) {
                                 me=as.matrix(loglst$.l[[id]]$extmatrix[mi,])

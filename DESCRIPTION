@@ -1,7 +1,7 @@
 Package: rblt
 Type: Package
 Title: Bio-Logging Toolbox
-Version: 0.2.4.6
+Version: 0.2.4.7
 Authors@R: 
     person(given = "Sebastien",
            family = "Geiger",
@@ -10,7 +10,7 @@ Authors@R:
 Description: An R-shiny application to plot datalogger time series at a microsecond precision as Acceleration, Temperature, 
   Pressure, Light intensity from CATS, AXY-TREK LUL and WACU bio-loggers. It is possible to link behavioral labels extracted
   from 'BORIS' software <http://www.boris.unito.it> or manually written in a csv file.
-  CATS bio-logger are manufactured by <https://www.cats.is>, AXY-TREK are manufactured by <https://www.technosmart.eu> and 
+  CATS bio-logger are manufactured by <https://cats.is/>, AXY-TREK are manufactured by <https://www.technosmart.eu> and 
   LUL and WACU are manufactured by <https://www.iphc.cnrs.fr/-MIBE-.html>.
 Maintainer: Sebastien Geiger <sebastien.geiger@iphc.cnrs.fr>
 License: GPL (>= 3)

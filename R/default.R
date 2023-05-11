@@ -43,9 +43,9 @@ cats2h5 = function(filecsv="",accres=50, fileh5="" ) {
     nbrow=nrow(ldsr)
     print(paste("nbrow:",nbrow))
     #change default value
-    ldm=data.matrix(ldsr[,c(3:14)])
     ldsr=ldm[,11]*(-1)
     ldm[,11]=ldsr
+    ldm=data.matrix(t(ldsr[,c(3:14)]))
     #ecriture du fichier H5
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f=h5file(filename  = fileh5, mode = "w")
@@ -88,7 +88,7 @@ democats2h5 = function(fileh5="",nbrow=10000) {
     ds[,12]=ds[,3]
     datestart=Sys.time()
     #ecriture du fichier H5
-    ldm=data.matrix(ds)
+    ldm=data.matrix(t(ds))
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f=h5file(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
@@ -152,7 +152,7 @@ axytrek2h5 = function(filecsv="", accres=25, fileh5="") {
     nbrow=nrow(lds)
     print(paste("nbrow:",nbrow))
     #ecriture du fichier H5
-    ldm=data.matrix(lds[,c(3:7)])
+    ldm=data.matrix(t(lds[,c(3:7)]))
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f=h5file(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
@@ -185,7 +185,7 @@ demoaxytrek2h5 = function(fileh5="",nbrow=10000) {
     ds[,5]=ds[,2]
     datestart=Sys.time()
     #ecriture du fichier H5
-    ldm=data.matrix(ds)
+    ldm=data.matrix(t(ds))
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f= h5file(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
@@ -242,7 +242,7 @@ lul2h5 = function(filecsv="", fileh5="", sep="\t") {
     ldm=lds[,"p"]*(-1)
     lds[,"p"]=ldm
     #ecriture du fichier H5
-    ldm=data.matrix(lds[,c("t","p","l")])
+    ldm=data.matrix(t(lds[,c("t","p","l")]))
     rm(lds)
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f=h5file(filename = fileh5, mode = "a")
@@ -275,7 +275,7 @@ demolul2h5 = function(fileh5="",nbrow=10000) {
     ds[,3]=nbrow/2
     datestart=Sys.time()
     #ecriture du fichier H5
-    ldm=data.matrix(ds)
+    ldm=data.matrix(t(ds))
     if(file.exists(fileh5)) file.remove(fileh5)
     h5f <- H5File$new(filename = fileh5, mode = "a")
     h5f[["data"]]=ldm
@@ -314,23 +314,29 @@ wacu2h5 = function(filecsv="",fileh5="",rtctick=1,accres=50,datestartstring="") 
     #change default value
     lds[,c("t"):=list(t/10)]
     lds[,c("p"):=list(p*(-1))]
+
+#    h5buf=1000000
+#    h5dd=1
+#    h5df=h5buf
+#    if(file.exists(fileh5)) file.remove(fileh5)
+#    h5f=h5file(filename=fileh5, mode = "w")
+#    createDataSet(h5f,datasetname = "/data", type = "double", dimensions = c(6,nbrow), chunksize = c(1,h5buf) )
+#    while (h5df<nbrow) {
+#      cat(".")
+#      ldm=as.matrix(lds[h5dd:h5df,])
+#      h5f[["/data"]][h5dd:h5df,]=ldm
+#      h5dd=h5df
+#      h5df=h5dd+h5buf
+#    }
+#    h5df=nbrow
+#    ldm=as.matrix(lds[h5dd:h5df,])
+#    h5f[["/data"]][h5dd:h5df,]=ldm
+
     #ecriture du fichier H5
-    h5buf=1000000
-    h5dd=1
-    h5df=h5buf
+    ldm=data.matrix(t(lds))
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f=h5file(filename=fileh5, mode = "w")
-    createDataSet(h5f,datasetname = "/data", type = "double", dimensions = c(nbrow,6), chunksize = c(h5buf,1) )
-    while (h5df<nbrow) {
-      cat(".")
-      ldm=as.matrix(lds[h5dd:h5df,])
-      h5f[["/data"]][h5dd:h5df,]=ldm
-      h5dd=h5df
-      h5df=h5dd+h5buf
-    }
-    h5df=nbrow
-    ldm=as.matrix(lds[h5dd:h5df,])
-    h5f[["/data"]][h5dd:h5df,]=ldm
+    h5f <- H5File$new(filename = fileh5, mode = "w")
+    h5f[["data"]]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=VersionLWacu
     h5attr(h5f, "datestart")=as.character.Date(datestart)
@@ -368,9 +374,9 @@ demowacu2h5 = function(fileh5="",nbrow=10000) {
     }
     datestart=Sys.time()
     #ecriture du fichier H5
-    ldm=data.matrix(w)
+    ldm=data.matrix(t(w))
     if(file.exists(fileh5)) file.remove(fileh5)
-    h5f <- H5File$new(filename = fileh5, mode = "a")
+    h5f <- H5File$new(filename = fileh5, mode = "w")
     h5f[["data"]]=ldm
     h5attr(h5f, "logger")="WACU"
     h5attr(h5f, "version")=VersionLWacu
