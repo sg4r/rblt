@@ -6,8 +6,7 @@
 <!-- badges: end -->
 
 ## Introduction
-Le package rblt R-bio-logging-toolbox est une application R-shiny de visualisation des données accéléros des bio-loggers AXYTREK, CATS, et des bio-loggers LUL et WACU, fabriqués par le service MIBE de l’IPHC 
-
+Le package rblt R-bio-logging-toolbox est une application R-shiny de visualisation des données accéléros des bio-loggers AXYTREK, CATS ou d'autres bio-loggers dont les données sont accessibles au format CSV.
 Il est possible d’associé à ces données la vision des comportements des animaux enregistrés depuis le logiciel BORIS http://www.boris.unito.it/ 
 
 ![rblt main screen](rblt.png)
