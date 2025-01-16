@@ -17,6 +17,10 @@ Biologging Accelerometer, Gyroscope, Magnetometer, Temperature, Pressure, Light 
 Trajectory Analysis
 
 ## Publications
+Automatic identification of the endangered hawksbill sea turtle behavior using deep learning and cross-species transfer learning by Lorène Jeantet, Kukhanya Zondo, Cyrielle Delvenne, Jordan Martin, Damien Chevallier, Emmanuel Dufourq
+Published:15/12/2024 https://pubmed.ncbi.nlm.nih.gov/39555892/
+
+
 Estimation of the Maternal Investment of Sea Turtles by Automatic Identification of Nesting Behavior and Number of Eggs Laid from a Tri-Axial Accelerometer
 by Lorène Jeantet, Vadym Hadetskyi, Vincent Vigon, François Korysko, Nicolas Paranthoen, Damien Chevallier  
 Published:20 February 2022, https://www.mdpi.com/2076-2615/12/4/520/htm
